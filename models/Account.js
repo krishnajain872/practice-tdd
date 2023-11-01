@@ -12,7 +12,10 @@ module.exports = (sequelize, DataTypes) => {
         as: "account_details",
       });
 
-      Account.belongsToMany(models.Transaction, { as: "acount_details" });
+      Account.belongsToMany(models.Transaction, {
+        as: "acount_details",
+        through: "Transaction",
+      });
     }
   }
   Account.init(
