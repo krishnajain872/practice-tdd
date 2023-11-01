@@ -55,4 +55,18 @@ describe("POST / Describe the user registration", () => {
         done();
       });
   });
+  it("should send code 409 if conflict encounter like user already register ", (done) => {
+    chai
+      .request(url)
+      .post(endpoint)
+      .type("form")
+      .send(invalid_data)
+      .end((err, res) => {
+        expect(res.statusCode).eq(409);
+        expect(res.body.code).eql(409);
+        expect(res.body).to.have.property("success").equal(false);
+        done();
+      });
+    expect(res.body.data.message).eq("user already registered ");
+  });
 });
