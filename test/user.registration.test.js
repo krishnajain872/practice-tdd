@@ -21,15 +21,14 @@ const invalid_data = {
 };
 
 describe("POST / Describe the user registration", () => {
-  it("should send code 201 if user successfully registered ", async (done) => {
-    await chai
+  it("should send code 201 if user successfully registered ", (done) => {
+    chai
       .request(url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       .send(data)
       .type("form")
       .end((err, res) => {
-        // console.log(res);
         expect(res.statusCode).eq(201);
         expect(res.body.code).eq(201);
         expect(res.body.data.message).eq("user registered successfully");
@@ -43,6 +42,7 @@ describe("POST / Describe the user registration", () => {
         done();
       });
   });
+
   it("should send code 400 if error for bad request", (done) => {
     chai
       .request(url)
