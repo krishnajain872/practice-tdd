@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@faker-js/faker": "^8.2.0",
     "chai": "^4.3.10",
     "chai-http": "^4.4.0",
     "dotenv": "^16.3.1",
@@ -25,8 +26,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "start":"node index.js",
-    "dev":"nodemon index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
