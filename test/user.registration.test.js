@@ -21,20 +21,6 @@ const invalid_data = {
 };
 
 describe("POST / Describe the user registration", () => {
-  // check the validation of the user data using validator
-  // it("should send code 200 if user data is validated ", async () => {
-  //   await chai
-  //     .request(url)
-  //     .post(endpoint)
-  //     .set("Content-Type", "application/json")
-  //     .send(data)
-  //     .type("form")
-  //     .end((err, res) => {
-  //       expect(res.statusCode).to.be.equal(200);
-  //       done();
-  //     });
-  // });
-
   it("should send code 201 if user successfully registered ", async () => {
     await chai
       .request(url)
