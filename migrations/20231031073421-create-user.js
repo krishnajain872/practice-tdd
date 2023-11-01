@@ -23,7 +23,7 @@ module.exports = {
         allowNull: false,
       },
       mobile: {
-        type: Sequelize.INTEGER(10),
+        type: Sequelize.INTEGER,
         allowNull: false,
         unique: true,
       },
