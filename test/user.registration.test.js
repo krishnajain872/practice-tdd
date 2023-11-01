@@ -68,21 +68,20 @@ describe("POST / Describe the user registration", () => {
         done();
       });
     expect(res.body.data.message).eq("user already registered ");
-    
+  });
 
-    it("should send code 500 if internal server error ", (done) => {
-      chai
-        .request(url)
-        .post(endpoint)
-        .type("form")
-        .send(data)
-        .end((err, res) => {
-          expect(res.statusCode).eq(500);
-          expect(res.body.code).eql(500);
-          expect(res.body).to.have.property("success").equal(false);
-          done();
-        });
-      expect(res.body.data.message).eq("Internal Server Error ");
-      
+  it("should send code 500 if internal server error ", (done) => {
+    chai
+      .request(url)
+      .post(endpoint)
+      .type("form")
+      .send(data)
+      .end((err, res) => {
+        expect(res.statusCode).eq(500);
+        expect(res.body.code).eql(500);
+        expect(res.body).to.have.property("success").equal(false);
+        done();
+      });
+    expect(res.body.data.message).eq("Internal Server Error ");
   });
 });
