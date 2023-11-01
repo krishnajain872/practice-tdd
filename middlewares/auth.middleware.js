@@ -29,19 +29,6 @@ const checkAccessToken = async (req, res, next) => {
   }
 };
 
-const verifyUser = async (req, res, next) => {
-  try {
-    if (req.user.role == "user") {
-      next();
-    } else {
-      throw new Error("user not authorised");
-    }
-  } catch (error) {
-    commonErrorHandler(req, res, error.message, 403, error);
-  }
-};
-
 module.exports = {
   checkAccessToken,
-  verifyUser,
 };
