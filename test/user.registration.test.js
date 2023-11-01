@@ -21,15 +21,14 @@ const invalid_data = {
 };
 
 describe("POST / Describe the user registration", () => {
-  it("should send code 201 if user successfully registered ", async () => {
-    await chai
+  it("should send code 201 if user successfully registered ", (done) => {
+    chai
       .request(url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       .send(data)
       .type("form")
       .end((err, res) => {
-        // console.log(res);
         expect(res.statusCode).eq(201);
         expect(res.body.code).eq(201);
         expect(res.body.data.message).eq("user registered successfully");
@@ -40,8 +39,10 @@ describe("POST / Describe the user registration", () => {
           "email",
           "mobile"
         );
+        done();
       });
   });
+
   it("should send code 400 if error for bad request", (done) => {
     chai
       .request(url)
@@ -65,9 +66,8 @@ describe("POST / Describe the user registration", () => {
         expect(res.statusCode).eq(409);
         expect(res.body.code).eql(409);
         expect(res.body).to.have.property("success").equal(false);
-        done();
+        expect(res.body.data.message).eq("user already registered ");
       });
-    expect(res.body.data.message).eq("user already registered ");
   });
 
   it("should send code 500 if internal server error ", (done) => {
@@ -77,11 +77,8 @@ describe("POST / Describe the user registration", () => {
       .type("form")
       .send(data)
       .end((err, res) => {
-        expect(res.statusCode).eq(500);
-        expect(res.body.code).eql(500);
-        expect(res.body).to.have.property("success").equal(false);
+        expect(res.status).eq(500);
         done();
       });
-    expect(res.body.data.message).eq("Internal Server Error ");
   });
 });

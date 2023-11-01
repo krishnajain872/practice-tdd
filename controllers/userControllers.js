@@ -4,7 +4,7 @@ const User = require("../models/User");
 exports.registerUser = async (req, res) => {
   try {
     const payload = req.body;
-    console.log(payload);
+    console.log(payload)
     if (!payload) {
       res.status(400).send(
         (response = {
