@@ -1,5 +1,5 @@
 "use strict";
-const { Model, UUID } = require("sequelize");
+const { Model, UUID, UUIDV1 } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Account extends Model {
     /**
@@ -8,10 +8,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Account.hasOne(models.User, {
-        as: "account_details",
+      Account.belongsTo(models.User, {
+        foreignKey: "user_id",
+        targetKey: "id",
+        as: "users",
       });
-
       Account.belongsToMany(models.Transaction, {
         as: "acount_details",
         through: "Transaction",
@@ -24,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: DataTypes.UUID,
+        defaultValue: UUIDV1,
       },
       account_type: {
         type: DataTypes.STRING,

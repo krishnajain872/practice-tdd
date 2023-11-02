@@ -12,6 +12,7 @@ const data = {
   last_name: "jain",
   email: "krishna@gmail.com",
   mobile: 1293012312,
+  password:"e4238he923rh2"
 };
 const invalid_data = {
   first_name: 21321,
