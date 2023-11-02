@@ -9,7 +9,6 @@ const url = "http://localhost:3000";
 const endpoint = "/api/staging/user/register";
 
 const data = userFakeData();
-
 console.log(data);
 const invalid_data = {
   first_name: 21321,

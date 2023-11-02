@@ -44,14 +44,11 @@ async function userRegistrationService(payload) {
     if (accessToken) {
       const user = await User.create(userData);
       user.dataValues.accessToken = accessToken;
-      console.log(user);
       return responseHelper(201, true, "user registered successfully", user);
     } else {
-      console.log(err);
       return errorHelper(500, "jwt error", "access token not generated");
     }
   } catch (err) {
-    console.log(err);
     if (err.name === "SequelizeUniqueConstraintError") {
       return errorHelper(409, err.name, err.parent.detail);
     } else {
