@@ -21,6 +21,12 @@ module.exports = {
       account_id: {
         type: Sequelize.UUID,
         allowNull: false,
+        references: {
+          model: "accounts",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       status: {
         type: Sequelize.STRING,
@@ -32,6 +38,12 @@ module.exports = {
       },
       trans_ref_id: {
         type: Sequelize.UUID,
+        references: {
+          model: "transactions",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       created_at: {
         allowNull: false,
