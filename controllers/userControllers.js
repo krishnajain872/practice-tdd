@@ -1,5 +1,3 @@
-const express = require("express");
-const User = require("../models/User");
 const { userRegistrationService } = require("../services/user.services");
 exports.registerUser = async (req, res) => {
   try {
@@ -14,9 +12,7 @@ exports.registerUser = async (req, res) => {
         })
       );
     }
-    const userdata = userRegistrationService(payload);
-    console.log(userdata);
-
+    const [userdata, errors] = userRegistrationService(payload);
     if (userdata) {
       res.status(201).send(
         (response = {
@@ -25,12 +21,12 @@ exports.registerUser = async (req, res) => {
           data: { message: "user registered successfully", userdata },
         })
       );
-    } else {
-      res.status(400).send(
+    } else if (errors) {
+      res.status(409).send(
         (response = {
-          code: 400,
+          code: errors.code,
           success: false,
-          data: { message: "bad request", payload: undefined },
+          data: { message: errors.message, error: errors.name },
         })
       );
     }
