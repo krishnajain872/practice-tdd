@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       });
       Account.belongsToMany(models.Transaction, {
         as: "acount_details",
-        through: "Transaction",
+        foreignKey: "id",
+        through: models.Transaction,
       });
     }
   }
