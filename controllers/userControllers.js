@@ -1,34 +1,36 @@
+const { errorHelper } = require("../helpers/errorHelp");
 const { userRegistrationService } = require("../services/user.services");
 exports.registerUser = async (req, res) => {
   try {
     const payload = req.body;
     console.log(payload);
-    if (!payload) {
-      res.status(400).send(
-        (response = {
-          code: 400,
-          success: false,
-          data: { message: "bad request", payload: undefined },
-        })
-      );
+    //check for correct payload
+    if (
+      !payload.email &&
+      !payload.mobile &&
+      !payload.password &&
+      !payload.first_name &&
+      !payload.last_name
+    ) {
+      // if paylaod is not valid
+      res
+        .status(400)
+        .send(
+          errorHelper(
+            "invalid payload",
+            400,
+            "Bad request",
+            "please check the payload and try again"
+          )
+        );
     }
-    const [userdata, errors] = userRegistrationService(payload);
-    if (userdata) {
-      res.status(201).send(
-        (response = {
-          code: 201,
-          success: true,
-          data: { message: "user registered successfully", userdata },
-        })
-      );
-    } else if (errors) {
-      res.status(409).send(
-        (response = {
-          code: errors.code,
-          success: false,
-          data: { message: errors.message, error: errors.name },
-        })
-      );
+
+    const response = await userRegistrationService(payload);
+    console.log(response);
+    if (response.code === 201 && response.success === true) {
+      res.status(201).send(response);
+    } else {
+      res.status(response.code).send(response);
     }
   } catch (err) {
     console.log(err);

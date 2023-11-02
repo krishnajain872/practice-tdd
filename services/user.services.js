@@ -1,36 +1,40 @@
+const { responseHelper } = require("../helpers/responseHelp");
 const db = require("../models");
 const User = db.User;
 
-const errorHelper = require("./../helpers/errorHelp");
-const userRegistrationService = async (payload) => {
+const { errorHelper } = require("./../helpers/errorHelp");
+const { passHashHelper } = require("./../helpers/passHelper");
+
+async function userRegistrationService(payload) {
   try {
-    if (
-      !payload.email &&
-      !payload.mobile &&
-      !payload.password &&
-      !payload.first_name &&
-      !payload.last_name
-    ) {
-      return errorHelper(
-        "Request Not accept unprocceble payload",
-        422,
-        "service error",
-        "please check the payload and try again"
+    // creating the password hash
+    const pass = await passHashHelper(payload.password);
+    console.log(pass);
+    if (pass == undefined) {
+      throw new Error(
+        errorHelper(
+          "Service Error",
+          500,
+          "service error",
+          "password hash not generated"
+        )
       );
     }
-    const pass = passHashHelper(payload.password);
+
     const data = {
       email: payload.email,
       mobile: payload.mobile,
-      password,
+      password: pass,
       first_name: payload.first_name,
       last_name: payload.last_name,
     };
-    const [userdata] = await User.create(data);
-    return userdata;
+
+    const userdata = await User.create(data);
+    return responseHelper(201, true, "user registered successfully", userdata);
+    console.log(userdata);
   } catch (err) {
+    console.log(err)
     const errors = errorHelper(
-      err,
       409,
       err.name,
       "please check the payload and try again",
@@ -38,17 +42,8 @@ const userRegistrationService = async (payload) => {
     );
     return errors;
   }
-};
-
-const userFindService = async (payload) => {};
-
-const userDeleteService = async (payload) => {};
-
-const userUpdateService = async (payload) => {};
+}
 
 module.exports = {
   userRegistrationService,
-  userUpdateService,
-  userDeleteService,
-  userFindService,
 };

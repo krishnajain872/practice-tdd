@@ -1,19 +1,16 @@
 const chai = require("chai");
 const expect = chai.expect;
 const chaiHttp = require("chai-http");
+const { userFakeData } = require("../helpers/fakeUser");
 
 chai.use(chaiHttp);
 
 const url = "http://localhost:3000";
 const endpoint = "/api/staging/user/register";
 
-const data = {
-  first_name: "krishna",
-  last_name: "jain",
-  email: "krishna@gmail.com",
-  mobile: 1293012312,
-  password:"e4238he923rh2"
-};
+const data = userFakeData();
+
+console.log(data);
 const invalid_data = {
   first_name: 21321,
   last_name: "jain",
