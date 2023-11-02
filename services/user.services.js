@@ -1,7 +1,16 @@
 const db = require("../models");
 
-const user = () => console.log(db.User);
+const userRegistrationService = async (payload) => {};
+
+const userFindService = async (payload) => {};
+
+const userDeleteService = async (payload) => {};
+
+const userUpdateService = async (payload) => {};
 
 module.exports = {
-  user,
+  userRegistrationService,
+  userUpdateService,
+  userDeleteService,
+  userFindService,
 };

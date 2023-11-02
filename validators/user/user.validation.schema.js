@@ -12,6 +12,7 @@ const schema = {
       .max(9999999999)
       .message("invalid mobile number")
       .required(),
+    password: joi.string().required(),
   }),
 };
 
