@@ -10,6 +10,7 @@ exports.errorHelper = (code, name, message, actual) => {
   }
 
   return {
+    success: false,
     type: type,
     code: code,
     name: name,

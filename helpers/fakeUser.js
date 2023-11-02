@@ -15,7 +15,6 @@ function generateRandomMobileNumber() {
  
  
   return {
-    userId: faker.string.uuid(),
     first_name: faker.internet.userName(),
     last_name: faker.internet.userName(),
     email: faker.internet.email(),
