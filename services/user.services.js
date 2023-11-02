@@ -1,46 +1,62 @@
+const { errorHelper } = require("../helpers/errorHelp");
 const { responseHelper } = require("../helpers/responseHelp");
-const db = require("../models");
+const db = require("./../models");
 const User = db.User;
-
-const { errorHelper } = require("./../helpers/errorHelp");
 const { passHashHelper } = require("./../helpers/passHelper");
+const jwt = require("jsonwebtoken");
 
 async function userRegistrationService(payload) {
   try {
-    // creating the password hash
-    const pass = await passHashHelper(payload.password);
-    console.log(pass);
-    if (pass == undefined) {
-      throw new Error(
-        errorHelper(
-          "Service Error",
-          500,
-          "service error",
-          "password hash not generated"
-        )
-      );
+    //JWT SCRET KEY
+    const { JWT_SECRET: secret } = process.env;
+    let isNotEmpty = Object.keys(payload).map(
+      (key) => payload[key].length != 0
+    );
+
+    if (!isNotEmpty) {
+      return errorHelper(400, "validation error", "check payload");
     }
 
-    const data = {
-      email: payload.email,
-      mobile: payload.mobile,
-      password: pass,
+    // create the password hash
+    const pass = await passHashHelper(payload.password);
+    if (pass == undefined) {
+      return errorHelper(500, "service error", "password hash not generated");
+    }
+
+    //
+    const userData = {
       first_name: payload.first_name,
       last_name: payload.last_name,
+      mobile: payload.mobile,
+      email: payload.email,
+      password: pass,
     };
 
-    const userdata = await User.create(data);
-    return responseHelper(201, true, "user registered successfully", userdata);
-    console.log(userdata);
-  } catch (err) {
-    console.log(err)
-    const errors = errorHelper(
-      409,
-      err.name,
-      "please check the payload and try again",
-      err.parent.detail
+    // generate an access token
+    const accessToken = jwt.sign(
+      {
+        mobile: payload.mobile,
+        email: payload.email,
+      },
+      secret
     );
-    return errors;
+
+    if (accessToken) {
+      const user = await User.create(userData);
+      user.dataValues.accessToken = accessToken;
+      console.log(user);
+      return responseHelper(201, true, "user registered successfully", user);
+    } else {
+      console.log(err);
+      return errorHelper(500, "jwt error", "access token not generated");
+    }
+  } catch (err) {
+    console.log(err);
+    if (err.name === "SequelizeUniqueConstraintError") {
+      return errorHelper(409, err.name, err.parent.detail);
+    } else {
+      return errorHelper(500, "service error", err.message);
+    }
   }
 }
 

@@ -2,31 +2,21 @@ const { errorHelper } = require("../helpers/errorHelp");
 const { userRegistrationService } = require("../services/user.services");
 exports.registerUser = async (req, res) => {
   try {
+    // payload
     const payload = req.body;
     console.log(payload);
-    //check for correct payload
-    if (
-      !payload.email &&
-      !payload.mobile &&
-      !payload.password &&
-      !payload.first_name &&
-      !payload.last_name
-    ) {
-      // if paylaod is not valid
-      res
-        .status(400)
-        .send(
-          errorHelper(
-            "invalid payload",
-            400,
-            "Bad request",
-            "please check the payload and try again"
-          )
-        );
-    }
 
+    // validate payload
+    let isNotEmpty = Object.keys(payload).map(
+      (key) => payload[key].length != 0
+    );
+    if (!isNotEmpty) {
+      return errorHelper(400, "Bad request", "validation error check payload");
+    }
+    // service call
     const response = await userRegistrationService(payload);
     console.log(response);
+    console.log("responsev => API CONTROLLER RESPONSE", response);
     if (response.code === 201 && response.success === true) {
       res.status(201).send(response);
     } else {

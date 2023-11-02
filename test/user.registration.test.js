@@ -39,7 +39,8 @@ describe("POST / Describe the user registration", () => {
           "mobile",
           "password",
           "updated_at",
-          "created_at"
+          "created_at",
+          "accessToken"
         );
         done();
       });
@@ -68,12 +69,11 @@ describe("POST / Describe the user registration", () => {
         expect(res.statusCode).eq(409);
         expect(res.body.code).eql(409);
         expect(res.body).to.have.property("success").equal(false);
-        expect(res.body.message).eq("please check the payload and try again");
         expect(res.body.name).eq("SequelizeUniqueConstraintError");
-        done()
+        done();
       });
   });
- 
+
   //this test is not impletemented yet
 
   // it("should send code 422 if database error aries ", (done) => {
