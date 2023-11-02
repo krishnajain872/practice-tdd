@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
 
       Account.belongsToMany(models.Transaction, {
         as: "acount_details",
-        through: "Transaction",
+        foreignKey: "id",
+        through: models.Transaction,
       });
     }
   }
@@ -45,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Account",
       createdAt: "created_at",
       updatedAt: "updated_at",
-      tableName:"accounts"
+      tableName: "accounts",
     }
   );
   return Account;
