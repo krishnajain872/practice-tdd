@@ -5,6 +5,7 @@ const User = db.User;
 const { passHashHelper } = require("./../helpers/passHelper");
 const jwt = require("jsonwebtoken");
 const { payloadValidate } = require("../helpers/payloadValidationHelper");
+const { Op } = require("sequelize");
 
 async function userRegistrationService(payload) {
   try {
