@@ -34,7 +34,6 @@ exports.loginUser = async (req, res) => {
   try {
     // payload
     const payload = req.body;
-
     // validate payload
     let isNotEmpty = Object.keys(payload).map(
       (key) => payload[key].length != 0

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-router.use("/api/staging/user", require("./userRoutes"));
+router.use("/user", require("./userRoutes"));
+router.use("/account", require("./accountRoute"));
 
 module.exports = router;

@@ -1,7 +1,9 @@
 var express = require("express");
+const { checkAccessToken } = require("../middlewares/auth.middleware");
+const { createAccount } = require("../controllers/accountController");
 var router = express.Router();
 
-router.route("/create-account/:id").post(addAccountValidation,authried, registerUser);
-router.route("/account").get(addLoginValidation, loginUser);
+router.route("/create-account").post(checkAccessToken,createAccount);
+// router.route("/account").get();
 
 module.exports = router;
