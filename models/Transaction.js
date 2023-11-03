@@ -1,5 +1,5 @@
 "use strict";
-const { Model, UUID } = require("sequelize");
+const { Model, UUID, UUIDV1 } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Transaction extends Model {
     /**
@@ -10,14 +10,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Transaction.belongsTo(models.Transaction, {
         as: "transaction_ref_to",
+        foreignKey: "trans_ref_id",
+        targetKey: "id",
       });
       Transaction.hasOne(models.Transaction, {
         foreignKey: "trans_ref_id",
         as: "transaction_ref_from",
+        sourceKey: "id",
       });
-      Transaction.hasOne(models.Account, {
+      Transaction.belongsTo(models.Account, {
         foreignKey: "account_id",
         as: "account_details",
+        targetKey: "id",
       });
     }
   }
@@ -27,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: DataTypes.UUID,
+        defaultValue: UUIDV1,
       },
       transaction_type: {
         type: DataTypes.STRING,
@@ -59,6 +63,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Transaction",
       createdAt: "created_at",
       updatedAt: "updated_at",
+      tableName: "transactions",
     }
   );
   return Transaction;
