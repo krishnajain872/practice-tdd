@@ -9,14 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Account.belongsTo(models.User, {
+        as: "user_details",
         foreignKey: "user_id",
         targetKey: "id",
-        as: "users",
       });
-      Account.belongsToMany(models.Transaction, {
-        as: "acount_details",
-        foreignKey: "id",
-        through: models.Transaction,
+
+      Account.hasMany(models.Transaction, {
+        foreignKey: "account_id",
+        sourceKey: "id",
       });
     }
   }
