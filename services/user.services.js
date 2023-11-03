@@ -11,6 +11,9 @@ async function userRegistrationService(payload) {
   try {
     //JWT SCRET KEY
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
+    let isNotEmpty = Object.keys(payload).map(
+      (key) => payload[key].length != 0
+    );
 
     if (!payloadValidate(payload)) {
       return errorHelper(400, "validation error", "check payload");
