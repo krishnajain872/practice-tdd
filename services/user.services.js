@@ -10,7 +10,7 @@ const { Op } = require("sequelize");
 async function userRegistrationService(payload) {
   try {
     //JWT SCRET KEY
-    const { JWT_SECRET: secret } = process.env;
+    const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
 
     if (!payloadValidate(payload)) {
       return errorHelper(400, "validation error", "check payload");
@@ -37,7 +37,10 @@ async function userRegistrationService(payload) {
         mobile: payload.mobile,
         email: payload.email,
       },
-      secret
+      secret,
+      {
+        expiresIn: expire,
+      }
     );
 
     if (accessToken) {
@@ -85,7 +88,10 @@ async function userLoginService(payload) {
             mobile: payload.mobile,
             email: payload.email,
           },
-          secret
+          secret,
+          {
+            expiresIn: "24s", // expires in 24 hours
+          }
         );
         user.dataValues.accessToken = accessToken;
         return responseHelper(202, true, "User Login Successfully", user);
