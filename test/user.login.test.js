@@ -26,8 +26,8 @@ describe("POST / Describe the user LOGIN ", () => {
       .send(data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(201);
-        expect(res.body.code).eq(201);
+        expect(res.statusCode).eq(202);
+        expect(res.body.code).eq(202);
         expect(res.body.data.message).eq("user login successfully");
         expect(res.body).to.have.property("success").equal(true);
         expect(res.body.data.payload).to.have.keys(
@@ -60,8 +60,8 @@ describe("POST / Describe the user LOGIN ", () => {
       .send(data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(404);
-        expect(res.body.code).eq(404);
+        expect(res.statusCode).eq(401);
+        expect(res.body.code).eq(401);
         expect(res.body).to.have.property("success").equal(false);
         done();
       });
