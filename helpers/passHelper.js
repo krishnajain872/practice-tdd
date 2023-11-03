@@ -9,3 +9,14 @@ module.exports.passHashHelper = async (password) => {
     throw err;
   }
 };
+
+module.exports.passCompareHelper=async function comparePasswordToHash(password, hash) {
+  try {
+    // Use bcrypt's compare function to check if the password matches the hash
+    const isMatch = await bcrypt.compare(password, hash);
+
+    return isMatch;
+  } catch (error) {
+   console.log(error)
+  }
+}
