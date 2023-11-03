@@ -4,16 +4,14 @@ const db = require("./../models");
 const User = db.User;
 const { passHashHelper } = require("./../helpers/passHelper");
 const jwt = require("jsonwebtoken");
+const { payloadValidate } = require("../helpers/payloadValidationHelper");
 
 async function userRegistrationService(payload) {
   try {
     //JWT SCRET KEY
     const { JWT_SECRET: secret } = process.env;
-    let isNotEmpty = Object.keys(payload).map(
-      (key) => payload[key].length != 0
-    );
 
-    if (!isNotEmpty) {
+    if (!payloadValidate(payload)) {
       return errorHelper(400, "validation error", "check payload");
     }
 
@@ -56,3 +54,6 @@ async function userRegistrationService(payload) {
     }
   }
 }
+module.exports = {
+  userRegistrationService,
+};
