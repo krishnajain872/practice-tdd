@@ -56,7 +56,3 @@ async function userRegistrationService(payload) {
     }
   }
 }
-
-module.exports = {
-  userRegistrationService,
-};
