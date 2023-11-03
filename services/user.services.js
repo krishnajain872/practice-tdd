@@ -54,6 +54,47 @@ async function userRegistrationService(payload) {
     }
   }
 }
+
+async function userLoginService(payload) {
+  try {
+    //JWT SCRET KEY
+    const { JWT_SECRET: secret } = process.env;
+    //payload validation
+    if (!payloadValidate(payload)) {
+      return errorHelper(400, "validation error", "check payload");
+    }
+    const userData = {
+      where: {
+        [Op.and]: [{ mobile: payload.mobile }, { email: payload.email }],
+      },
+    };
+
+    const user = await User.findOne(userData);
+    if (!user.id) {
+      return errorHelper(404, "User Not Found", "");
+    }
+    // comapare the password hash
+    const pass = await passCompareHelper(payload.password, user.password);
+    if (!pass) {
+      return errorHelper(401, "UNAUTHORIZED", "Wrong credentials");
+    } else {
+      if (user.id && pass) {
+        const accessToken = jwt.sign(
+          {
+            mobile: payload.mobile,
+            email: payload.email,
+          },
+          secret
+        );
+        user.dataValues.accessToken = accessToken;
+        return responseHelper(202, true, "User Login Successfully", user);
+      }
+    }
+  } catch (err) {
+    return errorHelper(500, "service error", err.message);
+  }
+}
 module.exports = {
   userRegistrationService,
+  userLoginService,
 };
