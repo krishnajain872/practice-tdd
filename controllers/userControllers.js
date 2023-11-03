@@ -1,5 +1,9 @@
 const { errorHelper } = require("../helpers/errorHelp");
-const { userRegistrationService } = require("../services/user.services");
+const {
+  userRegistrationService,
+  userLoginService,
+} = require("../services/user.services");
+
 exports.registerUser = async (req, res) => {
   try {
     // payload
