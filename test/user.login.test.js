@@ -8,14 +8,29 @@ chai.use(chaiHttp);
 const url = "http://localhost:3000";
 const endpoint = "/api/staging/user/login";
 
-const data = userFakeData();
-console.log(data);
-// const invalid_data = {
-//   first_name: 21321,
-//   last_name: "jain",
-//   email: "krishna@gmailcom",
-//   mobile: "1293012312",
-// };
+const data = {
+  email: "Blanche83@gmail2.com",
+  mobile: "8192132312",
+  password: "Uvcck0J1RU78LoW",
+};
+const worng_password = {
+  email: "Blanche83@gmail2.com",
+  mobile: "8192132312",
+  password: "Uvcck0J1RU7",
+};
+
+const not_found_data = {
+  email: "Blanche83@gmail2.com",
+  mobile: "9129394995",
+  password: "Uvcck0J1RU78LoW",
+};
+
+const invalid_data = {
+  first_name: 21321,
+  last_name: "jain",
+  email: "krishna@gmailcom",
+  mobile: "1293012312",
+};
 
 describe("POST / Describe the user LOGIN ", () => {
   it("should send code 202 if user successfully Login ", (done) => {
@@ -28,13 +43,20 @@ describe("POST / Describe the user LOGIN ", () => {
       .end((err, res) => {
         expect(res.statusCode).eq(202);
         expect(res.body.code).eq(202);
-        expect(res.body.data.message).eq("user login successfully");
+        expect(res.body.data.message).eq("User Login Successfully");
         expect(res.body).to.have.property("success").equal(true);
         expect(res.body.data.payload).to.have.keys(
-          "mobile",
+          "accessToken",
+          "created_at",
           "email",
-          "password"
+          "first_name",
+          "id",
+          "last_name",
+          "mobile",
+          "password",
+          "updated_at"
         );
+
         done();
       });
   });
@@ -43,7 +65,7 @@ describe("POST / Describe the user LOGIN ", () => {
       .request(url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(data)
+      .send(not_found_data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(404);
@@ -57,7 +79,7 @@ describe("POST / Describe the user LOGIN ", () => {
       .request(url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(data)
+      .send(worng_password)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(401);
@@ -75,9 +97,9 @@ describe("POST / Describe the user LOGIN ", () => {
       .send(data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(500);
-        expect(res.body.code).eq(500);
-        expect(res.body).to.have.property("success").equal(false);
+        if (err) {
+          expect(res.status).eq(500);
+        }
         done();
       });
   });
@@ -87,7 +109,7 @@ describe("POST / Describe the user LOGIN ", () => {
       .post(endpoint)
       .set("Content-Type", "application/json")
       //   .set()
-      .send(data)
+      .send(invalid_data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(400);

@@ -2,7 +2,7 @@ const { errorHelper } = require("../helpers/errorHelp");
 const { responseHelper } = require("../helpers/responseHelp");
 const db = require("./../models");
 const User = db.User;
-const { passHashHelper } = require("./../helpers/passHelper");
+const { passHashHelper, passCompareHelper } = require("./../helpers/passHelper");
 const jwt = require("jsonwebtoken");
 const { payloadValidate } = require("../helpers/payloadValidationHelper");
 const { Op } = require("sequelize");
@@ -71,7 +71,7 @@ async function userLoginService(payload) {
     };
 
     const user = await User.findOne(userData);
-    if (!user.id) {
+    if (!user) {
       return errorHelper(404, "User Not Found", "");
     }
     // comapare the password hash
