@@ -8,14 +8,15 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Account.hasOne(models.User, {
-        as: "account_details",
+      Account.belongsTo(models.User, {
+        as: "user_details",
+        foreignKey: "user_id",
+        targetKey: "id",
       });
 
-      Account.belongsToMany(models.Transaction, {
-        as: "acount_details",
-        foreignKey: "id",
-        through: models.Transaction,
+      Account.hasMany(models.Transaction, {
+        foreignKey: "account_id",
+        sourceKey: "id",
       });
     }
   }
