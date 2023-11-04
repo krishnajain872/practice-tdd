@@ -8,11 +8,10 @@ const checkAccessToken = async (req, res, next) => {
   const accessToken = req.headers["authorization"]?.split(" ")[1];
 
   if (!accessToken) {
-    return res.status(401).send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
+    return res
+      .status(401)
+      .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
   }
-
-  console.log(accessToken);
-
   try {
     const decodedJwt = await jwt.verify(accessToken, process.env.JWT_SECRET);
 
@@ -23,13 +22,25 @@ const checkAccessToken = async (req, res, next) => {
     });
 
     if (!user) {
-      return res.status(404).send(errorHelper(404, "Not Found", "No user found"));
+      return res
+        .status(404)
+        .send(errorHelper(404, "Not Found", "No user found"));
     }
   } catch (error) {
     if (error.name === "TokenExpiredError") {
-      return res.status(403).send(errorHelper(403, "UNAUTHORIZED ACCESS", "Access Denied due to FORBIDDEN login again"));
+      return res
+        .status(401)
+        .send(
+          errorHelper(
+            401,
+            "UNAUTHORIZED ACCESS",
+            "Access Denied due to FORBIDDEN login again"
+          )
+        );
     } else if (error.message === "Invalid token signature") {
-      return res.status(401).send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
+      return res
+        .status(401)
+        .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
     } else {
       return res.status(500).send(errorHelper(500, "Internal server error"));
     }

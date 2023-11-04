@@ -32,8 +32,8 @@ const invalid_data = {
   mobile: "1293012312",
 };
 
-describe("POST / Describe the user LOGIN ", () => {
-  it("should send code 202 if user successfully Login ", (done) => {
+describe("POST / Describe the Account test case ", () => {
+  it("should send code 201 for account create successfully", (done) => {
     chai
       .request(url)
       .post(endpoint)
@@ -41,40 +41,26 @@ describe("POST / Describe the user LOGIN ", () => {
       .send(data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(202);
-        expect(res.body.code).eq(202);
-        expect(res.body.data.message).eq("User Login Successfully");
-        expect(res.body).to.have.property("success").equal(true);
-        expect(res.body.data.payload).to.have.keys(
-          "accessToken",
-          "created_at",
-          "email",
-          "first_name",
-          "id",
-          "last_name",
-          "mobile",
-          "password",
-          "updated_at"
-        );
-
+        expect(res.statusCode).eq(201);
+        expect(res.body.code).eq(201);
         done();
       });
   });
-  it("should send code 404 if user not found  ", (done) => {
+  it("should send code 409 for account  already exist in db", (done) => {
     chai
       .request(url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(not_found_data)
+      .send(data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(404);
-        expect(res.body.code).eq(404);
-        expect(res.body).to.have.property("success").equal(false);
+        expect(res.statusCode).eq(409);
+        expect(res.body.code).eq(409);
         done();
       });
   });
-  it("should send code 401 if user password not match ", (done) => {
+
+  it("should send code 401 if unAuthorized  ", (done) => {
     chai
       .request(url)
       .post(endpoint)
@@ -84,6 +70,20 @@ describe("POST / Describe the user LOGIN ", () => {
       .end((err, res) => {
         expect(res.statusCode).eq(401);
         expect(res.body.code).eq(401);
+        expect(res.body).to.have.property("success").equal(false);
+        done();
+      });
+  });
+  it("should send code 403 if unAuthorized ", (done) => {
+    chai
+      .request(url)
+      .post(endpoint)
+      .set("Content-Type", "application/json")
+      .send(worng_password)
+      .type("form")
+      .end((err, res) => {
+        expect(res.statusCode).eq(403);
+        expect(res.body.code).eq(403);
         expect(res.body).to.have.property("success").equal(false);
         done();
       });
@@ -103,7 +103,7 @@ describe("POST / Describe the user LOGIN ", () => {
         done();
       });
   });
-  it("should send code 400 bad reques invalid payload", (done) => {
+  it("should send code 404 if account ", (done) => {
     chai
       .request(url)
       .post(endpoint)
