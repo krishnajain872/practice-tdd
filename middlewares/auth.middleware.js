@@ -41,6 +41,10 @@ const checkAccessToken = async (req, res, next) => {
       return res
         .status(401)
         .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
+    } else if (error.message === "JsonWebTokenError") {
+      return res
+        .status(401)
+        .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
     } else {
       return res.status(500).send(errorHelper(500, "Internal server error"));
     }
