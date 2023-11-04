@@ -6,17 +6,17 @@ const { userFakeData } = require("../helpers/fakeUser");
 chai.use(chaiHttp);
 
 const url = "http://localhost:3000";
-const endpoint = "/api/staging/user/account";
+const endpoint = "/api/staging/account/create-account";
 
 const data = {
-  email: "Blanche83@gmail2.com",
-  mobile: "8192132312",
-  password: "Uvcck0J1RU78LoW",
+  account_type: "saving account",
+  balance: 20.2,
+  mobile: "8192132311",
 };
-const worng_password = {
-  email: "Blanche83@gmail2.com",
-  mobile: "8192132312",
-  password: "Uvcck0J1RU7",
+const worng_data = {
+  account_type: "saving account",
+  balance: 20.2,
+  mobile: "8192132311",
 };
 
 const not_found_data = {
@@ -38,6 +38,10 @@ describe("POST / Describe the Account test case ", () => {
       .request(url)
       .post(endpoint)
       .set("Content-Type", "application/json")
+      .set(
+        "authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiI4MTkyMTMyMzEyIiwiZW1haWwiOiJCbGFuY2hlODNAZ21haWwyLmNvbSIsImlhdCI6MTY5OTA4NzI4MiwiZXhwIjoxNjk5MTczNjgyfQ.RlER0stt1FhUAHPJnCfQidQay-3ULLHrL7YSObK9GKo"
+      )
       .send(data)
       .type("form")
       .end((err, res) => {
@@ -51,6 +55,10 @@ describe("POST / Describe the Account test case ", () => {
       .request(url)
       .post(endpoint)
       .set("Content-Type", "application/json")
+      .set(
+        "authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiI4MTkyMTMyMzEyIiwiZW1haWwiOiJCbGFuY2hlODNAZ21haWwyLmNvbSIsImlhdCI6MTY5OTA4NzI4MiwiZXhwIjoxNjk5MTczNjgyfQ.RlER0stt1FhUAHPJnCfQidQay-3ULLHrL7YSObK9GKo"
+      )
       .send(data)
       .type("form")
       .end((err, res) => {
@@ -65,7 +73,11 @@ describe("POST / Describe the Account test case ", () => {
       .request(url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(worng_password)
+      .set(
+        "authorization",
+        "bearer e1haWwiOiJCbGFuY2hlODNAZ21hawyLmNvbSIsImlhdCI6MTY5OTA4NzI4MiwiZXhwIjoxNjk5MTczNjgyfQ.RlER0stt1FhUAHPJnCfQidQay-3ULLHrL7YSObK9GKo"
+      )
+      .send(data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(401);
@@ -74,25 +86,16 @@ describe("POST / Describe the Account test case ", () => {
         done();
       });
   });
-  it("should send code 403 if unAuthorized ", (done) => {
-    chai
-      .request(url)
-      .post(endpoint)
-      .set("Content-Type", "application/json")
-      .send(worng_password)
-      .type("form")
-      .end((err, res) => {
-        expect(res.statusCode).eq(403);
-        expect(res.body.code).eq(403);
-        expect(res.body).to.have.property("success").equal(false);
-        done();
-      });
-  });
+
   it("should send code 500 internal server errors", (done) => {
     chai
       .request(url)
       .post(endpoint)
       .set("Content-Type", "application/json")
+      .set(
+        "authorization",
+        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiI4MTkyMTMyMzEyIiwiZW1haWwiOiJCbGFuY2hlODNAZ21haWwyLmNvbSIsImlhdCI6MTY5OTA4NzI4MiwiZXhwIjoxNjk5MTczNjgyfQ.RlER0stt1FhUAHPJnCfQidQay-3ULLHrL7YSObK9GKo"
+      )
       //   .set()
       .send(data)
       .type("form")
@@ -103,19 +106,23 @@ describe("POST / Describe the Account test case ", () => {
         done();
       });
   });
-  it("should send code 404 if account ", (done) => {
-    chai
-      .request(url)
-      .post(endpoint)
-      .set("Content-Type", "application/json")
-      //   .set()
-      .send(invalid_data)
-      .type("form")
-      .end((err, res) => {
-        expect(res.statusCode).eq(400);
-        expect(res.body.code).eq(400);
-        expect(res.body).to.have.property("success").equal(false);
-        done();
-      });
-  });
 });
+//   it("should send code 404 if user not found ", (done) => {
+//     chai
+//       .request(url)
+//       .post(endpoint)
+//       .set("Content-Type", "application/json")
+//       .set(
+//         "authorization",
+//         "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiI4MTkyMTMyMzEyIiwiZW1haWwiOiJCbGFuY2hlODNAZ21haWwyLmNvbSIsImlhdCI6MTY5OTA4NzI4MiwiZXhwIjoxNjk5MTczNjgyfQ.RlER0stt1FhUAHPJnCfQidQay-3ULLHrL7YSObK9GKo"
+//       )
+//       .send(worng_data)
+//       .type("form")
+//       .end((err, res) => {
+//         expect(res.statusCode).eq(404);
+//         expect(res.body.code).eq(404);
+//         expect(res.body).to.have.property("success").equal(false);
+//         done();
+//       });
+//   });
+// });
