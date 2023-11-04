@@ -54,8 +54,6 @@ async function createAccountService(payload) {
         "account created successfully ",
         account
       );
-
-      console.log(account);
     } else {
       return responseHelper(
         422,
