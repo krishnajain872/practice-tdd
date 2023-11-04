@@ -4,7 +4,9 @@ const schema = {
   account: Joi.object({
     account_type: Joi.string().required(),
     balance: Joi.number().required(),
-    user_id: Joi.string().guid({ version: "uuidv4" }).required(),
+    mobile: Joi.string()
+      .pattern(new RegExp("^(\\+\\d{1,3}[- ]?)?\\d{10}$"))
+      .required(),
   }),
 };
 
