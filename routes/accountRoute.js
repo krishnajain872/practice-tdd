@@ -9,6 +9,9 @@ var router = express.Router();
 router
   .route("/create-account")
   .post(checkAccessToken, addAccountValidation, createAccount);
+router
+  .route("/transaction/update/balance")
+  .post(checkAccessToken, updateAccountValidation, updateAccount);
 // router.route("/account").get();
 
 module.exports = router;

@@ -27,3 +27,7 @@ exports.createAccount = async (req, res) => {
     res.status(500).send(err);
   }
 };
+
+exports.updateAccount = async (req, res) => {
+  res.status(200).send("account balance update");
+};

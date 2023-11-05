@@ -8,6 +8,9 @@ const schema = {
       .pattern(new RegExp("^(\\+\\d{1,3}[- ]?)?\\d{10}$"))
       .required(),
   }),
+  account_balance: Joi.object({
+    
+  })
 };
 
 module.exports = schema;
