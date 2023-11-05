@@ -1,5 +1,8 @@
 const { errorHelper } = require("../helpers/errorHelp");
-const { createAccountService } = require("../services/account.service");
+const {
+  createAccountService,
+  updateAccountBalanceService,
+} = require("../services/account.service");
 
 exports.createAccount = async (req, res) => {
   try {
@@ -29,5 +32,22 @@ exports.createAccount = async (req, res) => {
 };
 
 exports.updateAccount = async (req, res) => {
-  res.status(200).send("account balance update");
+  try {
+    const payload = {
+      account_id: req.body.account_id,
+      amount: req.body.amount,
+      type: req.body.type,
+    };
+
+    const response = await updateAccountBalanceService(payload);
+
+    if (response.success) {
+      res.status(200).send(response);
+    } else {
+      res.status(response.code).send(response);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
 };
