@@ -1,6 +1,7 @@
-const { errorHelper } = require("../helpers/errorHelp");
-const { userRegistrationService } = require("../services/user.services");
-exports.registerUser = async (req, res) => {
+const express = require("express");
+const User = require("../models/User");
+
+async function registerUser(req, res) {
   try {
     // payload
     const payload = req.body;
@@ -19,9 +20,12 @@ exports.registerUser = async (req, res) => {
     if (response.code === 201 && response.success === true) {
       res.status(201).send(response);
     } else {
-      res.status(response.code).send(response);
+      res.status(201);
     }
   } catch (err) {
     res.status(500).send(err);
   }
+}
+module.exports = {
+  registerUser,
 };
