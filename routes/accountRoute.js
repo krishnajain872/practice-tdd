@@ -1,10 +1,16 @@
 var express = require("express");
 const { checkAccessToken } = require("../middlewares/auth.middleware");
-const { createAccount, updateAccount, withdrawlAccountBalanceController } = require("../controllers/accountController");
+const {
+  createAccount,
+  updateAccount,
+} = require("../controllers/accountController");
 const {
   addAccountValidation,
   updateAccountBalanceValidation,
 } = require("../validators/user/account.validation");
+const {
+  withdrwalAccountBalanceService,
+} = require("../services/account.service");
 var router = express.Router();
 
 router
@@ -12,7 +18,7 @@ router
   .post(checkAccessToken, addAccountValidation, createAccount);
 router
   .route("/transaction/withdrawl-balance/:account_id")
-  .patch(checkAccessToken, updateAccountBalanceValidation,withdrawlAccountBalanceController);
+  .post(checkAccessToken, withdrwalAccountBalanceService, updateAccount);
 // router.route("/account").get();
 
 module.exports = router;

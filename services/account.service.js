@@ -98,7 +98,8 @@ async function widthdrawlAccountBalanceService(payload) {
 }
 
 
+
 module.exports = {
   createAccountService,
-   widthdrawlAccountBalanceService,
+  widthdrawlAccountBalanceService,
 };
