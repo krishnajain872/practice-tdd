@@ -1,32 +1,57 @@
 const jwt = require("jsonwebtoken");
 const models = require("./../models");
+const { errorHelper } = require("../helpers/errorHelp");
+const { Op } = require("sequelize");
 require("dotenv").config();
 
 const checkAccessToken = async (req, res, next) => {
+  const accessToken = req.headers["authorization"]?.split(" ")[1];
+
+  if (!accessToken) {
+    return res
+      .status(401)
+      .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
+  }
   try {
-    const header = req.headers["authorization"];
-    const accessToken = header ? header.split(" ")[1] : null;
-    if (!accessToken) {
-      throw new Error("Access denied");
-    }
-    const decodedJwt = jwt.verify(accessToken, process.env.JWT_SECRET);
+    const decodedJwt = await jwt.verify(accessToken, process.env.JWT_SECRET);
+
     const user = await models.User.findOne({
       where: {
-        id: decodedJwt.userId,
+        [Op.or]: [{ mobile: decodedJwt.mobile }, { email: decodedJwt.email }],
       },
     });
-    if (!user) {
-      throw new Error("User Not found");
-    }
-    req.user = user;
 
-    next();
-  } catch (error) {
-    if (error.message == "Access denied") {
-      commonErrorHandler(req, res, error.message, 400, error);
+    if (!user) {
+      return res
+        .status(404)
+        .send(errorHelper(404, "Not Found", "No user found"));
     }
-    commonErrorHandler(req, res, error.message, 404, error);
+  } catch (error) {
+    console.log(error)
+    if (error.name === "TokenExpiredError") {
+      return res
+        .status(401)
+        .send(
+          errorHelper(
+            401,
+            "UNAUTHORIZED ACCESS",
+            "Access Denied due to FORBIDDEN login again"
+          )
+        );
+    } else if (error.message === "Invalid token signature") {
+      return res
+        .status(401)
+        .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
+    } else if (error.name === "JsonWebTokenError") {
+      return res
+        .status(401)
+        .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
+    } else {
+      return res.status(500).send(errorHelper(500, "Internal server error"));
+    }
   }
+
+  next();
 };
 
 module.exports = {
