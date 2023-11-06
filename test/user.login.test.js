@@ -8,9 +8,11 @@ chai.use(chaiHttp);
 const { BASE_API_URL: api_url } = process.env;
 const endpoint = "/user/register";
 
-const data = {
-  
-}
+const dataLogin = {
+  email: "Blanche83@gmail2.com",
+  mobile: "8192132311",
+  password: "Uvcck0J1RU78LoW",
+};
 
 describe("POST / Describe the user LOGIN ", () => {
   it("should send code 202 if user successfully Login ", (done) => {
@@ -18,7 +20,7 @@ describe("POST / Describe the user LOGIN ", () => {
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(data)
+      .send(dataLogin)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(202);
@@ -73,7 +75,6 @@ describe("POST / Describe the user LOGIN ", () => {
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      //   .set()
       .send(data)
       .type("form")
       .end((err, res) => {
@@ -89,7 +90,7 @@ describe("POST / Describe the user LOGIN ", () => {
       .post(endpoint)
       .set("Content-Type", "application/json")
       //   .set()
-      .send(invalid_data)
+      .send(dataLogin)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(400);

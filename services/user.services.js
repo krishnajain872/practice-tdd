@@ -65,6 +65,7 @@ async function userLoginService(payload) {
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
     //payload validation
     if (!payloadValidate(payload)) {
+      console.log(payload)
       return errorHelper(400, "validation error", "check payload");
     }
     const userData = {
