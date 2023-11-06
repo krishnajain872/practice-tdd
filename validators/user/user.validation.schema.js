@@ -1,19 +1,15 @@
-const joi = require("joi");
+const Joi = require("joi");
 
 const schema = {
-  user: joi.object({
-    first_name: joi.string().required(),
-    last_name: joi.string().required(),
-    email: joi.string().email().required(),
-    mobile: joi
-      .number()
-      .min(1000000000)
-      .message("invalid mobile number")
-      .max(9999999999)
-      .message("invalid mobile number")
+  user: Joi.object({
+    first_name: Joi.string().required(),
+    last_name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    mobile: Joi.string()
+      .pattern(new RegExp("^(\\+\\d{1,3}[- ]?)?\\d{10}$"))
       .required(),
-    password: joi.string().required(),
-  }),
+    password: Joi.string().required(),
+  }), 
 };
 
 module.exports = schema;
