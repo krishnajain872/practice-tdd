@@ -65,7 +65,7 @@ async function userRegistrationService(payload) {
 async function userLoginService(payload) {
   try {
     //JWT SCRET KEY
-    const { JWT_SECRET: secret } = process.env;
+    const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
     //payload validation
     if (!payloadValidate(payload)) {
       return errorHelper(400, "validation error", "check payload");
@@ -93,7 +93,7 @@ async function userLoginService(payload) {
           },
           secret,
           {
-            expiresIn: "24s", // expires in 24 hours
+            expiresIn: expire, // expires in 24 hours
           }
         );
         user.dataValues.accessToken = accessToken;
