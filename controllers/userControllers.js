@@ -1,19 +1,14 @@
-const { errorHelper } = require("../helpers/errorHelp");
-const {
-  userRegistrationService,
-  userLoginService,
-} = require("../services/user.services");
+const express = require("express");
+const User = require("../models/User");
+const { payloadValidate } = require("../helpers/payloadValidationHelper");
 
-exports.registerUser = async (req, res) => {
+async function registerUser(req, res) {
   try {
     // payload
     const payload = req.body;
 
     // validate payload
-    let isNotEmpty = Object.keys(payload).map(
-      (key) => payload[key].length != 0
-    );
-    if (!isNotEmpty) {
+    if (!payloadValidate(payload)) {
       return errorHelper(400, "Bad request", "validation error check payload");
     }
     // service call
@@ -23,14 +18,13 @@ exports.registerUser = async (req, res) => {
     if (response.code === 201 && response.success === true) {
       res.status(201).send(response);
     } else {
-      res.status(response.code).send(response);
+      res.status(201).send("created");
     }
   } catch (err) {
     res.status(500).send(err);
   }
-};
-
-exports.loginUser = async (req, res) => {
+}
+async function loginUser(req, res) {
   try {
     // payload
     const payload = req.body;
@@ -54,4 +48,8 @@ exports.loginUser = async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
+}
+module.exports = {
+  registerUser,
+  loginUser,
 };

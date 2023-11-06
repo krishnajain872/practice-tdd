@@ -2,35 +2,19 @@ const chai = require("chai");
 const expect = chai.expect;
 const chaiHttp = require("chai-http");
 const { userFakeData } = require("../helpers/fakeUser");
-
+require("dotenv").config();
 chai.use(chaiHttp);
 
-const url = "http://localhost:3000";
-const endpoint = "/api/staging/user/login";
-
-const data = {
-  email: "Blanche83@gmail2.com",
-  mobile: "8192132312",
-  password: "Uvcck0J1RU78LoW",
-};
-const worng_password = {
-  email: "Blanche83@gmail2.com",
-  mobile: "8192132312",
-  password: "Uvcck0J1RU7",
-};
-
-const not_found_data = {
-  email: "Blanche83@gmail2.com",
-  mobile: "9129394995",
-  password: "Uvcck0J1RU78LoW",
-};
-
-const invalid_data = {
-  first_name: 21321,
-  last_name: "jain",
-  email: "krishna@gmailcom",
-  mobile: "1293012312",
-};
+const { BASE_API_URL: api_url } = process.env;
+const endpoint = "/user/register";
+const data = userFakeData();
+console.log(data);
+// const invalid_data = {
+//   first_name: 21321,
+//   last_name: "jain",
+//   email: "krishna@gmailcom",
+//   mobile: "1293012312",
+// };
 
 describe("POST / Describe the user LOGIN ", () => {
   it("should send code 202 if user successfully Login ", (done) => {
