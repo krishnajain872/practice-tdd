@@ -20,7 +20,7 @@ async function registerUser(req, res) {
     if (response.code === 201 && response.success === true) {
       res.status(201).send(response);
     } else {
-      res.status(201);
+      res.status(201).send("created");
     }
   } catch (err) {
     res.status(500).send(err);
