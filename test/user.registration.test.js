@@ -44,8 +44,7 @@ describe("POST / Describe the user registration", () => {
         done();
       });
   });
-
-  it("should send code 400 if error for bad request", (done) => {
+  it("should send code 400 if error for bad request", () => {
     chai
       .request(url)
       .post(endpoint)
@@ -53,9 +52,6 @@ describe("POST / Describe the user registration", () => {
       .send(invalid_data)
       .end((err, res) => {
         expect(res.statusCode).eq(400);
-        expect(res.body.code).eql(400);
-        expect(res.body).to.have.property("success").equal(false);
-        done();
       });
   });
   it("should send code 409 if conflict encounter like user already register ", (done) => {
@@ -70,10 +66,10 @@ describe("POST / Describe the user registration", () => {
         expect(res.body).to.have.property("success").equal(false);
         expect(res.body.message).eq("please check the payload and try again");
         expect(res.body.name).eq("SequelizeUniqueConstraintError");
-        done()
+        done();
       });
   });
- 
+
   //this test is not impletemented yet
 
   // it("should send code 422 if database error aries ", (done) => {

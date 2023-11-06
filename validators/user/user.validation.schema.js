@@ -1,12 +1,14 @@
-const joi = require("joi");
+const Joi = require("joi");
 
 const schema = {
-  user: joi.object({
-    first_name: joi.string().required(),
-    last_name: joi.string().required(),
-    email: joi.string().email().required(),
-    mobile: joi.string().required(),
-    password: joi.string().required(),
+  user: Joi.object({
+    first_name: Joi.string().required(),
+    last_name: Joi.string().required(),
+    email: Joi.string().email().required(),
+    mobile: Joi.string()
+      .pattern(new RegExp("^(\\+\\d{1,3}[- ]?)?\\d{10}$"))
+      .required(),
+    password: Joi.string().required(),
   }),
 };
 
