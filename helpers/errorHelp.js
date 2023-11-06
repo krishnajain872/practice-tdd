@@ -1,12 +1,4 @@
-module.exports.errorHelper = error = (
-  req,
-  res,
-  error,
-  code,
-  name,
-  message,
-  actual
-) => {
+const error = (req, res, error, code, name, message, actual) => {
   if (code == 409 || 422) {
     type = "service error ";
   } else if (code == 400) {
@@ -32,4 +24,7 @@ module.exports.errorHelper = error = (
     message: message,
     actual: actual,
   };
+};
+module.exports = {
+  error,
 };
