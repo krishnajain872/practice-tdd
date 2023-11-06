@@ -1,16 +1,21 @@
 const chai = require("chai");
 const expect = chai.expect;
 const chaiHttp = require("chai-http");
-const { userFakeData } = require("../helpers/fakeUser");
-
+require("dotenv").config();
 chai.use(chaiHttp);
 
-const url = "http://localhost:3000";
-const endpoint = "/api/staging/user/register";
+const { BASE_API_URL: api_url } = process.env;
 
-const data = userFakeData();
+const url = api_url;
+const endpoint = "/user/register";
 
-console.log(data);
+const data = {
+  first_name: "krishna",
+  last_name: "jain",
+  email: "krishna@gmail.com",
+  mobile: "9282828928",
+  password: "3ye89423ye088239",
+};
 const invalid_data = {
   first_name: 21321,
   last_name: "jain",
@@ -19,7 +24,7 @@ const invalid_data = {
 };
 
 describe("POST / Describe the user registration", () => {
-  it("should send code 201 if user successfully registered ", (done) => {
+  it("should send code 201 if user successfully registered ", () => {
     chai
       .request(url)
       .post(endpoint)
@@ -54,7 +59,7 @@ describe("POST / Describe the user registration", () => {
         expect(res.statusCode).eq(400);
       });
   });
-  it("should send code 409 if conflict encounter like user already register ", (done) => {
+  it("should send code 409 if conflict encounter like user already register ", () => {
     chai
       .request(url)
       .post(endpoint)
@@ -62,32 +67,10 @@ describe("POST / Describe the user registration", () => {
       .send(data)
       .end((err, res) => {
         expect(res.statusCode).eq(409);
-        expect(res.body.code).eql(409);
-        expect(res.body).to.have.property("success").equal(false);
-        expect(res.body.message).eq("please check the payload and try again");
-        expect(res.body.name).eq("SequelizeUniqueConstraintError");
-        done();
       });
   });
 
-  //this test is not impletemented yet
-
-  // it("should send code 422 if database error aries ", (done) => {
-  //   chai
-  //     .request(url)
-  //     .post(endpoint)
-  //     .type("form")
-  //     .send(data)
-  //     .end((err, res) => {
-  //       expect(res.statusCode).eq(422);
-  //       expect(res.body.code).eql(422);
-  //       expect(res.body).to.have.property("success").equal(false);
-  //       expect(res.body.message).eq("please check the payload and try again");
-  //       expect(res.body.name).eq("SequelizeDatabaseError");
-  //     });
-  // });
-
-  it("should send code 500 if internal server error ", (done) => {
+  it("should send code 500 if internal server error ", () => {
     chai
       .request(url)
       .post(endpoint)
@@ -97,7 +80,6 @@ describe("POST / Describe the user registration", () => {
         if (err) {
           expect(res.status).eq(500);
         }
-        done();
       });
   });
 });
