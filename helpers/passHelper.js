@@ -1,3 +1,4 @@
+const bcrypt  = require("bcrypt")
 const passHashHelper = (hash = (password) => {
   bcrypt.hash(password, (saltRounds = 10), function (err, hash) {
     if (err) {

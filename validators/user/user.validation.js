@@ -16,7 +16,7 @@ addUserValidation = async (req, res, next) => {
   }
 };
 loginUserValidation = async (req, res, next) => {
-  const value = await user.validate(req.body);
+  const value = await login.validate(req.body);
   if (value.error) {
     res.status(400).json({
       code: 400,

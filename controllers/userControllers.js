@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/User");
 const { payloadValidate } = require("../helpers/payloadValidationHelper");
+const { userLoginService } = require("../services/user.services");
 
 async function registerUser(req, res) {
   try {
@@ -46,6 +47,7 @@ async function loginUser(req, res) {
       res.status(response.code).send(response);
     }
   } catch (err) {
+    console.log(err)
     res.status(500).send(err);
   }
 }

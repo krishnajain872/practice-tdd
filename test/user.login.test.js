@@ -1,25 +1,21 @@
 const chai = require("chai");
 const expect = chai.expect;
 const chaiHttp = require("chai-http");
-const { userFakeData } = require("../helpers/fakeUser");
+const { User, USERS } = require("../helpers/fakeUser");
 require("dotenv").config();
 chai.use(chaiHttp);
 
 const { BASE_API_URL: api_url } = process.env;
 const endpoint = "/user/register";
-const data = userFakeData();
-console.log(data);
-// const invalid_data = {
-//   first_name: 21321,
-//   last_name: "jain",
-//   email: "krishna@gmailcom",
-//   mobile: "1293012312",
-// };
+
+const data = {
+  
+}
 
 describe("POST / Describe the user LOGIN ", () => {
   it("should send code 202 if user successfully Login ", (done) => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       .send(data)
@@ -46,7 +42,7 @@ describe("POST / Describe the user LOGIN ", () => {
   });
   it("should send code 404 if user not found  ", (done) => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       .send(not_found_data)
@@ -60,7 +56,7 @@ describe("POST / Describe the user LOGIN ", () => {
   });
   it("should send code 401 if user password not match ", (done) => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       .send(worng_password)
@@ -74,7 +70,7 @@ describe("POST / Describe the user LOGIN ", () => {
   });
   it("should send code 500 internal server errors", (done) => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       //   .set()
@@ -89,7 +85,7 @@ describe("POST / Describe the user LOGIN ", () => {
   });
   it("should send code 400 bad reques invalid payload", (done) => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       //   .set()
