@@ -13,7 +13,6 @@ const { Op } = require("sequelize");
 
 async function createAccountService(payload) {
   try {
-   
     if (!payloadValidate(payload)) {
       return errorHelper(400, "validation error", "check payload");
     }
@@ -57,10 +56,8 @@ async function createAccountService(payload) {
         "account created successfully ",
         account
       );
- 
- 
+
       console.log(account);
- 
     } else {
       return responseHelper(
         422,
@@ -75,6 +72,10 @@ async function createAccountService(payload) {
   }
 }
 
+async function withdrwalAccountBalanceService(payload) {}
+async function depositeAccountBalanceService(payload) {}
 module.exports = {
   createAccountService,
+  withdrwalAccountBalanceService,
+  depositeAccountBalanceService,
 };
