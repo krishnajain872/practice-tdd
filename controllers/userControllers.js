@@ -24,8 +24,10 @@ async function registerUser(req, res) {
     res.status(500).send(err);
   }
 }
+async function loginUser(req, res) {};
 module.exports = {
   registerUser,
+  loginUser
 };
 
-exports.loginUser = async (req, res) => {};
+
