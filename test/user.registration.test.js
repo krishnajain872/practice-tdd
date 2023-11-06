@@ -1,11 +1,13 @@
 const chai = require("chai");
 const expect = chai.expect;
 const chaiHttp = require("chai-http");
-
+require("dotenv").config();
 chai.use(chaiHttp);
 
-const url = "http://localhost:3000";
-const endpoint = "/api/staging/user/register";
+const { BASE_API_URL: api_url } = process.env;
+
+const url = api_url;
+const endpoint = "/user/register";
 
 const data = {
   first_name: "krishna",
