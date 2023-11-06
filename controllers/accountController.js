@@ -41,7 +41,7 @@ exports.withdrawlAccountBalanceController = async (req, res) => {
     };
 
     console.log("=> PAYLOAD CONTROLLER  ", payload);
-    const response = await updateAccountBalanceService(payload);
+    const response = await widthdrawlAccountBalanceService(payload);
 
     if (response.success) {
       res.status(200).send(response);
