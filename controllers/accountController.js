@@ -1,7 +1,7 @@
 const { errorHelper } = require("../helpers/errorHelp");
 const {
   createAccountService,
-  updateAccountBalanceService,
+  widthdrawlAccountBalanceService,
 } = require("../services/account.service");
 
 exports.createAccount = async (req, res) => {
@@ -31,14 +31,15 @@ exports.createAccount = async (req, res) => {
   }
 };
 
-exports.updateAccount = async (req, res) => {
+exports.withdrawlAccountBalanceController = async (req, res) => {
   try {
     const payload = {
-      account_id: req.body.account_id,
+      account_id: req.params.account_id,
       amount: req.body.amount,
       type: req.body.type,
     };
 
+    console.log("=> PAYLOAD CONTROLLER  ", payload);
     const response = await updateAccountBalanceService(payload);
 
     if (response.success) {

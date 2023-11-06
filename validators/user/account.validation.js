@@ -1,4 +1,4 @@
-const { account } = require("./account.validation.schema");
+const { account, account_balance } = require("./account.validation.schema");
 
 module.exports = {
   addAccountValidation: async (req, res, next) => {
@@ -21,9 +21,10 @@ module.exports = {
     }
   },
   updateAccountBalanceValidation: async (req, res, next) => {
+    const  id = JSON.stringify(req.params.account_id)
     const value = await account_balance.validate({
-      account_id: req.params,
-      balance: req.body.balance,
+      account_id: id,
+      amount: req.body.amount,
       type: req.body.type,
     });
     if (value.error) {
