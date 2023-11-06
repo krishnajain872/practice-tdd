@@ -25,11 +25,11 @@ const invalid_data = {
   type: "deposite",
 };
 
-describe("POST / Describe the update account balance test case ", () => {
+describe("patch / Describe the update account balance test case ", () => {
   it("should send code 200 balance updated successfully", (done) => {
     chai
       .request(url)
-      .post(endpoint)
+      .patch(endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", bearer)
       .query({ account_id: id })
@@ -47,7 +47,7 @@ describe("POST / Describe the update account balance test case ", () => {
   it("should send code 401 if unAuthorized  ", (done) => {
     chai
       .request(url)
-      .post(endpoint)
+      .patch(endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", bearer)
       .send(data)
@@ -63,7 +63,7 @@ describe("POST / Describe the update account balance test case ", () => {
   it("should send code 500 internal server errors", (done) => {
     chai
       .request(url)
-      .post(endpoint)
+      .patch(endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", bearer)
       //   .set()
@@ -79,7 +79,7 @@ describe("POST / Describe the update account balance test case ", () => {
   it("should send code 404 if user not found ", (done) => {
     chai
       .request(url)
-      .post(endpoint)
+      .patch(endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", bearer)
       .send(worng_data)
@@ -94,7 +94,7 @@ describe("POST / Describe the update account balance test case ", () => {
   it("should send code 422 if user not found ", (done) => {
     chai
       .request(url)
-      .post(endpoint)
+      .patch(endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", bearer)
       .send(worng_data)
@@ -109,7 +109,7 @@ describe("POST / Describe the update account balance test case ", () => {
   it("should send code 400 if user not found ", (done) => {
     chai
       .request(url)
-      .post(endpoint)
+      .patch(endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", bearer)
       .send(worng_data)
