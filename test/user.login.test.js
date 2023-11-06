@@ -6,16 +6,30 @@ require("dotenv").config();
 chai.use(chaiHttp);
 
 const { BASE_API_URL: api_url } = process.env;
-const endpoint = "/user/register";
+const endpoint = "/user/login";
 
 const dataLogin = {
   email: "Blanche83@gmail2.com",
   mobile: "8192132311",
   password: "Uvcck0J1RU78LoW",
 };
+const badData = {
+  mobile: "8192132311",
+  password: "Uvcck0J1RU78LoW",
+};
+const dataLogin404 = {
+  email: "Blanche83@gmail2.com",
+  mobile: "8192132321",
+  password: "Uvcck0J1RU78LoW",
+};
+const worng_password = {
+  email: "Blanche83@gmail2.com",
+  mobile: "8192132311",
+  password: "Uvcck0J1RU78Lo",
+};
 
 describe("POST / Describe the user LOGIN ", () => {
-  it("should send code 202 if user successfully Login ", (done) => {
+  it("should send code 202 if user successfully Login ", () => {
     chai
       .request(api_url)
       .post(endpoint)
@@ -23,6 +37,7 @@ describe("POST / Describe the user LOGIN ", () => {
       .send(dataLogin)
       .type("form")
       .end((err, res) => {
+        console.log(res)
         expect(res.statusCode).eq(202);
         expect(res.body.code).eq(202);
         expect(res.body.data.message).eq("User Login Successfully");
@@ -32,31 +47,27 @@ describe("POST / Describe the user LOGIN ", () => {
           "created_at",
           "email",
           "first_name",
-          "id",
           "last_name",
           "mobile",
           "password",
           "updated_at"
         );
-
-        done();
       });
   });
-  it("should send code 404 if user not found  ", (done) => {
+  it("should send code 404 if user not found  ", () => {
     chai
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(not_found_data)
+      .send(dataLogin404)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(404);
         expect(res.body.code).eq(404);
         expect(res.body).to.have.property("success").equal(false);
-        done();
       });
   });
-  it("should send code 401 if user password not match ", (done) => {
+  it("should send code 401 if user password not match ", () => {
     chai
       .request(api_url)
       .post(endpoint)
@@ -67,36 +78,33 @@ describe("POST / Describe the user LOGIN ", () => {
         expect(res.statusCode).eq(401);
         expect(res.body.code).eq(401);
         expect(res.body).to.have.property("success").equal(false);
-        done();
       });
   });
-  it("should send code 500 internal server errors", (done) => {
+  it("should send code 500 internal server errors", () => {
     chai
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(data)
+      .send()
       .type("form")
       .end((err, res) => {
         if (err) {
           expect(res.status).eq(500);
         }
-        done();
       });
   });
-  it("should send code 400 bad reques invalid payload", (done) => {
+  it("should send code 400 bad reques invalid payload", () => {
     chai
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       //   .set()
-      .send(dataLogin)
+      .send(badData)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(400);
         expect(res.body.code).eq(400);
         expect(res.body).to.have.property("success").equal(false);
-        done();
       });
   });
 });

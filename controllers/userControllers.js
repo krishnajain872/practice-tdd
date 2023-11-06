@@ -29,9 +29,7 @@ async function loginUser(req, res) {
   try {
     // payload
     const payload = req.body;
-    // validate payload
     if (!payloadValidate(payload)) {
-      console.log(payload)
       return errorHelper(400, "Bad request", "validation error check payload");
     }
     // service call
@@ -44,7 +42,7 @@ async function loginUser(req, res) {
       res.status(response.code).send(response);
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(500).send(err);
   }
 }
