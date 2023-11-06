@@ -9,7 +9,10 @@ const { payloadValidate } = require("../helpers/payloadValidationHelper");
 async function userRegistrationService(payload) {
   try {
     //JWT SCRET KEY
-    const { JWT_SECRET: secret } = process.env;
+    const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
+    let isNotEmpty = Object.keys(payload).map(
+      (key) => payload[key].length != 0
+    );
 
     if (!payloadValidate(payload)) {
       return errorHelper(400, "validation error", "check payload");
@@ -36,7 +39,10 @@ async function userRegistrationService(payload) {
         mobile: payload.mobile,
         email: payload.email,
       },
-      secret
+      secret,
+      {
+        expiresIn: expire,
+      }
     );
 
     if (accessToken) {
