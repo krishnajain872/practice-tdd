@@ -7,13 +7,10 @@ chai.use(chaiHttp);
 
 const url = "http://localhost:3000";
 const endpoint = "/api/staging/account/transaction/withdrawl-balance/";
-const bearer = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiI4MTkyMTMyMzExIiwiZW1haWwiOiJCbGFuY2hlODNAZ21haWwyLmNvbSIsImlhdCI6MTY5OTI1MzU5NSwiZXhwIjoxNjk5MzM5OTk1fQ.80tDEb6HQQf374nGn4KzdMLe-GxdT9ChoVGGYSKvnJ8"
-
+const bearer =
+  "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiI4MTkyMTMyMzExIiwiZW1haWwiOiJCbGFuY2hlODNAZ21haWwyLmNvbSIsImlhdCI6MTY5OTI1MzU5NSwiZXhwIjoxNjk5MzM5OTk1fQ.80tDEb6HQQf374nGn4KzdMLe-GxdT9ChoVGGYSKvnJ8";
+const id = "5b069ef0-7af9-11ee-9941-a13d98c3f1fe";
 const data = {
-  amount: 25979.8,
-  type: "deposite",
-};
-const worng_data = {
   amount: 25979.8,
   type: "deposite",
 };
@@ -34,16 +31,14 @@ describe("POST / Describe the update account balance test case ", () => {
       .request(url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .set(
-        "authorization",
-        "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2JpbGUiOiI4MTkyMTMyMzEyIiwiZW1haWwiOiJCbGFuY2hlODNAZ21haWwyLmNvbSIsImlhdCI6MTY5OTA4NzI4MiwiZXhwIjoxNjk5MTczNjgyfQ.RlER0stt1FhUAHPJnCfQidQay-3ULLHrL7YSObK9GKo"
-      )
-      .query({ account_id: "5b069ef0-7af9-11ee-9941-a13d98c3f1fe" })
+      .set("authorization", bearer)
+      .query({ account_id: id })
       .send(data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(200);
         expect(res.body.code).eq(200);
+        expect(res.body.success).eq(true);
 
         done();
       });
@@ -92,6 +87,36 @@ describe("POST / Describe the update account balance test case ", () => {
       .end((err, res) => {
         expect(res.statusCode).eq(404);
         expect(res.body.code).eq(404);
+        expect(res.body).to.have.property("success").equal(false);
+        done();
+      });
+  });
+  it("should send code 422 if user not found ", (done) => {
+    chai
+      .request(url)
+      .post(endpoint)
+      .set("Content-Type", "application/json")
+      .set("authorization", bearer)
+      .send(worng_data)
+      .type("form")
+      .end((err, res) => {
+        expect(res.statusCode).eq(422);
+        expect(res.body.code).eq(422);
+        expect(res.body).to.have.property("success").equal(false);
+        done();
+      });
+  });
+  it("should send code 400 if user not found ", (done) => {
+    chai
+      .request(url)
+      .post(endpoint)
+      .set("Content-Type", "application/json")
+      .set("authorization", bearer)
+      .send(worng_data)
+      .type("form")
+      .end((err, res) => {
+        expect(res.statusCode).eq(400);
+        expect(res.body.code).eq(400);
         expect(res.body).to.have.property("success").equal(false);
         done();
       });
