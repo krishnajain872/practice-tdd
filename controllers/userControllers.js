@@ -8,7 +8,7 @@ async function registerUser(req, res) {
     if (!payload) {
       res.status(400);
     } else {
-      res.status(201);
+      res.status(201).send("created");
     }
   } catch (err) {
     console.log(err);
