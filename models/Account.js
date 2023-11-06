@@ -1,55 +1,54 @@
 "use strict";
-const { Model, UUID, UUIDV1 } = require("sequelize");
+const { Model, UUID } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Account extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      User.hasMany(models.Account, {
+      Account.belongsTo(models.User, {
+        as: "user_details",
         foreignKey: "user_id",
+        targetKey: "id",
+      });
+
+      Account.hasMany(models.Transaction, {
+        foreignKey: "account_id",
         sourceKey: "id",
       });
     }
   }
-  User.init(
+  Account.init(
     {
       id: {
         type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: UUIDV1,
+        defaultValue: DataTypes.UUID,
       },
-      first_name: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      last_name: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      email: {
+      account_type: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      mobile: {
-        type: DataTypes.STRING,
+      balance: {
+        type: DataTypes.FLOAT,
         allowNull: false,
+        defaultValue: 0.0,
       },
-      password: {
-        type: DataTypes.STRING,
+      user_id: {
+        type: DataTypes.UUID,
         allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: "User",
+      modelName: "Account",
       createdAt: "created_at",
       updatedAt: "updated_at",
-      tableName:"users"
+      tableName: "accounts",
     }
   );
-  return User;
+  return Account;
 };
