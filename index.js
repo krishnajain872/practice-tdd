@@ -10,6 +10,8 @@ app.use(router);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use("/api/staging", api);
+
 app.get("/", (req, res) => {
   res.status(200).send("baking system api with tdd ");
 });
