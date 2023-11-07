@@ -1,4 +1,4 @@
-const error = (code, name, message, actual) => {
+const errorHelper = (code, name, message, actual) => {
   if (code == 409 || 422) {
     type = "service error ";
   } else if (code == 400) {
@@ -16,5 +16,5 @@ const error = (code, name, message, actual) => {
   };
 };
 module.exports = {
-  error,
+  errorHelper,
 };
