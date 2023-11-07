@@ -24,6 +24,7 @@ describe("POST / Describe the user registration", () => {
       .send(data)
       .type("form")
       .end((err, res) => {
+        console.log(res.text)
         expect(res.statusCode).eq(201);
         expect(res.body.code).eq(201);
         expect(res.body.data.message).eq("user registered successfully");
