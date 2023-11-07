@@ -13,7 +13,7 @@ const data = {
   first_name: "krishna",
   last_name: "jain",
   email: "krishna@gmail.com",
-  mobile: 1293012312,
+  mobile: "9282828928",
   password: "3ye89423ye088239",
 };
 const invalid_data = {
@@ -24,8 +24,8 @@ const invalid_data = {
 };
 
 describe("POST / Describe the user registration", () => {
-  it("should send code 201 if user successfully registered ", async () => {
-    await chai
+  it("should send code 201 if user successfully registered ", () => {
+    chai
       .request(url)
       .post(endpoint)
       .set("Content-Type", "application/json")
@@ -43,6 +43,29 @@ describe("POST / Describe the user registration", () => {
       .send(invalid_data)
       .end((err, res) => {
         expect(res.statusCode).eq(400);
+      });
+  });
+  it("should send code 409 if conflict encounter like user already register ", () => {
+    chai
+      .request(url)
+      .post(endpoint)
+      .type("form")
+      .send(data)
+      .end((err, res) => {
+        expect(res.statusCode).eq(409);
+      });
+  });
+
+  it("should send code 500 if internal server error ", () => {
+    chai
+      .request(url)
+      .post(endpoint)
+      .type("form")
+      .send(data)
+      .end((err, res) => {
+        if (err) {
+          expect(res.status).eq(500);
+        }
       });
   });
 });

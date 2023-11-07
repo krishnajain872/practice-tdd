@@ -18,4 +18,4 @@ const addUserValidation = async (req, res, next) => {
 
 module.exports = {
   addUserValidation,
-};
+}
