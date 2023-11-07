@@ -1,25 +1,18 @@
 const { faker } = require("@faker-js/faker");
-module.exports.userFakeData = user = () => {
-  function generateRandomMobileNumber() {
-    // Generate a random number between 1000000000 and 999.999.9999
-    const randomNumber = Math.floor(Math.random() * 9000000000) + 1000000000;
-
-    // Convert the number to a string
-    const mobileNumber = randomNumber.toString();
-
-    // Return the mobile number
-    return mobileNumber;
-  }
-
+const userFakeData = () => {
   return {
     first_name: faker.internet.userName(),
     last_name: faker.internet.userName(),
     email: faker.internet.email(),
-    mobile: generateRandomMobileNumber(),
     password: faker.internet.password(),
+    mobile: faker.number.int({ min: 1000000000, max: 9999999999 }),
   };
 };
-
-module.exports.USERS = faker.helpers.multiple(user, {
+const USERS = faker.helpers.multiple(userFakeData, {
   count: 5,
 });
+
+module.exports = {
+  userFakeData,
+  USERS,
+};

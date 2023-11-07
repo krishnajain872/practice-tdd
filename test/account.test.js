@@ -1,12 +1,13 @@
 const chai = require("chai");
 const expect = chai.expect;
 const chaiHttp = require("chai-http");
-const { userFakeData } = require("../helpers/fakeUser");
-
+const { User, USERS } = require("../helpers/fakeUser");
+require("dotenv").config();
 chai.use(chaiHttp);
 
-const url = "http://localhost:3000";
-const endpoint = "/api/staging/user/account";
+const { BASE_API_URL: api_url } = process.env;
+const endpoint = "/account/create-account";
+
 
 const data = {
   email: "Blanche83@gmail2.com",
@@ -35,7 +36,7 @@ const invalid_data = {
 describe("POST / Describe the Account test case ", () => {
   it("should send code 201 for account create successfully", (done) => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       .send(data)
@@ -48,7 +49,7 @@ describe("POST / Describe the Account test case ", () => {
   });
   it("should send code 409 for account  already exist in db", (done) => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       .send(data)
@@ -62,7 +63,7 @@ describe("POST / Describe the Account test case ", () => {
 
   it("should send code 401 if unAuthorized  ", (done) => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       .send(worng_password)
@@ -76,7 +77,7 @@ describe("POST / Describe the Account test case ", () => {
   });
   it("should send code 403 if unAuthorized ", (done) => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       .send(worng_password)
@@ -90,10 +91,9 @@ describe("POST / Describe the Account test case ", () => {
   });
   it("should send code 500 internal server errors", (done) => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      //   .set()
       .send(data)
       .type("form")
       .end((err, res) => {
@@ -105,10 +105,9 @@ describe("POST / Describe the Account test case ", () => {
   });
   it("should send code 404 if account ", (done) => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      //   .set()
       .send(invalid_data)
       .type("form")
       .end((err, res) => {
