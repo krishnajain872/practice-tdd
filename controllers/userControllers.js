@@ -4,7 +4,7 @@ const User = require("../models/User");
 async function registerUser(req, res) {
   try {
     const payload = req.body;
-    console.log(payload)
+    console.log(payload);
     if (!payload) {
       res.status(400);
     } else {
