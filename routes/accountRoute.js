@@ -2,7 +2,6 @@ var express = require("express");
 const { checkAccessToken } = require("../middlewares/auth.middleware");
 const {
   createAccount,
-
   withdrawlAccountBalanceController,
 } = require("../controllers/accountController");
 const {
