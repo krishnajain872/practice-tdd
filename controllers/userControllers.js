@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/User");
 const { payloadValidate } = require("../helpers/payloadValidationHelper");
+const { userRegistrationService } = require("../services/user.services");
 
 async function registerUser(req, res) {
   try {
@@ -18,9 +19,10 @@ async function registerUser(req, res) {
     if (response.code === 201 && response.success === true) {
       res.status(201).send(response);
     } else {
-      res.status(201).send("created");
+      res.status(response.code).send(response);
     }
   } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
 }
