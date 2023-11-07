@@ -4,7 +4,6 @@ const router = express.Router();
 const api = require("./routes");
 require("dotenv").config();
 const app = express();
-const api = require('./routes')
 const { SERVER_PORT: port } = process.env;
 
 app.use(router);
