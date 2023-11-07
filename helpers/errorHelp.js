@@ -1,4 +1,4 @@
-const error = (req, res, error, code, name, message, actual) => {
+const error = (code, name, message, actual) => {
   if (code == 409 || 422) {
     type = "service error ";
   } else if (code == 400) {
@@ -6,20 +6,10 @@ const error = (req, res, error, code, name, message, actual) => {
   } else if (code == 500) {
     type = "Internal server error";
   }
-
-  res.status(code).send({
-    error: error,
-    type: type,
-    code: code,
-    name: name,
-    message: message,
-    actual: actual,
-  });
-
   return {
-    error: error,
-    type: type,
     code: code,
+    success: false,
+    type: type,
     name: name,
     message: message,
     actual: actual,

@@ -1,5 +1,5 @@
-const { USERS } = require("../helpers/fakeUser");
-const User = require("../models/User");
+const register = async () => {};
 
-data = JSON.stringify(USERS());//fake data
-module.exports.register = async () => {};
+module.exports = {
+  register,
+};
