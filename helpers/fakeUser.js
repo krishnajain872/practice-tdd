@@ -1,5 +1,5 @@
 const { faker } = require("@faker-js/faker");
-const User = (user = () => {
+const User = () => {
   return {
     first_name: faker.internet.userName(),
     last_name: faker.internet.userName(),
@@ -7,9 +7,8 @@ const User = (user = () => {
     mobile:generateRandomMobileNumber(),
     password: faker.internet.password(),
   };
-});
-
-const USERS = faker.helpers.multiple(user, {
+};
+const USERS = faker.helpers.multiple(User, {
   count: 5,
 });
 
