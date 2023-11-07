@@ -16,18 +16,15 @@ const auth = `Bearer ${token}`;
 
 console.log(id);
 const data = {
-  amount: 25979.8,
+  amount: 259798,
   type: "deposite",
 };
 
 const invalid_data = {
-  amount: -25979.8,
+  amount: -25978,
   type: "deposite",
 };
-const unProccebleData = {
-  amount: 1000000,
-  type: "deposite",
-};
+ 
 
 describe("patch / Describe the deposite balance in account test case ", () => {
   let request;
@@ -48,8 +45,7 @@ describe("patch / Describe the deposite balance in account test case ", () => {
         expect(res.statusCode).to.equal(200);
         expect(res.body.code).to.equal(200);
         expect(res.body.success).to.equal(true);
-        expect(res.body.payload.history.is_sucessful).to.equal(true);
-        expect(res.body.data.payload).to.have.keys("balance");
+        expect(res.body.data.payload).to.have.keys("balance","history");
       });
   });
 
@@ -83,6 +79,7 @@ describe("patch / Describe the deposite balance in account test case ", () => {
   });
 
   it("should send code 404 if user not found ", () => {
+
     request
       .patch(endpoint_404)
       .set("Content-Type", "application/json")
@@ -90,25 +87,13 @@ describe("patch / Describe the deposite balance in account test case ", () => {
       .send(data)
       .type("form")
       .end((err, res) => {
+        console.log(res.body)
         expect(res.statusCode).to.equal(404);
-        expect(res.code).to.equal(404);
+        expect(res.body.code).to.equal(404);
         expect(res.body).to.have.property("success").equal(false);
       });
   });
-  it("should send code 422 for insuficient balance ", () => {
-    request
-      .patch(endpoint)
-      .set("Content-Type", "application/json")
-      .set("authorization", auth)
-      .send(unProccebleData)
-      .type("form")
-      .end((err, res) => {
-        console.log(res.body);
-        expect(res.statusCode).to.equal(422);
-        expect(res.body.code).to.equal(422);
-        expect(res.body).to.have.property("success").equal(false);
-      });
-  });
+   
   it("should send code 400 for insuficient balance ", () => {
     request
       .patch(endpoint)

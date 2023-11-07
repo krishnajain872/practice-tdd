@@ -146,24 +146,25 @@ async function depositeAccountBalanceService(payload) {
   }
 }
 
-
 async function depositeAccountBalanceService(payload) {
   const transaction = await sequelize.transaction();
   try {
     // Validate the payload
     if (!payloadValidate(payload)) {
       await transaction.rollback();
+      console.log("()=> PAYLOAD", payload);
       return errorHelper(400, "validation error", "check payload");
     }
 
-     // Get the account to update
-     const account = await Account.findByPk(payload.account_id);
-     if (!account) {
-       await transaction.rollback();
-       return errorHelper(404, "account not found", " ");
-     }
-    // Update the account balance
+    // Get the account to update
+    const account = await Account.findByPk(payload.account_id);
 
+    if (!account) {
+      await transaction.rollback();
+      return errorHelper(404, "account not found", " ");
+    }
+    // Update the account balance
+    console.log("()=> ACCOUNT", account);
     account.balance += payload.amount;
 
     // Save the account
@@ -189,10 +190,8 @@ async function depositeAccountBalanceService(payload) {
     });
   } catch (err) {
     console.log(err);
-
     // Rollback the transaction if something goes wrong
     await transaction.rollback();
-
     return errorHelper(500, "service error", err.message);
   }
 }
