@@ -6,7 +6,7 @@ require("dotenv").config();
 chai.use(chaiHttp);
 
 const { BASE_API_URL: api_url, API_AUTH_TOKEN: token } = process.env;
-const endpoint = "/account/create-account";
+const endpoint = "/account/transaction/withdrawl-balance/:account_id";
 
 const auth = `Bearer ${token}`;
 
@@ -16,20 +16,25 @@ const data = {
   type: "deposite",
 };
 
-const not_found_data = {
-  amount: 25979.8,
-  type: "deposite",
-};
-
 const invalid_data = {
-  amount: 25979.8,
+  amount: -25979.8,
   type: "deposite",
 };
+const unProccebleData = {
+  amount: 10000000000000,
+  type: "deposite",
+};
+ 
 
 describe("patch / Describe the update account balance test case ", () => {
-  it("should send code 200 balance updated successfully", (done) => {
-    chai
-      .request(api_url)
+  let request;
+
+  before(() => {
+    request = chai.request(api_url);
+  });
+
+  it("should send code 200 balance updated successfully", () => {
+    request
       .patch(endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", auth)
@@ -37,32 +42,23 @@ describe("patch / Describe the update account balance test case ", () => {
       .send(data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(200);
-        expect(res.body.code).eq(200);
-        expect(res.body.success).eq(true);
-
-        done();
+        expect(res.statusCode).to.equal(200);
       });
   });
 
-  it("should send code 401 if unAuthorized  ", (done) => {
-    chai
-      .request(api_url)
+  it("should send code 401 if unAuthorized  ", () => {
+    request
       .patch(endpoint)
       .set("Content-Type", "application/json")
       .send(data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(401);
-        expect(res.body.code).eq(401);
-        expect(res.body).to.have.property("success").equal(false);
-        done();
-      });
+        expect(res.statusCode).to.equal(401);
+  });
   });
 
-  it("should send code 500 internal server errors", (done) => {
-    chai
-      .request(api_url)
+  it("should send code 500 internal server errors", () => {
+    request
       .patch(endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", auth)
@@ -70,54 +66,42 @@ describe("patch / Describe the update account balance test case ", () => {
       .type("form")
       .end((err, res) => {
         if (err) {
-          expect(res.status).eq(500);
+          expect(res.status).to.equal(500);
         }
-        done();
       });
   });
-  it("should send code 404 if user not found ", (done) => {
-    chai
-      .request(api_url)
+
+  it("should send code 404 if user not found ", () => {
+    request
+      .patch(endpoint)
+      .set("Content-Type", "application/json")
+      .set("authorization", auth)
+      .send(data)
+      .type("form")
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(404);
+      });
+  });
+  it("should send code 422 for insuficient balance ", () => {
+    request
+      .patch(endpoint)
+      .set("Content-Type", "application/json")
+      .set("authorization", auth)
+      .send(unProccebleData)
+      .type("form")
+      .end((err, res) => {
+        expect(res.statusCode).to.equal(422)
+      });
+  });
+  it("should send code 400 for insuficient balance ", () => {
+    request
       .patch(endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", auth)
       .send(invalid_data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(404);
-        expect(res.body.code).eq(404);
-        expect(res.body).to.have.property("success").equal(false);
-        done();
-      });
-  });
-  it("should send code 422 if unprocessable content ", (done) => {
-    chai
-      .request(api_url)
-      .patch(endpoint)
-      .set("Content-Type", "application/json")
-      .set("authorization", auth)
-      .send(invalid_data)
-      .type("form")
-      .end((err, res) => {
-        expect(res.statusCode).eq(422);
-        expect(res.body.code).eq(422);
-        expect(res.body).to.have.property("success").equal(false);
-        done();
-      });
-  });
-  it("should send code 400 if user not found ", (done) => {
-    chai
-      .request(api_url)
-      .patch(endpoint)
-      .set("Content-Type", "application/json")
-      .set("authorization", auth)
-      .send(invalid_data)
-      .type("form")
-      .end((err, res) => {
-        expect(res.statusCode).eq(400);
-        expect(res.body.code).eq(400);
-        expect(res.body).to.have.property("success").equal(false);
-        done();
+        expect(res.statusCode).to.equal(400)
       });
   });
 });

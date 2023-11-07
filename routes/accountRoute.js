@@ -4,10 +4,8 @@ const {
   createAccount,
   withdrawlAccountBalanceController,
 } = require("../controllers/accountController");
-const {
-  addAccountValidation,
-  updateAccountBalanceValidation,
-} = require("../validators/user/account.validation");
+const { addAccountValidation, updateAccountBalanceValidation } = require("../validators/account/account.validation");
+
 var router = express.Router();
 
 router

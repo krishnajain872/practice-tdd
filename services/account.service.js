@@ -53,6 +53,7 @@ async function widthdrawlAccountBalanceService(payload) {
     console.log(account);
     if (!account) {
       await transaction.rollback();
+      console.log("()=> TEST ENTERED SERVICE LAYER ");
       errorHelper(404, "account not found", " ");
     }
 
@@ -96,8 +97,6 @@ async function widthdrawlAccountBalanceService(payload) {
     return errorHelper(500, "service error", err.message);
   }
 }
-
-
 
 module.exports = {
   createAccountService,

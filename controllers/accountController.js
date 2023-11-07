@@ -1,6 +1,9 @@
 const { errorHelper } = require("../helpers/errorHelp");
 const { payloadValidate } = require("../helpers/payloadValidationHelper");
-const { createAccountService } = require("../services/account.service");
+const {
+  createAccountService,
+  widthdrawlAccountBalanceService,
+} = require("../services/account.service");
 
 async function createAccount(req, res) {
   try {
@@ -22,15 +25,21 @@ async function createAccount(req, res) {
     console.log(err);
     res.status(500).send(err);
   }
-};
+}
 
-  async function withdrawlAccountBalanceController (req, res) {
+async function withdrawlAccountBalanceController(req, res) {
   try {
+    console.log("this withdrawl controller called");
     const payload = {
       account_id: req.params.account_id,
       amount: req.body.amount,
       type: req.body.type,
     };
+
+    // validate payload
+    if (!payloadValidate(payload)) {
+      return errorHelper(400, "Bad request", "validation error check payload");
+    }
 
     console.log("=> PAYLOAD CONTROLLER  ", payload);
     const response = await widthdrawlAccountBalanceService(payload);
@@ -44,9 +53,8 @@ async function createAccount(req, res) {
     console.log(err);
     res.status(500).send(err);
   }
-};
+}
 module.exports = {
   createAccount,
-  withdrawlAccountBalanceController
-
-}
+  withdrawlAccountBalanceController,
+};
