@@ -23,10 +23,10 @@ async function createAccount(req, res) {
     res.status(500).send(err);
   }
 }
+async function updateAccount(req, res) {
+  res.status(200).send("account balance update");
+}
 module.exports = {
   createAccount,
-};
-
-exports.updateAccount = async (req, res) => {
-  res.status(200).send("account balance update");
+  updateAccount,
 };

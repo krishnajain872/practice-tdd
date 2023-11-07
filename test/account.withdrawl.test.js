@@ -32,7 +32,7 @@ describe("patch / Describe the update account balance test case ", () => {
       .request(api_url)
       .patch(endpoint)
       .set("Content-Type", "application/json")
-      .set("authorization", bearer)
+      .set("authorization", auth)
       .query({ account_id: id })
       .send(data)
       .type("form")
@@ -50,7 +50,6 @@ describe("patch / Describe the update account balance test case ", () => {
       .request(api_url)
       .patch(endpoint)
       .set("Content-Type", "application/json")
-      .set("authorization", bearer)
       .send(data)
       .type("form")
       .end((err, res) => {
@@ -66,7 +65,7 @@ describe("patch / Describe the update account balance test case ", () => {
       .request(api_url)
       .patch(endpoint)
       .set("Content-Type", "application/json")
-      .set("authorization", bearer)
+      .set("authorization", auth)
       .send(data)
       .type("form")
       .end((err, res) => {
@@ -81,8 +80,8 @@ describe("patch / Describe the update account balance test case ", () => {
       .request(api_url)
       .patch(endpoint)
       .set("Content-Type", "application/json")
-      .set("authorization", bearer)
-      .send(worng_data)
+      .set("authorization", auth)
+      .send(invalid_data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(404);
@@ -91,13 +90,13 @@ describe("patch / Describe the update account balance test case ", () => {
         done();
       });
   });
-  it("should send code 422 if user not found ", (done) => {
+  it("should send code 422 if unprocessable content ", (done) => {
     chai
       .request(api_url)
       .patch(endpoint)
       .set("Content-Type", "application/json")
-      .set("authorization", bearer)
-      .send(worng_data)
+      .set("authorization", auth)
+      .send(invalid_data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(422);
@@ -111,8 +110,8 @@ describe("patch / Describe the update account balance test case ", () => {
       .request(api_url)
       .patch(endpoint)
       .set("Content-Type", "application/json")
-      .set("authorization", bearer)
-      .send(worng_data)
+      .set("authorization", auth)
+      .send(invalid_data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(400);

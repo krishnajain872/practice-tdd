@@ -8,9 +8,6 @@ const {
   addAccountValidation,
   updateAccountBalanceValidation,
 } = require("../validators/user/account.validation");
-const {
-  withdrwalAccountBalanceService,
-} = require("../services/account.service");
 var router = express.Router();
 
 router
