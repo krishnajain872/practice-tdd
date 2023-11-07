@@ -37,7 +37,6 @@ describe("POST / Describe the user LOGIN ", () => {
       .send(dataLogin)
       .type("form")
       .end((err, res) => {
-        console.log(res)
         expect(res.statusCode).eq(202);
         expect(res.body.code).eq(202);
         expect(res.body.data.message).eq("User Login Successfully");
@@ -49,6 +48,7 @@ describe("POST / Describe the user LOGIN ", () => {
           "first_name",
           "last_name",
           "mobile",
+          "id",
           "password",
           "updated_at"
         );
@@ -98,7 +98,6 @@ describe("POST / Describe the user LOGIN ", () => {
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      //   .set()
       .send(badData)
       .type("form")
       .end((err, res) => {

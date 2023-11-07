@@ -6,11 +6,10 @@ const errorHelper = (code, name, message, actual) => {
   } else if (code == 500) {
     type = "Internal server error";
   }
-
   return {
+    code: code,
     success: false,
     type: type,
-    code: code,
     name: name,
     message: message,
     actual: actual,
