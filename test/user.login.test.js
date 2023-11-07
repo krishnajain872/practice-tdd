@@ -90,6 +90,7 @@ describe("POST / Describe the user LOGIN ", () => {
       .end((err, res) => {
         if (err) {
           expect(res.status).eq(500);
+          expect(res.body).to.have.property("success").equal(false);
         }
       });
   });

@@ -47,14 +47,11 @@ async function widthdrawlAccountBalanceService(payload) {
       await transaction.rollback();
       return errorHelper(400, "validation error", "check payload");
     }
-
     // Get the account to update
-    const account = await Account.findOne({ id: payload.account_id });
-    console.log(account);
+    const account = await Account.findByPk(payload.account_id);
     if (!account) {
       await transaction.rollback();
-      console.log("()=> TEST ENTERED SERVICE LAYER ");
-      errorHelper(404, "account not found", " ");
+      return errorHelper(404, "account not found", " ");
     }
 
     // Update the account balance
