@@ -1,8 +1,12 @@
 var express = require("express");
 const { checkAccessToken } = require("../middlewares/auth.middleware");
-const { createAccount, updateAccount } = require("../controllers/accountController");
+const {
+  createAccount,
+  updateAccount,
+} = require("../controllers/accountController");
 const {
   addAccountValidation,
+  updateAccountBalanceValidation,
 } = require("../validators/user/account.validation");
 const {
   withdrwalAccountBalanceService,
@@ -13,8 +17,8 @@ router
   .route("/create-account")
   .post(checkAccessToken, addAccountValidation, createAccount);
 router
-  .route("/transaction/update/balance")
-  .post(checkAccessToken, withdrwalAccountBalanceService, updateAccount);
+  .route("/transaction/withdrawl")
+  .post(checkAccessToken, updateAccountBalanceValidation, updateAccount);
 // router.route("/account").get();
 
 module.exports = router;

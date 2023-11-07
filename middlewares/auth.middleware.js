@@ -12,6 +12,7 @@ const checkAccessToken = async (req, res, next) => {
       .status(401)
       .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
   }
+  console.log(accessToken);
   try {
     const decodedJwt = await jwt.verify(accessToken, process.env.JWT_SECRET);
 
@@ -27,7 +28,7 @@ const checkAccessToken = async (req, res, next) => {
         .send(errorHelper(404, "Not Found", "No user found"));
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     if (error.name === "TokenExpiredError") {
       return res
         .status(401)
@@ -47,6 +48,7 @@ const checkAccessToken = async (req, res, next) => {
         .status(401)
         .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
     } else {
+      console.log(error);
       return res.status(500).send(errorHelper(500, "Internal server error"));
     }
   }

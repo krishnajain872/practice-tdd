@@ -1,7 +1,9 @@
 const { errorHelper } = require("../helpers/errorHelp");
 const { responseHelper } = require("../helpers/responseHelp");
 const db = require("./../models");
+const TransactionModel = db.Transaction;
 const User = db.User;
+
 const Account = db.Account;
 const {
   passHashHelper,
@@ -10,7 +12,7 @@ const {
 const jwt = require("jsonwebtoken");
 const { payloadValidate } = require("../helpers/payloadValidationHelper");
 const { Op } = require("sequelize");
-
+const { Transaction } = require("sequelize");
 async function createAccountService(payload) {
   try {
     if (!payloadValidate(payload)) {

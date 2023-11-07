@@ -10,37 +10,56 @@ const endpoint = "/account/create-account";
 
 const auth = `Bearer ${token}`;
 
-const id = "5b069ef0-7af9-11ee-9941-a13d98c3f1fe";
 const data = {
-  amount: 25979.8,
-  type: "deposite",
+  account_type: "saving account",
+  balance: 20.2,
+  mobile: "6843660302",
+};
+const worng_data = {
+  account_type: "saving account",
+  balance: "qws",
+  mobile: "8182834821",
 };
 
 const not_found_data = {
-  amount: 25979.8,
-  type: "deposite",
+  account_type: "saving account",
+  balance: 20.2,
+  mobile: "8182834821",
 };
 
 const invalid_data = {
-  amount: 25979.8,
-  type: "deposite",
+  first_name: 21321,
+  last_name: "jain",
+  email: "krishna@gmailcom",
+  mobile: "1293012312",
 };
 
-describe("patch / Describe the update account balance test case ", () => {
-  it("should send code 200 balance updated successfully", (done) => {
+describe("POST / Describe the Account test case ", () => {
+  it("should send code 201 for account create successfully", (done) => {
     chai
       .request(api_url)
-      .patch(endpoint)
+      .post(endpoint)
       .set("Content-Type", "application/json")
-      .set("authorization", bearer)
-      .query({ account_id: id })
+      .set("authorization", auth)
       .send(data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(200);
-        expect(res.body.code).eq(200);
-        expect(res.body.success).eq(true);
-
+        expect(res.statusCode).eq(201);
+        expect(res.body.code).eq(201);
+        done();
+      });
+  });
+  it("should send code 409 for account  already exist in db", (done) => {
+    chai
+      .request(api_url)
+      .post(endpoint)
+      .set("Content-Type", "application/json")
+      .set("authorization", auth)
+      .send(data)
+      .type("form")
+      .end((err, res) => {
+        expect(res.statusCode).eq(409);
+        expect(res.body.code).eq(409);
         done();
       });
   });
@@ -48,9 +67,8 @@ describe("patch / Describe the update account balance test case ", () => {
   it("should send code 401 if unAuthorized  ", (done) => {
     chai
       .request(api_url)
-      .patch(endpoint)
+      .post(endpoint)
       .set("Content-Type", "application/json")
-      .set("authorization", bearer)
       .send(data)
       .type("form")
       .end((err, res) => {
@@ -60,13 +78,12 @@ describe("patch / Describe the update account balance test case ", () => {
         done();
       });
   });
-
   it("should send code 500 internal server errors", (done) => {
     chai
       .request(api_url)
-      .patch(endpoint)
+      .post(endpoint)
       .set("Content-Type", "application/json")
-      .set("authorization", bearer)
+      .set("authorization", auth)
       .send(data)
       .type("form")
       .end((err, res) => {
@@ -76,47 +93,18 @@ describe("patch / Describe the update account balance test case ", () => {
         done();
       });
   });
+
   it("should send code 404 if user not found ", (done) => {
     chai
       .request(api_url)
-      .patch(endpoint)
+      .post(endpoint)
       .set("Content-Type", "application/json")
-      .set("authorization", bearer)
-      .send(worng_data)
+      .set("authorization", auth)
+      .send(not_found_data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(404);
         expect(res.body.code).eq(404);
-        expect(res.body).to.have.property("success").equal(false);
-        done();
-      });
-  });
-  it("should send code 422 if user not found ", (done) => {
-    chai
-      .request(api_url)
-      .patch(endpoint)
-      .set("Content-Type", "application/json")
-      .set("authorization", bearer)
-      .send(worng_data)
-      .type("form")
-      .end((err, res) => {
-        expect(res.statusCode).eq(422);
-        expect(res.body.code).eq(422);
-        expect(res.body).to.have.property("success").equal(false);
-        done();
-      });
-  });
-  it("should send code 400 if user not found ", (done) => {
-    chai
-      .request(api_url)
-      .patch(endpoint)
-      .set("Content-Type", "application/json")
-      .set("authorization", bearer)
-      .send(worng_data)
-      .type("form")
-      .end((err, res) => {
-        expect(res.statusCode).eq(400);
-        expect(res.body.code).eq(400);
         expect(res.body).to.have.property("success").equal(false);
         done();
       });
