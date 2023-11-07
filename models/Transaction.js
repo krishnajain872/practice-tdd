@@ -44,7 +44,6 @@ module.exports = (sequelize, DataTypes) => {
       account_id: {
         type: DataTypes.UUID,
         allowNull: false,
-        type: DataTypes.UUID,
       },
       status: {
         type: DataTypes.STRING,
