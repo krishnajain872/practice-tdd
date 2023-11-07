@@ -30,7 +30,6 @@ async function userRegistrationService(payload) {
 
     const userdata = await User.create(data);
     return responseHelper(201, true, "user registered successfully", userdata);
-    console.log(userdata);
   } catch (err) {
     console.log(err);
     return errorHelper(
