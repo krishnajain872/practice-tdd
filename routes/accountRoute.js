@@ -2,14 +2,14 @@ var express = require("express");
 const { checkAccessToken } = require("../middlewares/auth.middleware");
 const {
   createAccount,
-  updateAccount,
   withdrawlAccountBalanceController,
   depositeAccountBalanceController,
 } = require("../controllers/accountController");
 const {
   addAccountValidation,
   updateAccountBalanceValidation,
-} = require("../validators/user/account.validation");
+} = require("../validators/account/account.validation");
+
 var router = express.Router();
 
 router

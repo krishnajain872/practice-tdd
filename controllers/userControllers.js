@@ -1,19 +1,15 @@
-const { errorHelper } = require("../helpers/errorHelp");
-const {
-  userRegistrationService,
-  userLoginService,
-} = require("../services/user.services");
+const express = require("express");
+const User = require("../models/User");
+const { payloadValidate } = require("../helpers/payloadValidationHelper");
+const { userLoginService, userRegistrationService } = require("../services/user.services");
 
-exports.registerUser = async (req, res) => {
+async function registerUser(req, res) {
   try {
     // payload
     const payload = req.body;
 
     // validate payload
-    let isNotEmpty = Object.keys(payload).map(
-      (key) => payload[key].length != 0
-    );
-    if (!isNotEmpty) {
+    if (!payloadValidate(payload)) {
       return errorHelper(400, "Bad request", "validation error check payload");
     }
     // service call
@@ -26,19 +22,29 @@ exports.registerUser = async (req, res) => {
       res.status(response.code).send(response);
     }
   } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
-};
+}
 
-exports.loginUser = async (req, res) => {
+async function loginUser(req, res) {
+  try {
+    const payload = req.body;
+    if (!payload) {
+      res.status(400).send("invalid data");
+    } else {
+      res.status(202).send("login success");
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+}
+async function loginUser(req, res) {
   try {
     // payload
     const payload = req.body;
-    // validate payload
-    let isNotEmpty = Object.keys(payload).map(
-      (key) => payload[key].length != 0
-    );
-    if (!isNotEmpty) {
+    if (!payloadValidate(payload)) {
       return errorHelper(400, "Bad request", "validation error check payload");
     }
     // service call
@@ -51,6 +57,11 @@ exports.loginUser = async (req, res) => {
       res.status(response.code).send(response);
     }
   } catch (err) {
+    console.log(err);
     res.status(500).send(err);
   }
+}
+module.exports = {
+  registerUser,
+  loginUser,
 };
