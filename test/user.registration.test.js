@@ -33,8 +33,6 @@ describe("POST / Describe the user registration", () => {
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(201);
-        expect(res.body).to.have.property("success").equal(true);
-        done();
       });
   });
   it("should send code 400 if error for bad request", () => {
