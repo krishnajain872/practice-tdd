@@ -18,9 +18,10 @@ async function userRegistrationService(payload) {
     if (!payloadValidate(payload)) {
       return errorHelper(400, "validation error", "check payload");
     }
-
+    console.log("service Payload =  > ", payload);
     // create the password hash
     const pass = await passHashHelper(payload.password);
+    console.log(pass);
     if (pass == undefined) {
       return errorHelper(500, "service error", "password hash not generated");
     }
@@ -45,7 +46,6 @@ async function userRegistrationService(payload) {
         expiresIn: expire,
       }
     );
-
     if (accessToken) {
       const user = await User.create(userData);
       user.dataValues.accessToken = accessToken;
@@ -54,6 +54,7 @@ async function userRegistrationService(payload) {
       return errorHelper(500, "jwt error", "access token not generated");
     }
   } catch (err) {
+    console.log(err);
     if (err.name === "SequelizeUniqueConstraintError") {
       return errorHelper(409, err.name, err.parent.detail);
     } else {

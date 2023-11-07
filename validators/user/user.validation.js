@@ -1,6 +1,6 @@
 const { user, login } = require("./user.validation.schema");
 
-addUserValidation = async (req, res, next) => {
+const addUserValidation = async (req, res, next) => {
   const value = await user.validate(req.body);
   if (value.error) {
     res.status(400).json({
@@ -15,8 +15,8 @@ addUserValidation = async (req, res, next) => {
     next();
   }
 };
-loginUserValidation = async (req, res, next) => {
-  const value = await user.validate(req.body);
+const loginUserValidation = async (req, res, next) => {
+  const value = await login.validate(req.body);
   if (value.error) {
     res.status(400).json({
       code: 400,
