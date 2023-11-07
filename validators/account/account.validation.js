@@ -1,8 +1,7 @@
-const { error } = require("console");
-const { user, login } = require("./user.validation.schema");
+const { account, account_balance } = require("./account.validation.schema");
 
-const addUserValidation = async (req, res, next) => {
-  const value = await user.validate(req.body);
+const addAccountValidation = async (req, res, next) => {
+  const value = await account.validate(req.body);
   if (value.error) {
     res.status(400).json({
       code: 400,
@@ -16,10 +15,14 @@ const addUserValidation = async (req, res, next) => {
     next();
   }
 };
-const loginUserValidation = async (req, res, next) => {
-  const value = await login.validate(req.body);
+
+const updateAccountBalanceValidation = async (req, res, next) => {
+  const value = await account_balance.validate({
+    account_id:req.params.account_id,
+    amount: req.body.amount,
+    type: req.body.type,
+  });
   if (value.error) {
-    console.log(error);
     res.status(400).json({
       code: 400,
       success: false,
@@ -32,8 +35,7 @@ const loginUserValidation = async (req, res, next) => {
     next();
   }
 };
-
 module.exports = {
-  addUserValidation,
-  loginUserValidation,
+  addAccountValidation,
+  updateAccountBalanceValidation,
 };
