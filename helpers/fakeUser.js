@@ -1,17 +1,10 @@
 const { faker } = require("@faker-js/faker");
-function generateRandomMobileNumber() {
-  // Generate a random 10-digit number.
-  const mobileNumber = Math.floor(Math.random() * 1000000000) + 1;
-
-  // Return the mobile number as a string.
-  return mobileNumber.toString();
-}
 const userFakeData = () => {
   return {
     first_name: faker.internet.userName(),
     last_name: faker.internet.userName(),
     email: faker.internet.email(),
-    mobile: generateRandomMobileNumber(),
+    mobile: faker.number.int({ min: 1000000000, max: 9999999999 }),
     password: faker.internet.password(),
   };
 };
