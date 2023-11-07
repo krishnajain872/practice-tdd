@@ -1,4 +1,4 @@
-const passHashHelper = (hash = (password) => {
+const passHashHelper = (password) => {
   bcrypt.hash(password, (saltRounds = 10), function (err, hash) {
     if (err) {
       console.log(err);
@@ -7,7 +7,7 @@ const passHashHelper = (hash = (password) => {
       return hash;
     }
   });
-});
+};
 
 const passCompareHelper = async function comparePasswordToHash(password, hash) {
   try {
