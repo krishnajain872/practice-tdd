@@ -6,7 +6,7 @@ function generateRandomMobileNumber() {
   // Return the mobile number as a string.
   return mobileNumber.toString();
 }
-const User = () => {
+const userFakeData = () => {
   return {
     first_name: faker.internet.userName(),
     last_name: faker.internet.userName(),
@@ -15,11 +15,11 @@ const User = () => {
     password: faker.internet.password(),
   };
 };
-const USERS = faker.helpers.multiple(User, {
+const USERS = faker.helpers.multiple(userFakeData, {
   count: 5,
 });
 
 module.exports = {
-  User,
+  userFakeData,
   USERS,
 };
