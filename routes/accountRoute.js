@@ -11,7 +11,7 @@ router
   .route("/create-account")
   .post(checkAccessToken, addAccountValidation, createAccount);
 router
-  .route("/transaction/update/balance")
+  .route("/transaction/withdrawl")
   .post(checkAccessToken, updateAccountBalanceValidation, updateAccount);
 // router.route("/account").get();
 

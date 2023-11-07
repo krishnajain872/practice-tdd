@@ -74,60 +74,6 @@ async function createAccountService(payload) {
   }
 }
 
-async function updateAccountBalanceService(payload) {
-  const transaction = await sequelize.transaction();
-  try {
-    // Validate the payload
-    if (!payloadValidate(payload)) {
-      await transaction.rollback();
-      return errorHelper(400, "validation error", "check payload");
-    }
-    // Get the account to update
-    const account = await Account.findOne(payload.account_id);
-    if (!account) {
-      await transaction.rollback();
-      errorHelper(404, "account not found", " ");
-    }
-    // Update the account balance
-    if (payload.type === "deposite") {
-      account.balance += payload.amount;
-    }
-    // Update the account balance
-    if (payload.type === "withdrawl") {
-      account.balance -= payload.amount;
-    }
-
-    await account.save({ transaction });
-
-    // Commit the transaction
-    const transactionData = {
-      transaction_type: payload.type,
-      account_id: account.id,
-      is_successful: account.id ? true : false,
-      status: "completed",
-      account_role: payload.type === "deposite" ? "reciver" : "sender",
-      trans_ref_id: null,
-    };
-
-    const history = await TransactionModel.create(transactionData);
-    if (!history) {
-      await transaction.rollback();
-      return errorHelper(500, "service error", "Transaction failed");
-    } else {
-      await transaction.commit();
-      return responseHelper(200, true, "transaction success full", history);
-    }
-  } catch (err) {
-    console.log(err);
-
-    // Rollback the transaction if something goes wrong
-    await transaction.rollback();
-
-    return errorHelper(500, "service error", err.message);
-  }
-}
-
 module.exports = {
   createAccountService,
-  updateAccountBalanceService,
 };
