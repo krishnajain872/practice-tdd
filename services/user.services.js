@@ -14,13 +14,14 @@ async function userRegistrationService(payload) {
   try {
     //JWT SCRET KEY
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
-
+    
     if (!payloadValidate(payload)) {
       return errorHelper(400, "validation error", "check payload");
     }
-
+    console.log("service Payload =  > ", payload);
     // create the password hash
     const pass = await passHashHelper(payload.password);
+    console.log(pass);
     if (pass == undefined) {
       return errorHelper(500, "service error", "password hash not generated");
     }
@@ -45,7 +46,6 @@ async function userRegistrationService(payload) {
         expiresIn: expire,
       }
     );
-
     if (accessToken) {
       const user = await User.create(userData);
       user.dataValues.accessToken = accessToken;
@@ -54,6 +54,7 @@ async function userRegistrationService(payload) {
       return errorHelper(500, "jwt error", "access token not generated");
     }
   } catch (err) {
+    console.log(err);
     if (err.name === "SequelizeUniqueConstraintError") {
       return errorHelper(409, err.name, err.parent.detail);
     } else {
@@ -65,9 +66,10 @@ async function userRegistrationService(payload) {
 async function userLoginService(payload) {
   try {
     //JWT SCRET KEY
-    const { JWT_SECRET: secret } = process.env;
+    const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
     //payload validation
     if (!payloadValidate(payload)) {
+      console.log(payload)
       return errorHelper(400, "validation error", "check payload");
     }
     const userData = {
@@ -93,7 +95,7 @@ async function userLoginService(payload) {
           },
           secret,
           {
-            expiresIn: "24s", // expires in 24 hours
+            expiresIn: expire, // expires in 24 hours
           }
         );
         user.dataValues.accessToken = accessToken;
@@ -101,6 +103,7 @@ async function userLoginService(payload) {
       }
     }
   } catch (err) {
+    console.log("this is the error message \n\n\n\n",err)
     return errorHelper(500, "service error", err.message);
   }
 }

@@ -27,6 +27,7 @@ const checkAccessToken = async (req, res, next) => {
         .send(errorHelper(404, "Not Found", "No user found"));
     }
   } catch (error) {
+    console.log(error);
     if (error.name === "TokenExpiredError") {
       return res
         .status(401)
@@ -38,6 +39,10 @@ const checkAccessToken = async (req, res, next) => {
           )
         );
     } else if (error.message === "Invalid token signature") {
+      return res
+        .status(401)
+        .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
+    } else if (error.name === "JsonWebTokenError") {
       return res
         .status(401)
         .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
