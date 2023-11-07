@@ -1,11 +1,7 @@
 const { account } = require("./account.validation.schema");
 
 const addAccountValidation = async (req, res, next) => {
-  const value = await account.validate({
-    account_type: req.body.account_type,
-    balance: req.body.balance,
-    mobile: req.body.mobile,
-  });
+  const value = await account.validate(req.body);
   if (value.error) {
     res.status(400).json({
       code: 400,
