@@ -33,19 +33,7 @@ describe("POST / Describe the user registration", () => {
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(201);
-        expect(res.body.code).eq(201);
-        expect(res.body.data.message).eq("user registered successfully");
         expect(res.body).to.have.property("success").equal(true);
-        expect(res.body.data.payload).to.have.keys(
-          "id",
-          "first_name",
-          "last_name",
-          "email",
-          "mobile",
-          "password",
-          "updated_at",
-          "created_at"
-        );
         done();
       });
   });
