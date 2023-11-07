@@ -54,7 +54,11 @@ async function withdrawlAccountBalanceController(req, res) {
     res.status(500).send(err);
   }
 }
+
+
+async function depositeAccountBalanceController(req, res) {}
 module.exports = {
   createAccount,
   withdrawlAccountBalanceController,
+  depositeAccountBalanceController,
 };
