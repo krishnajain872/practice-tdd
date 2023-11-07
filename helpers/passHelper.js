@@ -1,13 +1,16 @@
-const passHashHelper = (password) => {
-  bcrypt.hash(password, (saltRounds = 10), function (err, hash) {
-    if (err) {
-      console.log(err);
-      return err;
-    } else {
-      return hash;
-    }
-  });
-}
+const bcrypt = require("bcrypt");
+require("dotenv").config();
+const { HASH_SALTS: salt } = process.env;
+const passHashHelper = async (password) => {
+  try {
+    const hash = await bcrypt.hash(password, (saltRounds = Number(salt)));
+    console.log("helper Hash =>  ", hash);
+    return hash;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+};
 
 const passCompareHelper = async function comparePasswordToHash(password, hash) {
   try {
