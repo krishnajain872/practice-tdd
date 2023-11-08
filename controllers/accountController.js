@@ -1,17 +1,11 @@
-const { errorHelper } = require("../helpers/errorHelp");
-const { payloadValidate } = require("../helpers/payloadValidationHelper");
-const { createAccountService } = require("../services/account.service");
+const { createAccount } = require("../services/account.service");
 
-async function createAccount(req, res) {
+async function account(req, res) {
   try {
     // payload
     const payload = req.body;
-    // validate payload
-    if (!payloadValidate(payload)) {
-      return errorHelper(400, "Bad request", "validation error check payload");
-    }
-    // service call42
-    const response = await createAccountService(payload);
+    // service call
+    const response = await createAccount(payload);
     console.log("responsev => API CONTROLLER RESPONSE", response);
     if (response.code === 201 && response.success === true) {
       res.status(201).send(response);
@@ -26,7 +20,8 @@ async function createAccount(req, res) {
 async function updateAccount(req, res) {
   res.status(200).send("account balance update");
 }
+
 module.exports = {
-  createAccount,
+  account,
   updateAccount,
 };
