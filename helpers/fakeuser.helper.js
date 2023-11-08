@@ -8,7 +8,6 @@ const User = () => {
     mobile: faker.number.int({ min: 1000000000, max: 9999999999 }),
   };
 };
-
 const USERS = faker.helpers.multiple(User, {
   count: 5,
 });
