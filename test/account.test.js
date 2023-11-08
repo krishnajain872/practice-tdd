@@ -1,13 +1,11 @@
 const chai = require("chai");
 const expect = chai.expect;
 const chaiHttp = require("chai-http");
-const { User, USERS } = require("../helpers/fakeUser");
 require("dotenv").config();
 chai.use(chaiHttp);
 
 const { BASE_API_URL: api_url } = process.env;
 const endpoint = "/account/create-account";
-
 
 const data = {
   email: "Blanche83@gmail2.com",
@@ -75,12 +73,12 @@ describe("POST / Describe the Account test case ", () => {
         done();
       });
   });
-  it("should send code 403 if unAuthorized ", (done) => {
+  it("should send code 403  ", (done) => {
     chai
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(worng_password)
+      .send(data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(403);
