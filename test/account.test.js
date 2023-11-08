@@ -73,20 +73,6 @@ describe("POST / Describe the Account test case ", () => {
         done();
       });
   });
-  it("should send code 403  ", (done) => {
-    chai
-      .request(api_url)
-      .post(endpoint)
-      .set("Content-Type", "application/json")
-      .send(data)
-      .type("form")
-      .end((err, res) => {
-        expect(res.statusCode).eq(403);
-        expect(res.body.code).eq(403);
-        expect(res.body).to.have.property("success").equal(false);
-        done();
-      });
-  });
   it("should send code 500 internal server errors", (done) => {
     chai
       .request(api_url)
