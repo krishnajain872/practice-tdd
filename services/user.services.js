@@ -1,14 +1,19 @@
-const { errorHelper } = require("../helpers/errorHelp");
-const { responseHelper } = require("../helpers/responseHelp");
+// db models for service
 const db = require("./../models");
 const User = db.User;
-const { passHashHelper } = require("./../helpers/passHelper");
+
+// helpers 
+const { errorHelper } = require("../helpers/error.helper");
+const { responseHelper } = require("../helpers/response.helper");
+const { passHashHelper } = require("./../helpers/password.helper");
+
 const jwt = require("jsonwebtoken");
 
 async function userRegistrationService(payload) {
   try {
     //JWT SCRET KEY
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
+
     let isNotEmpty = Object.keys(payload).map(
       (key) => payload[key].length != 0
     );
