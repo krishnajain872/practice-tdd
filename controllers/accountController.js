@@ -1,21 +1,15 @@
-const { errorHelper } = require("../helpers/errorHelp");
-const { payloadValidate } = require("../helpers/payloadValidationHelper");
 const {
-  createAccountService,
-  widthdrawlAccountBalanceService,
-  depositeAccountBalanceService,
+  createAccount,
+  depositeBalance,
+  withdrawlBalance
 } = require("../services/account.service");
 
-async function createAccount(req, res) {
+async function account(req, res) {
   try {
     // payload
     const payload = req.body;
-    // validate payload
-    if (!payloadValidate(payload)) {
-      return errorHelper(400, "Bad request", "validation error check payload");
-    }
-    // service call42
-    const response = await createAccountService(payload);
+    // service call
+    const response = await createAccount(payload);
     console.log("responsev => API CONTROLLER RESPONSE", response);
     if (response.code === 201 && response.success === true) {
       res.status(201).send(response);
@@ -28,7 +22,7 @@ async function createAccount(req, res) {
   }
 }
 
-async function withdrawlAccountBalanceController(req, res) {
+async function withdrawlAccountBalance(req, res) {
   try {
     console.log("this withdrawl controller called");
     const payload = {
@@ -36,14 +30,8 @@ async function withdrawlAccountBalanceController(req, res) {
       amount: req.body.amount,
       type: req.body.type,
     };
-
-    // validate payload
-    if (!payloadValidate(payload)) {
-      return errorHelper(400, "Bad request", "validation error check payload");
-    }
-
     console.log("=> PAYLOAD CONTROLLER  ", payload);
-    const response = await widthdrawlAccountBalanceService(payload);
+    const response = await withdrawlBalance(payload);
 
     if (response.success) {
       res.status(200).send(response);
@@ -56,7 +44,7 @@ async function withdrawlAccountBalanceController(req, res) {
   }
 }
 
-async function depositeAccountBalanceController(req, res) {
+async function depositeAccountBalance(req, res) {
   try {
     const payload = {
       account_id: req.params.account_id,
@@ -65,7 +53,7 @@ async function depositeAccountBalanceController(req, res) {
     };
 
     console.log("=> PAYLOAD CONTROLLER  ", payload);
-    const response = await depositeAccountBalanceService(payload);
+    const response = await depositeBalance(payload);
 
     if (response.success) {
       res.status(200).send(response);
@@ -78,7 +66,7 @@ async function depositeAccountBalanceController(req, res) {
   }
 }
 module.exports = {
-  createAccount,
-  withdrawlAccountBalanceController,
-  depositeAccountBalanceController,
+  account,
+  withdrawlAccountBalance,
+  depositeAccountBalance,
 };

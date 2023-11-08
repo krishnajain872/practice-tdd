@@ -1,26 +1,12 @@
-const { errorHelper } = require("../helpers/errorHelp");
-const { responseHelper } = require("../helpers/responseHelp");
+const { errorHelper } = require("../helpers/error.helper");
+const { responseHelper } = require("../helpers/response.helper");
 const db = require("./../models");
-const TransactionModel = db.Transaction;
 const User = db.User;
-const sequelize = db.sequelize;
-
 const Account = db.Account;
-const {
-  passHashHelper,
-  passCompareHelper,
-} = require("./../helpers/passHelper");
-const jwt = require("jsonwebtoken");
-const { payloadValidate } = require("../helpers/payloadValidationHelper");
-const { Op } = require("sequelize");
-
-async function createAccountService(payload) {
+const TransactionModel = db.Transaction;
+const sequelize = db.sequelize;
+async function createAccount(payload) {
   try {
-    // Validate the payload
-    if (!payloadValidate(payload)) {
-      return errorHelper(400, "validation error", "check payload");
-    }
-
     // Find or create the user
     const user = await User.findOrCreate(payload);
 
@@ -39,14 +25,9 @@ async function createAccountService(payload) {
   }
 }
 
-async function widthdrawlAccountBalanceService(payload) {
+async function withdrawlBalance(payload) {
   const transaction = await sequelize.transaction();
   try {
-    // Validate the payload
-    if (!payloadValidate(payload)) {
-      await transaction.rollback();
-      return errorHelper(400, "validation error", "check payload");
-    }
     // Get the account to update
     const account = await Account.findByPk(payload.account_id);
     if (!account) {
@@ -94,14 +75,9 @@ async function widthdrawlAccountBalanceService(payload) {
     return errorHelper(500, "service error", err.message);
   }
 }
-async function depositeAccountBalanceService(payload) {
+async function depositeBalance(payload) {
   const transaction = await sequelize.transaction();
   try {
-    // Validate the payload
-    if (!payloadValidate(payload)) {
-      await transaction.rollback();
-      return errorHelper(400, "validation error", "check payload");
-    }
 
     // Get the account to update
     const account = await Account.findOne({ id: payload.account_id });
@@ -146,58 +122,8 @@ async function depositeAccountBalanceService(payload) {
   }
 }
 
-async function depositeAccountBalanceService(payload) {
-  const transaction = await sequelize.transaction();
-  try {
-    // Validate the payload
-    if (!payloadValidate(payload)) {
-      await transaction.rollback();
-      console.log("()=> PAYLOAD", payload);
-      return errorHelper(400, "validation error", "check payload");
-    }
-
-    // Get the account to update
-    const account = await Account.findByPk(payload.account_id);
-
-    if (!account) {
-      await transaction.rollback();
-      return errorHelper(404, "account not found", " ");
-    }
-    // Update the account balance
-    console.log("()=> ACCOUNT", account);
-    account.balance += payload.amount;
-
-    // Save the account
-    await account.save({ transaction });
-
-    // Create a transaction history record
-    const transactionData = {
-      transaction_type: payload.type,
-      account_id: account.id,
-      is_sucessful: true,
-      status: "completed",
-      account_role: "reciver",
-      trans_ref_id: null,
-    };
-
-    const history = await TransactionModel.create(transactionData);
-    // Commit the transaction
-    await transaction.commit();
-    // Return the transaction history
-    return responseHelper(200, true, "transaction success full", {
-      history,
-      balance: account.balance,
-    });
-  } catch (err) {
-    console.log(err);
-    // Rollback the transaction if something goes wrong
-    await transaction.rollback();
-    return errorHelper(500, "service error", err.message);
-  }
-}
-
 module.exports = {
-  createAccountService,
-  widthdrawlAccountBalanceService,
-  depositeAccountBalanceService,
+  createAccount,
+  withdrawlBalance,
+  depositeBalance,
 };
