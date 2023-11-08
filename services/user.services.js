@@ -5,9 +5,10 @@ const User = db.User;
 // helpers
 const { errorHelper } = require("../helpers/error.helper");
 const { responseHelper } = require("../helpers/response.helper");
-const { passHashHelper } = require("./../helpers/password.helper");
+const { passHashHelper, passCompareHelper } = require("./../helpers/password.helper");
 
 const jwt = require("jsonwebtoken");
+const { Op } = require("sequelize");
 
 async function userRegistration(payload) {
   try {
@@ -59,9 +60,6 @@ async function userLogin(payload) {
     //JWT SCRET KEY
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
     //payload validation
-    if (!payloadValidate(payload)) {
-      return errorHelper(400, "validation error", "check payload");
-    }
     const userData = {
       where: {
         [Op.and]: [{ mobile: payload.mobile }, { email: payload.email }],
@@ -93,6 +91,7 @@ async function userLogin(payload) {
       }
     }
   } catch (err) {
+    console.log("this is the error message \n\n\n\n",err)
     return errorHelper(500, "service error", err.message);
   }
 }
