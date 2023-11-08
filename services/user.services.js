@@ -9,7 +9,7 @@ const { passHashHelper } = require("./../helpers/password.helper");
 
 const jwt = require("jsonwebtoken");
 
-async function userRegistrationService(payload) {
+async function userRegistration(payload) {
   try {
     //JWT SCRET KEY
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
@@ -66,5 +66,5 @@ async function userRegistrationService(payload) {
 }
 
 module.exports = {
-  userRegistrationService,
+  userRegistration,
 };
