@@ -9,7 +9,7 @@ const schema = {
       .pattern(new RegExp("^(\\+\\d{1,3}[- ]?)?\\d{10}$"))
       .required(),
     password: Joi.string().required(),
-  }), 
+  }),
 };
 
 module.exports = schema;
