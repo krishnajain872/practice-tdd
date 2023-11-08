@@ -1,4 +1,4 @@
-const { errorHelper } = require("../helpers/errorHelp");
+const { errorHelper } = require("../helpers/error.helper");
 
 exports.createAccount = async (req, res) => {
 
