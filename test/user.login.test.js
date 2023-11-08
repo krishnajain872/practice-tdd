@@ -1,14 +1,13 @@
 const chai = require("chai");
 const expect = chai.expect;
 const chaiHttp = require("chai-http");
-const { User, USERS } = require("../helpers/fakeUser");
 require("dotenv").config();
 chai.use(chaiHttp);
 
 const { BASE_API_URL: api_url } = process.env;
 const endpoint = "/user/login";
 
-const dataLogin = {
+const data = {
   email: "Blanche83@gmail2.com",
   mobile: "8192132311",
   password: "Uvcck0J1RU78LoW",
@@ -34,7 +33,7 @@ describe("POST / Describe the user LOGIN ", () => {
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(dataLogin)
+      .send(data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(202);

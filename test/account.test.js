@@ -1,7 +1,6 @@
 const chai = require("chai");
 const expect = chai.expect;
 const chaiHttp = require("chai-http");
-const { User, USERS } = require("../helpers/fakeUser");
 require("dotenv").config();
 chai.use(chaiHttp);
 

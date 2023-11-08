@@ -1,11 +1,13 @@
 const jwt = require("jsonwebtoken");
 const models = require("./../models");
-const { errorHelper } = require("../helpers/errorHelp");
+const { errorHelper } = require("../helpers/error.helper");
 const { Op } = require("sequelize");
 require("dotenv").config();
 
 const checkAccessToken = async (req, res, next) => {
   const accessToken = req.headers["authorization"]?.split(" ")[1];
+
+  const { JWT_SECRET: secret } = process.env;
 
   if (!accessToken) {
     return res
@@ -14,7 +16,7 @@ const checkAccessToken = async (req, res, next) => {
   }
   console.log(accessToken);
   try {
-    const decodedJwt = await jwt.verify(accessToken, process.env.JWT_SECRET);
+    const decodedJwt = await jwt.verify(accessToken, secret);
 
     const user = await models.User.findOne({
       where: {
@@ -28,22 +30,11 @@ const checkAccessToken = async (req, res, next) => {
         .send(errorHelper(404, "Not Found", "No user found"));
     }
   } catch (error) {
-    console.log(error);
-    if (error.name === "TokenExpiredError") {
-      return res
-        .status(401)
-        .send(
-          errorHelper(
-            401,
-            "UNAUTHORIZED ACCESS",
-            "Access Denied due to FORBIDDEN login again"
-          )
-        );
-    } else if (error.message === "Invalid token signature") {
-      return res
-        .status(401)
-        .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
-    } else if (error.name === "JsonWebTokenError") {
+    if (
+      error.name === "TokenExpiredError" ||
+      error.message === "Invalid token signature" ||
+      error.name === "JsonWebTokenError"
+    ) {
       return res
         .status(401)
         .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));

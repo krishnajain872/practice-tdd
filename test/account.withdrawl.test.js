@@ -48,8 +48,8 @@ describe("patch / Describe the update account balance test case ", () => {
         expect(res.statusCode).to.equal(200);
         expect(res.body.code).to.equal(200);
         expect(res.body.success).to.equal(true);
-        expect(res.body.payload.history.is_sucessful).to.equal(true);
-        expect(res.body.data.payload).to.have.keys("balance");
+        expect(res.body.data.payload.history.is_sucessful).to.equal(true);
+        expect(res.body.data.payload.history).to.have.keys("balance");
       });
   });
 
@@ -90,8 +90,9 @@ describe("patch / Describe the update account balance test case ", () => {
       .send(data)
       .type("form")
       .end((err, res) => {
+        console.log(res.body);
         expect(res.statusCode).to.equal(404);
-        expect(res.code).to.equal(404);
+        expect(res.body.code).to.equal(404);
         expect(res.body).to.have.property("success").equal(false);
       });
   });

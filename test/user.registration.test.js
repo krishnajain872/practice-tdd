@@ -3,11 +3,11 @@ const expect = chai.expect;
 const chaiHttp = require("chai-http");
 require("dotenv").config();
 chai.use(chaiHttp);
-const { userFakeData } = require("./../helpers/fakeUser");
+const { userFakeData } = require("./../helpers/fakeuser.helper");
 const { BASE_API_URL: api_url } = process.env;
 const endpoint = "/user/register";
+
 const data = userFakeData();
-console.log(data);
 const invalid_data = {
   first_name: 21321,
   last_name: "jain",
@@ -24,7 +24,6 @@ describe("POST / Describe the user registration", () => {
       .send(data)
       .type("form")
       .end((err, res) => {
-        console.log(res.text)
         expect(res.statusCode).eq(201);
         expect(res.body.code).eq(201);
         expect(res.body.data.message).eq("user registered successfully");
