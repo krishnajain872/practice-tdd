@@ -1,7 +1,6 @@
 const express = require("express");
 const User = require("../models/User");
-const { userRegistrationService } = require("../services/user.services");
-
+const { userRegistration } = require("../services/user.services");
 async function registerUser(req, res) {
   try {
     // payload
@@ -14,7 +13,7 @@ async function registerUser(req, res) {
       return errorHelper(400, "Bad request", "validation error check payload");
     }
     // service call
-    const response = await userRegistrationService(payload);
+    const response = await userRegistration(payload);
     if (response.code === 201 && response.success === true) {
       res.status(201).send(response);
     } else {
