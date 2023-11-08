@@ -5,9 +5,10 @@ const User = db.User;
 // helpers
 const { errorHelper } = require("../helpers/error.helper");
 const { responseHelper } = require("../helpers/response.helper");
-const { passHashHelper } = require("./../helpers/password.helper");
+const { passHashHelper, passCompareHelper } = require("./../helpers/password.helper");
 
 const jwt = require("jsonwebtoken");
+const { Op } = require("sequelize");
 
 async function userRegistration(payload) {
   try {

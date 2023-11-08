@@ -33,7 +33,7 @@ describe("POST / Describe the user LOGIN ", () => {
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(dataLogin)
+      .send(data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(202);
