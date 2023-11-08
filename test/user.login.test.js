@@ -12,15 +12,23 @@ const data = {
   mobile: "8192132311",
   password: "Uvcck0J1RU78LoW",
 };
-const wrong_data = {
-  email: "Blanche83@gmail2.com",
+const badData = {
+  mobile: "8192132311",
   password: "Uvcck0J1RU78LoW",
 };
-
-console.log(data);
+const dataLogin404 = {
+  email: "Blanche83@gmail2.com",
+  mobile: "8192132321",
+  password: "Uvcck0J1RU78LoW",
+};
+const worng_password = {
+  email: "Blanche83@gmail2.com",
+  mobile: "8192132311",
+  password: "Uvcck0J1RU78Lo",
+};
 
 describe("POST / Describe the user LOGIN ", () => {
-  it("should send code 202 if user successfully Login ", (done) => {
+  it("should send code 202 if user successfully Login ", () => {
     chai
       .request(api_url)
       .post(endpoint)
@@ -29,58 +37,72 @@ describe("POST / Describe the user LOGIN ", () => {
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(202);
-        done();
+        expect(res.body.code).eq(202);
+        expect(res.body.data.message).eq("User Login Successfully");
+        expect(res.body).to.have.property("success").equal(true);
+        expect(res.body.data.payload).to.have.keys(
+          "accessToken",
+          "created_at",
+          "email",
+          "first_name",
+          "last_name",
+          "mobile",
+          "id",
+          "password",
+          "updated_at"
+        );
       });
   });
-  it("should send code 404 if user not found  ", (done) => {
+  it("should send code 404 if user not found  ", () => {
     chai
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(data)
+      .send(dataLogin404)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(404);
-        done();
+        expect(res.body.code).eq(404);
+        expect(res.body).to.have.property("success").equal(false);
       });
   });
-  it("should send code 401 if user password not match ", (done) => {
+  it("should send code 401 if user password not match ", () => {
     chai
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(data)
+      .send(worng_password)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(401);
-        done();
+        expect(res.body.code).eq(401);
+        expect(res.body).to.have.property("success").equal(false);
       });
   });
-  it("should send code 500 internal server errors", (done) => {
+  it("should send code 500 internal server errors", () => {
     chai
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      //   .set()
-      .send(data)
+      .send()
       .type("form")
       .end((err, res) => {
         if (err) {
-          expect(res.statusCode).eq(500);
+          expect(res.status).eq(500);
         }
-        done();
       });
   });
-  it("should send code 400 bad reques invalid payload", (done) => {
+  it("should send code 400 bad reques invalid payload", () => {
     chai
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
-      .send(wrong_data)
+      .send(badData)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(400);
-        done();
+        expect(res.body.code).eq(400);
+        expect(res.body).to.have.property("success").equal(false);
       });
   });
 });
