@@ -2,7 +2,7 @@
 const db = require("./../models");
 const User = db.User;
 
-// helpers 
+// helpers
 const { errorHelper } = require("../helpers/error.helper");
 const { responseHelper } = require("../helpers/response.helper");
 const { passHashHelper } = require("./../helpers/password.helper");
@@ -29,7 +29,6 @@ async function userRegistrationService(payload) {
       return errorHelper(500, "service error", "password hash not generated");
     }
 
-    //
     const userData = {
       first_name: payload.first_name,
       last_name: payload.last_name,
