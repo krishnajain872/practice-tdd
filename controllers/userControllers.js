@@ -1,18 +1,19 @@
 const express = require("express");
 const User = require("../models/User");
-
+const { userRegistration } = require("../services/user.services");
 async function registerUser(req, res) {
   try {
+    // payload
     const payload = req.body;
-    console.log(payload);
-    if (!payload) {
-      res.status(400);
+    // service call
+    const response = await userRegistration(payload);
+    if (response.code === 201 && response.success === true) {
+      res.status(201).send(response);
     } else {
-      res.status(201).send("created");
+      res.status(response.code).send(response);
     }
   } catch (err) {
-    console.log(err);
-    res.status(500);
+    res.status(500).send(err);
   }
 }
 module.exports = {

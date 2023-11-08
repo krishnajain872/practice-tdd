@@ -3,19 +3,11 @@ const expect = chai.expect;
 const chaiHttp = require("chai-http");
 require("dotenv").config();
 chai.use(chaiHttp);
-
+const { User } = require("./../helpers/fakeuser.helper");
 const { BASE_API_URL: api_url } = process.env;
-
-const url = api_url;
 const endpoint = "/user/register";
 
-const data = {
-  first_name: "krishna",
-  last_name: "jain",
-  email: "krishna@gmail.com",
-  mobile: "9282828928",
-  password: "3ye89423ye088239",
-};
+const data = User();
 const invalid_data = {
   first_name: 21321,
   last_name: "jain",
@@ -26,18 +18,32 @@ const invalid_data = {
 describe("POST / Describe the user registration", () => {
   it("should send code 201 if user successfully registered ", () => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
       .send(data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(201);
+        expect(res.body.code).eq(201);
+        expect(res.body.data.message).eq("user registered successfully");
+        expect(res.body).to.have.property("success").equal(true);
+        expect(res.body.data.payload).to.have.keys(
+          "id",
+          "first_name",
+          "last_name",
+          "email",
+          "mobile",
+          "password",
+          "updated_at",
+          "created_at",
+          "accessToken"
+        );
       });
   });
   it("should send code 400 if error for bad request", () => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .type("form")
       .send(invalid_data)
@@ -47,18 +53,21 @@ describe("POST / Describe the user registration", () => {
   });
   it("should send code 409 if conflict encounter like user already register ", () => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .type("form")
       .send(data)
       .end((err, res) => {
         expect(res.statusCode).eq(409);
+        expect(res.body.code).eql(409);
+        expect(res.body).to.have.property("success").equal(false);
+        expect(res.body.name).eq("SequelizeUniqueConstraintError");
       });
   });
 
   it("should send code 500 if internal server error ", () => {
     chai
-      .request(url)
+      .request(api_url)
       .post(endpoint)
       .type("form")
       .send(data)
