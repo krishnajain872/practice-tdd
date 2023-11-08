@@ -82,7 +82,8 @@ describe("patch / Describe the deposite balance in account test case ", () => {
       });
   });
 
-  it("should send code 404 if user not found ", () => {
+  it("should send code 404 if account not found ", () => {
+
     request
       .patch(endpoint_404)
       .set("Content-Type", "application/json")
@@ -109,7 +110,8 @@ describe("patch / Describe the deposite balance in account test case ", () => {
         expect(res.body).to.have.property("success").equal(false);
       });
   });
-  it("should send code 400 for insuficient balance ", () => {
+   
+  it("should send code 400 for bad payload request ", () => {
     request
       .patch(endpoint)
       .set("Content-Type", "application/json")
