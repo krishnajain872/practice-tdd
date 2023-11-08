@@ -1,22 +1,17 @@
-const { errorHelper } = require("../helpers/errorHelp");
-const { responseHelper } = require("../helpers/responseHelp");
+const { errorHelper } = require("../helpers/error.helper");
+const { responseHelper } = require("../helpers/response.helper");
 const db = require("./../models");
 const User = db.User;
 const Account = db.Account;
 const {
   passHashHelper,
   passCompareHelper,
-} = require("./../helpers/passHelper");
+} = require("./../helpers/password.helper");
 const jwt = require("jsonwebtoken");
-const { payloadValidate } = require("../helpers/payloadValidationHelper");
 const { Op } = require("sequelize");
 
-async function createAccountService(payload) {
+async function createAccount(payload) {
   try {
-   
-    if (!payloadValidate(payload)) {
-      return errorHelper(400, "validation error", "check payload");
-    }
     // fetch user details
     const userData = {
       where: {
@@ -57,10 +52,8 @@ async function createAccountService(payload) {
         "account created successfully ",
         account
       );
- 
- 
+
       console.log(account);
- 
     } else {
       return responseHelper(
         422,
@@ -76,5 +69,5 @@ async function createAccountService(payload) {
 }
 
 module.exports = {
-  createAccountService,
+  createAccount,
 };
