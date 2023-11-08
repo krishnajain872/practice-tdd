@@ -1,16 +1,17 @@
-const { responseHelper } = require("../helpers/responseHelp");
+// include database model
 const db = require("../models");
 const User = db.User;
 
-const { errorHelper } = require("./../helpers/errorHelp");
-const { passHashHelper } = require("./../helpers/passHelper");
+// include helper variables
+const { errorHelper } = require("./../helpers/error.helper");
+const { passHashHelper } = require("./../helpers/password.helper");
+const { responseHelper } = require("../helpers/response.helper");
 
 async function userRegistrationService(payload) {
   try {
     // creating the password hash
     const pass = await passHashHelper(payload.password);
-    console.log(pass);
-    if (pass == undefined) {
+    if (!pass) {
       return;
       errorHelper(
         "Service Error",
@@ -19,7 +20,7 @@ async function userRegistrationService(payload) {
         "password hash not generated"
       );
     }
-
+    // udpate the payload with encrypted password
     const data = {
       email: payload.email,
       mobile: payload.mobile,
@@ -27,7 +28,7 @@ async function userRegistrationService(payload) {
       first_name: payload.first_name,
       last_name: payload.last_name,
     };
-
+    // create user record in database
     const userdata = await User.create(data);
     return responseHelper(201, true, "user registered successfully", userdata);
   } catch (err) {
