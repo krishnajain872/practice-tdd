@@ -6,7 +6,6 @@ async function registerUser(req, res) {
   try {
     // payload
     const payload = req.body;
-
     // validate payload
     let isNotEmpty = Object.keys(payload).map(
       (key) => payload[key].length != 0
@@ -16,15 +15,12 @@ async function registerUser(req, res) {
     }
     // service call
     const response = await userRegistrationService(payload);
-
-    console.log("responsev => API CONTROLLER RESPONSE", response);
     if (response.code === 201 && response.success === true) {
       res.status(201).send(response);
     } else {
       res.status(response.code).send(response);
     }
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 }
