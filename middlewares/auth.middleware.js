@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const models = require("./../models");
-const { errorHelper } = require("../helpers/errorHelp");
+const { errorHelper } = require("../helpers/error.helper");
 const { Op } = require("sequelize");
 require("dotenv").config();
 
