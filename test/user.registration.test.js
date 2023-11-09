@@ -3,11 +3,11 @@ const expect = chai.expect;
 const chaiHttp = require("chai-http");
 require("dotenv").config();
 chai.use(chaiHttp);
-const { User } = require("./../helpers/fakeuser.helper");
+const { userFakeData } = require("./../helpers/fakeuser.helper");
 const { BASE_API_URL: api_url } = process.env;
 const endpoint = "/user/register";
 
-const data = User();
+const data = userFakeData();
 const invalid_data = {
   first_name: 21321,
   last_name: "jain",

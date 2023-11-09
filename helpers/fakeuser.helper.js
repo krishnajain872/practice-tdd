@@ -1,5 +1,5 @@
 const { faker } = require("@faker-js/faker");
-const User = () => {
+const userFakeData = () => {
   return {
     first_name: faker.internet.userName(),
     last_name: faker.internet.userName(),
@@ -8,11 +8,11 @@ const User = () => {
     mobile: faker.number.int({ min: 1000000000, max: 9999999999 }),
   };
 };
-const USERS = faker.helpers.multiple(User, {
+const USERS = faker.helpers.multiple(userFakeData, {
   count: 5,
 });
 
 module.exports = {
-  User,
+  userFakeData,
   USERS,
 };

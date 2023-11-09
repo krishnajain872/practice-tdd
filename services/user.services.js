@@ -13,14 +13,6 @@ async function userRegistration(payload) {
   try {
     //JWT SCRET KEY
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
-
-    let isNotEmpty = Object.keys(payload).map(
-      (key) => payload[key].length != 0
-    );
-
-    if (!isNotEmpty) {
-      return errorHelper(400, "validation error", "check payload");
-    }
     // create the password hash
     const pass = await passHashHelper(payload.password);
     if (pass == undefined) {
@@ -61,7 +53,6 @@ async function userRegistration(payload) {
     }
   }
 }
-
 module.exports = {
   userRegistration,
 };
