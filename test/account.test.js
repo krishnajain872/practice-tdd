@@ -32,7 +32,7 @@ const invalid_data = {
 };
 
 describe("POST / Describe the Account test case ", () => {
-  it("should send code 201 for account create successfully", (done) => {
+  it("should send code 201 for account create successfully", () => {
     chai
       .request(api_url)
       .post(endpoint)
@@ -46,7 +46,7 @@ describe("POST / Describe the Account test case ", () => {
         done();
       });
   });
-  it("should send code 409 for account  already exist in db", (done) => {
+  it("should send code 409 for account  already exist in db", () => {
     chai
       .request(api_url)
       .post(endpoint)
@@ -61,7 +61,7 @@ describe("POST / Describe the Account test case ", () => {
       });
   });
 
-  it("should send code 401 if unAuthorized  ", (done) => {
+  it("should send code 401 if unAuthorized  ", () => {
     chai
       .request(api_url)
       .post(endpoint)
@@ -75,7 +75,7 @@ describe("POST / Describe the Account test case ", () => {
         done();
       });
   });
-  it("should send code 500 internal server errors", (done) => {
+  it("should send code 500 internal server errors", () => {
     chai
       .request(api_url)
       .post(endpoint)
@@ -90,7 +90,7 @@ describe("POST / Describe the Account test case ", () => {
         done();
       });
   });
-  it("should send code 404 if user not found ", (done) => {
+  it("should send code 404 if user not found ", () => {
     chai
       .request(api_url)
       .post(endpoint)
