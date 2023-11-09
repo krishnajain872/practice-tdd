@@ -4,7 +4,7 @@ const chaiHttp = require("chai-http");
 require("dotenv").config();
 chai.use(chaiHttp);
 
-const { BASE_API_URL: api_url } = process.env;
+const { BASE_API_URL: api_url ,  } = process.env;
 const endpoint = "/user/login";
 
 const data = {
