@@ -4,9 +4,9 @@ const chaiHttp = require("chai-http");
 require("dotenv").config();
 chai.use(chaiHttp);
 
-const { BASE_API_URL: api_url } = process.env;
-const endpoint = "/account/create-account";
-
+const { BASE_API_URL: api_url, API_AUTH_TOKEN: token } = process.env;
+const endpoint = "/account";
+const auth = `Bearer ${token}`;
 const data = {
   email: "Blanche83@gmail2.com",
   mobile: "8192132312",
@@ -37,6 +37,7 @@ describe("POST / Describe the Account test case ", () => {
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
+      .set("Authorization", auth)
       .send(data)
       .type("form")
       .end((err, res) => {
@@ -50,6 +51,7 @@ describe("POST / Describe the Account test case ", () => {
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
+      .set("Authorization", auth)
       .send(data)
       .type("form")
       .end((err, res) => {
@@ -78,6 +80,7 @@ describe("POST / Describe the Account test case ", () => {
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
+      .set("Authorization", auth)
       .send(data)
       .type("form")
       .end((err, res) => {
@@ -87,16 +90,17 @@ describe("POST / Describe the Account test case ", () => {
         done();
       });
   });
-  it("should send code 404 if account ", (done) => {
+  it("should send code 404 if user not found ", (done) => {
     chai
       .request(api_url)
       .post(endpoint)
       .set("Content-Type", "application/json")
+      .set("Authorization", auth)
       .send(invalid_data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(400);
-        expect(res.body.code).eq(400);
+        expect(res.statusCode).eq(404);
+        expect(res.body.code).eq(404);
         expect(res.body).to.have.property("success").equal(false);
         done();
       });

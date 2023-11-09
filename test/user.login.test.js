@@ -4,7 +4,7 @@ const chaiHttp = require("chai-http");
 require("dotenv").config();
 chai.use(chaiHttp);
 
-const { BASE_API_URL: api_url } = process.env;
+const { BASE_API_URL: api_url ,  } = process.env;
 const endpoint = "/user/login";
 
 const data = {
@@ -28,7 +28,7 @@ const worng_password = {
 };
 
 describe("POST / Describe the user LOGIN ", () => {
-  it("should send code 202 if user successfully Login ", () => {
+  it("should send code 200 if user successfully Login ", () => {
     chai
       .request(api_url)
       .post(endpoint)
@@ -36,8 +36,8 @@ describe("POST / Describe the user LOGIN ", () => {
       .send(data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(202);
-        expect(res.body.code).eq(202);
+        expect(res.statusCode).eq(200);
+        expect(res.body.code).eq(200);
         expect(res.body.data.message).eq("User Login Successfully");
         expect(res.body).to.have.property("success").equal(true);
         expect(res.body.data.payload).to.have.keys(
