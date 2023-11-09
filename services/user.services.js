@@ -91,7 +91,6 @@ async function userLogin(payload) {
       }
     }
   } catch (err) {
-    console.log("this is the error message \n\n\n\n",err)
     return errorHelper(500, "service error", err.message);
   }
 }
