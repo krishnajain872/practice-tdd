@@ -8,9 +8,7 @@ const { BASE_API_URL: api_url } = process.env;
 const endpoint_register = "/user/register";
 const endpoint_login = "/user/login";
 
-
 const data = userFakeData();
-
 
 describe("POST / Describe the user registration", () => {
   it("should send code 201 if user successfully registered ", () => {
@@ -77,20 +75,22 @@ describe("POST / Describe the user registration", () => {
 });
 
 const login = {
-  email:data.email,
-  mobile:data.mobile,
-  password:data.password
-}
+  email: data.email,
+  mobile: data.mobile,
+  password: data.password,
+};
+console.log("LOGIN DATA \n", login);
+console.log("DATA \n", data);
 
 const invalid_data = {
-  email: "krishna@gmailcom",
-  mobile: "1293012312",
-  password :data.password
+  email: data.email,
+  mobile: "9291828737",
+  password: data.password,
 };
 const wrong = {
-  email:data.email,
-  mobile:data.mobile,
-  password:"G&(BQDQEW(D"
+  email: data.email,
+  mobile: data.mobile,
+  password: "G&(BQDQEW(D",
 };
 
 describe("POST / Describe the user LOGIN ", () => {
@@ -102,6 +102,7 @@ describe("POST / Describe the user LOGIN ", () => {
       .send(login)
       .type("form")
       .end((err, res) => {
+        console.log(res.body);
         expect(res.statusCode).eq(200);
         expect(res.body.code).eq(200);
         expect(res.body.data.message).eq("User Login Successfully");
