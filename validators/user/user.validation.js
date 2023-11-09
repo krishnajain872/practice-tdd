@@ -33,5 +33,5 @@ const loginUserValidation = async (req, res, next) => {
 
 module.exports = {
   addUserValidation,
-  loginUserValidation
-}
+  loginUserValidation,
+};
