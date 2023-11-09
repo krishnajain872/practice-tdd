@@ -5,6 +5,6 @@ const { addUserValidation,  loginUserValidation } = require("./../validators/use
 var router = express.Router();
 
 router.route("/register").post(addUserValidation, registerUser);
-// router.route("/login").post(loginUserValidation, loginUser);
+router.route("/login").post(loginUserValidation, loginUser);
 
 module.exports = router;
