@@ -12,8 +12,8 @@ const {
 const jwt = require("jsonwebtoken");
 const { Op, Transaction } = require("sequelize");
 async function createAccount(payload) {
+  const transaction = await sequelize.transaction();
   try {
-    const transaction = await sequelize.transaction();
     // fetch user details
     const userData = {
       where: {
