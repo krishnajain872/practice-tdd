@@ -87,11 +87,10 @@ async function userLogin(payload) {
           }
         );
         user.dataValues.accessToken = accessToken;
-        return responseHelper(202, true, "User Login Successfully", user);
+        return responseHelper(200, true, "User Login Successfully", user);
       }
     }
   } catch (err) {
-    console.log("this is the error message \n\n\n\n",err)
     return errorHelper(500, "service error", err.message);
   }
 }
