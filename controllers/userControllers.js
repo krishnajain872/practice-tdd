@@ -31,7 +31,6 @@ async function loginUser(req, res) {
       res.status(response.code).send(response);
     }
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 }
