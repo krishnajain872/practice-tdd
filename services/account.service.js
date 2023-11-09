@@ -3,7 +3,8 @@ const { responseHelper } = require("../helpers/response.helper");
 const db = require("./../models");
 const User = db.User;
 const Account = db.Account;
-const transaction = await sequelize.transaction();
+const sequelize = db.sequelize;
+
 const {
   passHashHelper,
   passCompareHelper,
@@ -12,6 +13,7 @@ const jwt = require("jsonwebtoken");
 const { Op, Transaction } = require("sequelize");
 async function createAccount(payload) {
   try {
+    const transaction = await sequelize.transaction();
     // fetch user details
     const userData = {
       where: {
