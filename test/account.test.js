@@ -43,7 +43,6 @@ describe("POST / Describe the Account test case ", () => {
       .end((err, res) => {
         expect(res.statusCode).eq(201);
         expect(res.body.code).eq(201);
-        done();
       });
   });
   it("should send code 409 for account  already exist in db", () => {
@@ -57,7 +56,6 @@ describe("POST / Describe the Account test case ", () => {
       .end((err, res) => {
         expect(res.statusCode).eq(409);
         expect(res.body.code).eq(409);
-        done();
       });
   });
 
@@ -72,7 +70,6 @@ describe("POST / Describe the Account test case ", () => {
         expect(res.statusCode).eq(401);
         expect(res.body.code).eq(401);
         expect(res.body).to.have.property("success").equal(false);
-        done();
       });
   });
   it("should send code 500 internal server errors", () => {
@@ -87,7 +84,6 @@ describe("POST / Describe the Account test case ", () => {
         if (err) {
           expect(res.status).eq(500);
         }
-        done();
       });
   });
   it("should send code 404 if user not found ", () => {
@@ -102,7 +98,6 @@ describe("POST / Describe the Account test case ", () => {
         expect(res.statusCode).eq(404);
         expect(res.body.code).eq(404);
         expect(res.body).to.have.property("success").equal(false);
-        done();
       });
   });
 });
