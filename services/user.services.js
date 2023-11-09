@@ -5,7 +5,10 @@ const User = db.User;
 // helpers
 const { errorHelper } = require("../helpers/error.helper");
 const { responseHelper } = require("../helpers/response.helper");
-const { passHashHelper, passCompareHelper } = require("./../helpers/password.helper");
+const {
+  passHashHelper,
+  passCompareHelper,
+} = require("./../helpers/password.helper");
 
 const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
@@ -57,6 +60,7 @@ async function userRegistration(payload) {
 
 async function userLogin(payload) {
   try {
+    console.log("LOGIN PAYLAOD FROM SERVICE => ", payload);
     //JWT SCRET KEY
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
     //payload validation
@@ -87,15 +91,14 @@ async function userLogin(payload) {
           }
         );
         user.dataValues.accessToken = accessToken;
-        return responseHelper(202, true, "User Login Successfully", user);
+        return responseHelper(200, true, "User Login Successfully", user);
       }
     }
   } catch (err) {
-    console.log("this is the error message \n\n\n\n",err)
     return errorHelper(500, "service error", err.message);
   }
 }
 module.exports = {
   userRegistration,
-  userLogin
+  userLogin,
 };
