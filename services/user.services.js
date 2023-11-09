@@ -5,9 +5,10 @@ const User = db.User;
 // helpers
 const { errorHelper } = require("../helpers/error.helper");
 const { responseHelper } = require("../helpers/response.helper");
-const { passHashHelper } = require("./../helpers/password.helper");
+const { passHashHelper, passCompareHelper } = require("./../helpers/password.helper");
 
 const jwt = require("jsonwebtoken");
+const { Op } = require("sequelize");
 
 async function userRegistration(payload) {
   try {
@@ -53,6 +54,48 @@ async function userRegistration(payload) {
     }
   }
 }
+
+async function userLogin(payload) {
+  try {
+    //JWT SCRET KEY
+    const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
+    //payload validation
+    const userData = {
+      where: {
+        [Op.and]: [{ mobile: payload.mobile }, { email: payload.email }],
+      },
+    };
+
+    const user = await User.findOne(userData);
+    if (!user) {
+      return errorHelper(404, "User Not Found", "");
+    }
+    // comapare the password hash
+    const pass = await passCompareHelper(payload.password, user.password);
+    if (!pass) {
+      return errorHelper(401, "UNAUTHORIZED", "Wrong credentials");
+    } else {
+      if (user.id && pass) {
+        const accessToken = jwt.sign(
+          {
+            mobile: payload.mobile,
+            email: payload.email,
+          },
+          secret,
+          {
+            expiresIn: expire, // expires in 24 hours
+          }
+        );
+        user.dataValues.accessToken = accessToken;
+        return responseHelper(200, true, "User Login Successfully", user);
+      }
+    }
+  } catch (err) {
+    console.log("this is the error message \n\n\n\n",err)
+    return errorHelper(500, "service error", err.message);
+  }
+}
 module.exports = {
   userRegistration,
+  userLogin
 };
