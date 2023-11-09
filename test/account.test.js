@@ -5,7 +5,7 @@ require("dotenv").config();
 chai.use(chaiHttp);
 
 const { BASE_API_URL: api_url } = process.env;
-const endpoint = "/account/create-account";
+const endpoint = "/account";
 
 const data = {
   email: "Blanche83@gmail2.com",
