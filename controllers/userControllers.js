@@ -19,7 +19,7 @@ async function registerUser(req, res) {
 
 async function loginUser(req, res) {
   try {
-    res.status(202).send("login success");
+    res.status(200).send("login success");
   } catch (err) {
     console.log(err);
     res.status(500).send(err);
