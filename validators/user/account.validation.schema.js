@@ -11,7 +11,7 @@ const schema = {
   account_balance: Joi.object({
     account_id: Joi.string().guid({ version: "uuidv1" }).required(),
     amount: Joi.number().integer().min(0).required(),
-    type: Joi.string().valid("deposite", "withdrawl").required(),
+    type: Joi.string().valid("deposite", "withdrawal").required(),
   }),
 };
 
