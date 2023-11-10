@@ -17,11 +17,11 @@ async function account(req, res) {
     res.status(500).send(err);
   }
 }
-async function updateAccount(req, res) {
+async function withdrawl(req, res) {
   res.status(200).send("account balance update");
 }
 
 module.exports = {
   account,
-  updateAccount,
+  withdrawl,
 };
