@@ -5,12 +5,10 @@ require("dotenv").config();
 chai.use(chaiHttp);
 const { userFakeData } = require("../helpers/fakeuser.helper");
 const { BASE_API_URL: api_url } = process.env;
-const endpoint_register = "/user/register";
-const endpoint_login = "/user/login";
-
+const endpoint_register = "/users/register";
+const endpoint_login = "/users/login";
 
 const data = userFakeData();
-
 
 describe("POST / Describe the user registration", () => {
   it("should send code 201 if user successfully registered ", () => {
@@ -77,20 +75,20 @@ describe("POST / Describe the user registration", () => {
 });
 
 const login = {
-  email:data.email,
-  mobile:data.mobile,
-  password:data.password
-}
+  email: data.email,
+  mobile: data.mobile,
+  password: data.password,
+};
 
 const invalid_data = {
   email: "krishna@gmailcom",
   mobile: "1293012312",
-  password :data.password
+  password: data.password,
 };
 const wrong = {
-  email:data.email,
-  mobile:data.mobile,
-  password:"G&(BQDQEW(D"
+  email: data.email,
+  mobile: data.mobile,
+  password: "G&(BQDQEW(D",
 };
 
 describe("POST / Describe the user LOGIN ", () => {
