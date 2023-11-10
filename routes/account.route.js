@@ -9,7 +9,7 @@ var router = express.Router();
 
 router.route("/").post(checkAccessToken, addAccountValidation, account);
 router
-  .route("/withdrawal")
+  .route("/:account_id/withdrawal")
   .post(checkAccessToken, updateAccountBalanceValidation, withdrawal);
 
 module.exports = router;
