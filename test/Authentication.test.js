@@ -5,8 +5,8 @@ require("dotenv").config();
 chai.use(chaiHttp);
 const { userFakeData } = require("../helpers/fakeuser.helper");
 const { BASE_API_URL: api_url } = process.env;
-const endpoint_register = "/user/register";
-const endpoint_login = "/user/login";
+const endpoint_register = "/users/register";
+const endpoint_login = "/users/login";
 
 const data = userFakeData();
 
