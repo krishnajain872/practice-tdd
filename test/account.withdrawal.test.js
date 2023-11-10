@@ -5,7 +5,7 @@ require("dotenv").config();
 chai.use(chaiHttp);
 
 const { BASE_API_URL: api_url, API_AUTH_TOKEN: token } = process.env;
-const endpoint = "/account/create-account";
+const endpoint = "/accounts/withdrawal";
 
 const auth = `Bearer ${token}`;
 
