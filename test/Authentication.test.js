@@ -81,8 +81,8 @@ const login = {
 };
 
 const invalid_data = {
-  email: "krishna@gmailcom",
-  mobile: "1293012312",
+  email: data.email,
+  mobile: "9291828737",
   password: data.password,
 };
 const wrong = {
