@@ -1,6 +1,6 @@
 async function account(req, res) {
-  res.status(201).send("welcome to account");
+  res.status(201).send("account created");
 }
 module.exports = {
-  account
-}
+  account,
+};
