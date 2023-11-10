@@ -79,12 +79,10 @@ const login = {
   mobile: data.mobile,
   password: data.password,
 };
-console.log("LOGIN DATA \n", login);
-console.log("DATA \n", data);
 
 const invalid_data = {
-  email: data.email,
-  mobile: "9291828737",
+  email: "krishna@gmailcom",
+  mobile: "1293012312",
   password: data.password,
 };
 const wrong = {
@@ -102,7 +100,6 @@ describe("POST / Describe the user LOGIN ", () => {
       .send(login)
       .type("form")
       .end((err, res) => {
-        console.log(res.body);
         expect(res.statusCode).eq(200);
         expect(res.body.code).eq(200);
         expect(res.body.data.message).eq("User Login Successfully");
