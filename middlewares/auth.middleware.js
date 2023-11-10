@@ -13,7 +13,7 @@ const checkAccessToken = async (req, res, next) => {
     return res
       .status(401)
       .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
-  }console.log(accessToken)
+  }
   try {
     const decodedJwt = await jwt.verify(accessToken, secret);
 
@@ -38,7 +38,6 @@ const checkAccessToken = async (req, res, next) => {
         .status(401)
         .send(errorHelper(401, "UNAUTHORIZED ACCESS", "Access Denied"));
     } else {
-      console.log(error)
       return res.status(500).send(errorHelper(500, "Internal server error"));
     }
   }
