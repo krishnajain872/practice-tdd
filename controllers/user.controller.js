@@ -24,7 +24,7 @@ async function loginUser(req, res) {
     // service call
     const response = await userLogin(payload);
 
-    console.log("response => Login API CONTROLLER RESPONSE", response);
+    console.log("response =>Login API CONTROLLER RESPONSE", response);
     if (response.code === 200 && response.success === true) {
       res.status(200).send(response);
     } else {
