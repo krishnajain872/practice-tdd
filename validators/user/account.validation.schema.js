@@ -8,6 +8,11 @@ const schema = {
       .pattern(new RegExp("^(\\+\\d{1,3}[- ]?)?\\d{10}$"))
       .required(),
   }),
+  account_balance: Joi.object({
+    account_id: Joi.string().guid({ version: "uuidv1" }).required(),
+    amount: Joi.number().integer().min(0).required(),
+    type: Joi.string().valid("deposite", "withdrawal").required(),
+  }),
 };
 
 module.exports = schema;

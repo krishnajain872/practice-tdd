@@ -17,8 +17,6 @@ async function createAccount(payload) {
         mobile: payload.mobile,
       },
     };
-
-    //
     const user = await User.findOne(userData);
     if (!user) {
       return errorHelper(404, "User Not Found", "");
