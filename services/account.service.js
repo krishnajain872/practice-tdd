@@ -54,10 +54,6 @@ async function createAccount(payload) {
   }
 }
 
-async function withdrwalAccountBalance(payload) {}
-async function depositeAccountBalance(payload) {}
 module.exports = {
   createAccount,
-  withdrwalAccountBalance,
-  depositeAccountBalance,
 };

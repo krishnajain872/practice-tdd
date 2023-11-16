@@ -17,9 +17,6 @@ async function account(req, res) {
     res.status(500).send(err);
   }
 }
-async function withdrawal(req, res) {
-  res.status(200).send("account balance update");
-}
 
 module.exports = {
   account,
