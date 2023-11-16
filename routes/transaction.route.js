@@ -1,8 +1,6 @@
 var express = require("express");
 const { checkAccessToken } = require("../middlewares/auth.middleware");
-const {
-  withdrawalBalance: withdrawal,
-} = require("../controllers/transaction.controller");
+const { withdrawalBalance } = require("../controllers/transaction.controller");
 var router = express.Router();
 const {
   updateAccountBalanceValidation,
@@ -10,6 +8,6 @@ const {
 
 router
   .route("/withdrawal")
-  .post(checkAccessToken, updateAccountBalanceValidation, withdrawal);
+  .post(checkAccessToken, updateAccountBalanceValidation, withdrawalBalance);
 
 module.exports = router;
