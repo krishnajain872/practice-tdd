@@ -1,11 +1,13 @@
 var express = require("express");
 const { checkAccessToken } = require("../middlewares/auth.middleware");
-const { createAccount } = require("../controllers/account.controller");
+const { withdrawalBalance } = require("../controllers/transaction.controller");
 var router = express.Router();
 const {
-  addAccountValidation,
+  updateAccountBalanceValidation,
 } = require("../validators/account/account.validation");
 
-router.route("/").post(checkAccessToken, addAccountValidation, createAccount);
+router
+  .route("/withdrawal")
+  .patch(checkAccessToken, updateAccountBalanceValidation, withdrawalBalance);
 
 module.exports = router;
