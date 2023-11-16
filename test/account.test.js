@@ -100,7 +100,7 @@ describe("POST / Describe the Account test case ", () => {
 
 const withdrawal_data = {
   amount: 25979.8,
-  type: "deposite",
+  type: "withdrawal",
 };
 
 const invalid_withdrawal_data = {
