@@ -1,6 +1,6 @@
 var express = require("express");
-const { registerUser, loginUser } = require("../controllers/userControllers");
-const { addUserValidation,  loginUserValidation } = require("./../validators/user/user.validation");
+const { registerUser, loginUser } = require("../controllers/user.controller");
+const { addUserValidation,  loginUserValidation } = require("../validators/user/user.validation");
 
 var router = express.Router();
 

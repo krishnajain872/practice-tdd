@@ -9,39 +9,29 @@ const {
   API_AUTH_TOKEN: token,
   ACCOUNT_ID: id,
 } = process.env;
-const endpoint = `/account/transaction/withdrawl-balance/${id}`;
-const endpoint_404 = `/account/transaction/withdrawl-balance/b21d2050-7afa-11ee-a87a-8132b6f0f497`;
+
+const withdrawal_endpoint = `/transactions/withdrawal`;
 
 const auth = `Bearer ${token}`;
 
-console.log(id);
-const data = {
+const withdrawal_data = {
   amount: 25979.8,
-  type: "deposite",
+  account_id: id,
 };
 
-const invalid_data = {
+const invalid_withdrawal_data = {
   amount: -25979.8,
-  type: "deposite",
-};
-const unProccebleData = {
-  amount: 1000000,
-  type: "deposite",
+  account_id: id,
 };
 
-describe("patch / Describe the update account balance test case ", () => {
-  let request;
-
-  before(() => {
-    request = chai.request(api_url);
-  });
-
-  it("should send code 200 balance updated successfully", () => {
-    request
-      .patch(endpoint)
+describe("patch / Describe the withdrawal account balance test case ", () => {
+  it("should send code 200 balance updated successfully", (done) => {
+    chai
+      .request(api_url)
+      .patch(withdrawal_endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", auth)
-      .send(data)
+      .send(withdrawal_data)
       .type("form")
       .end((err, res) => {
         console.log(res.body);
@@ -53,11 +43,12 @@ describe("patch / Describe the update account balance test case ", () => {
       });
   });
 
-  it("should send code 401 if unAuthorized  ", () => {
-    request
-      .patch(endpoint)
+  it("should send code 401 if unAuthorized  ", (done) => {
+    chai
+      .request(api_url)
+      .patch(withdrawal_endpoint)
       .set("Content-Type", "application/json")
-      .send(data)
+      .send(withdrawal_data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).to.equal(401);
@@ -66,12 +57,13 @@ describe("patch / Describe the update account balance test case ", () => {
       });
   });
 
-  it("should send code 500 internal server errors", () => {
-    request
-      .patch(endpoint)
+  it("should send code 500 internal server errors", (done) => {
+    chai
+      .request(api_url)
+      .patch(withdrawal_endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", auth)
-      .send(data)
+      .send(withdrawal_data)
       .type("form")
       .end((err, res) => {
         if (err) {
@@ -81,46 +73,49 @@ describe("patch / Describe the update account balance test case ", () => {
         }
       });
   });
-
-  it("should send code 404 if user not found ", () => {
-    request
-      .patch(endpoint_404)
+  it("should send code 404 if user not found ", (done) => {
+    chai
+      .request(api_url)
+      .patch(withdrawal_endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", auth)
-      .send(data)
-      .type("form")
-      .end((err, res) => {
-        console.log(res.body);
-        expect(res.statusCode).to.equal(404);
-        expect(res.body.code).to.equal(404);
-        expect(res.body).to.have.property("success").equal(false);
-      });
-  });
-  it("should send code 422 for insuficient balance ", () => {
-    request
-      .patch(endpoint)
-      .set("Content-Type", "application/json")
-      .set("authorization", auth)
-      .send(unProccebleData)
-      .type("form")
-      .end((err, res) => {
-        console.log(res.body);
-        expect(res.statusCode).to.equal(422);
-        expect(res.body.code).to.equal(422);
-        expect(res.body).to.have.property("success").equal(false);
-      });
-  });
-  it("should send code 400 for insuficient balance ", () => {
-    request
-      .patch(endpoint)
-      .set("Content-Type", "application/json")
-      .set("authorization", auth)
-      .send(invalid_data)
+      .send(invalid_withdrawal_data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).to.equal(400);
         expect(res.body.code).to.equal(400);
         expect(res.body).to.have.property("success").equal(false);
+        done();
+      });
+  });
+  it("should send code 422 if INSUFICIENT BALANCE ", (done) => {
+    chai
+      .request(api_url)
+      .patch(endpoint)
+      .set("Content-Type", "application/json")
+      .set("authorization", auth)
+      .send(invalid_withdrawal_data)
+      .type("form")
+      .end((err, res) => {
+        expect(res.statusCode).eq(422);
+        expect(res.body.code).eq(422);
+        expect(res.body).to.have.property("success").equal(false);
+        done();
+      });
+  });
+  it("should send code 400 if user not found ", (done) => {
+    chai
+      .request(api_url)
+      .patch(withdrawal_endpoint)
+      .set("Content-Type", "application/json")
+      .set("authorization", auth)
+      .send(invalid_withdrawal_data)
+      .type("form")
+      .end((err, res) => {
+        expect(res.statusCode).eq(400);
+        expect(res.body.code).eq(400);
+        expect(res.body).to.have.property("success").equal(false);
+        done();
       });
   });
 });
