@@ -17,9 +17,8 @@ const addAccountValidation = async (req, res, next) => {
 };
 const updateAccountBalanceValidation = async (req, res, next) => {
   const value = await account_balance.validate({
-    account_id: req.params,
+    account_id: req.body.account_id,
     balance: req.body.balance,
-    type: req.body.type,
   });
   if (value.error) {
     res.status(400).json({

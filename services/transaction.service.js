@@ -3,7 +3,7 @@ const { responseHelper } = require("../helpers/response.helper");
 const db = require("./../models");
 const Account = db.Account;
 const sequelize = db.sequelize;
-const TransactionModel = db.Transaction
+const TransactionModel = db.Transaction;
 async function widthdrawalAccountBalance(payload) {
   const transaction = await sequelize.transaction();
   try {
@@ -62,9 +62,6 @@ async function widthdrawalAccountBalance(payload) {
   }
 }
 
-async function depositAccountBalance(payload) {}
-
 module.exports = {
   widthdrawalAccountBalance,
-  depositAccountBalance,
 };

@@ -1,11 +1,11 @@
-const { createAccount } = require("../services/account.service");
+const { createAccount: Account } = require("../services/account.service");
 
-async function account(req, res) {
+async function createAccount(req, res) {
   try {
     // payload
     const payload = req.body;
     // service call
-    const response = await createAccount(payload);
+    const response = await Account(payload);
     console.log("responsev => API CONTROLLER RESPONSE", response);
     if (response.code === 201 && response.success === true) {
       res.status(201).send(response);
@@ -19,5 +19,5 @@ async function account(req, res) {
 }
 
 module.exports = {
-  account,
+  createAccount,
 };

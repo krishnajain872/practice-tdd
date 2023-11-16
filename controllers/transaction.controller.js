@@ -1,6 +1,6 @@
-async function withdrawal(req, res) {
+async function withdrawalBalance(req, res) {
   res.status(200).send("account balance update");
 }
 module.exports = {
-  withdrawal,
+  withdrawalBalance,
 };

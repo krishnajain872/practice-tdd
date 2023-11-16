@@ -10,16 +10,18 @@ const {
   ACCOUNT_ID: id,
 } = process.env;
 
-const withdrawal_endpoint = `/accounts/${id}/transaction/withdrawal`;
+const withdrawal_endpoint = `/transactions/withdrawal`;
 
 const auth = `Bearer ${token}`;
 
 const withdrawal_data = {
   amount: 25979.8,
+  account_id: id,
 };
 
 const invalid_withdrawal_data = {
   amount: -25979.8,
+  account_id: id,
 };
 
 describe("patch / Describe the withdrawal account balance test case ", () => {
@@ -29,7 +31,6 @@ describe("patch / Describe the withdrawal account balance test case ", () => {
       .patch(withdrawal_endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", auth)
-      .query({ account_id: id })
       .send(withdrawal_data)
       .type("form")
       .end((err, res) => {
