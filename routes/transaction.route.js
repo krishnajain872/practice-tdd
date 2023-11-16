@@ -1,6 +1,6 @@
 var express = require("express");
 const { checkAccessToken } = require("../middlewares/auth.middleware");
-const { withdrawalBalance } = require("../controllers/transaction.controller");
+const { withdrawalBalance,depositBalance } = require("../controllers/transaction.controller");
 var router = express.Router();
 const {
   updateAccountBalanceValidation,
@@ -9,5 +9,8 @@ const {
 router
   .route("/withdrawal")
   .patch(checkAccessToken, updateAccountBalanceValidation, withdrawalBalance);
+router
+  .route("/deposit")
+  .patch(checkAccessToken, updateAccountBalanceValidation, depositBalance);
 
 module.exports = router;

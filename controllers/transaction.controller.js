@@ -1,4 +1,4 @@
-const  transactionServices  = require("../services/transaction.service");
+const transactionServices = require("../services/transaction.service");
 
 async function withdrawalBalance(req, res) {
   try {
@@ -6,7 +6,9 @@ async function withdrawalBalance(req, res) {
       account_id: req.body.account_id,
       amount: req.body.amount,
     };
-    const response = await transactionServices.widthdrawalAccountBalance(payload);
+    const response = await transactionServices.widthdrawalAccountBalance(
+      payload
+    );
 
     if (response.success) {
       res.status(200).send(response);
@@ -18,7 +20,16 @@ async function withdrawalBalance(req, res) {
     res.status(500).send(err);
   }
 }
+async function depositBalance(req, res) {
+  try {
+    res.status(200).send("balance updated");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+}
 
 module.exports = {
   withdrawalBalance,
+  depositBalance,
 };
