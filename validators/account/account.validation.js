@@ -15,6 +15,7 @@ const addAccountValidation = async (req, res, next) => {
     next();
   }
 };
+
 const updateAccountBalanceValidation = async (req, res, next) => {
   const value = await account_balance.validate({
     account_id: req.body.account_id,
@@ -34,6 +35,6 @@ const updateAccountBalanceValidation = async (req, res, next) => {
   }
 };
 module.exports = {
-  updateAccountBalanceValidation,
   addAccountValidation,
+  updateAccountBalanceValidation,
 };

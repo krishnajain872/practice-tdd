@@ -15,12 +15,16 @@ const withdrawal_endpoint = `/transactions/withdrawal`;
 const auth = `Bearer ${token}`;
 
 const withdrawal_data = {
-  amount: 25979.8,
+  amount: 25979,
+  account_id: id,
+};
+const withdrawal_data_Insuficient = {
+  amount: 259712312131,
   account_id: id,
 };
 
 const invalid_withdrawal_data = {
-  amount: -25979.8,
+  amount: -25979,
   account_id: id,
 };
 
@@ -34,9 +38,11 @@ describe("patch / Describe the withdrawal account balance test case ", () => {
       .send(withdrawal_data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(200);
-        expect(res.body.code).eq(200);
-        expect(res.body.success).eq(true);
+        expect(res.statusCode).to.equal(200);
+        expect(res.body.code).to.equal(200);
+        expect(res.body.success).to.equal(true);
+        expect(res.body.data.payload.history.is_sucessful).to.equal(true);
+        expect(res.body.data.payload.history).to.have.keys("balance");
       });
   });
 
@@ -48,9 +54,9 @@ describe("patch / Describe the withdrawal account balance test case ", () => {
       .send(withdrawal_data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(401);
-        expect(res.body.code).eq(401);
-        expect(res.body).to.have.property("success").equal(false);
+        expect(res.statusCode).to.equal(401);
+        expect(res.body.code).to.equal(401);
+        expect(res.body.success).to.equal(false);
       });
   });
 
@@ -64,7 +70,9 @@ describe("patch / Describe the withdrawal account balance test case ", () => {
       .type("form")
       .end((err, res) => {
         if (err) {
-          expect(res.status).eq(500);
+          expect(res.status).to.equal(500);
+          expect(res.body.code).to.equal(500);
+          expect(res.body).to.have.property("success").equal(false);
         }
       });
   });
@@ -77,18 +85,18 @@ describe("patch / Describe the withdrawal account balance test case ", () => {
       .send(invalid_withdrawal_data)
       .type("form")
       .end((err, res) => {
-        expect(res.statusCode).eq(404);
-        expect(res.body.code).eq(404);
+        expect(res.statusCode).to.equal(400);
+        expect(res.body.code).to.equal(400);
         expect(res.body).to.have.property("success").equal(false);
       });
   });
   it("should send code 422 if INSUFICIENT BALANCE ", () => {
     chai
       .request(api_url)
-      .patch(endpoint)
+      .patch(withdrawal_endpoint)
       .set("Content-Type", "application/json")
       .set("authorization", auth)
-      .send(invalid_withdrawal_data)
+      .send(withdrawal_data_Insuficient)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(422);

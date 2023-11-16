@@ -21,19 +21,13 @@ async function createAccount(payload) {
     if (!user) {
       return errorHelper(404, "User Not Found", "");
     }
-    const accountExist = {
-      where: {
-        [Op.and]: [
-          { user_id: user.id },
-          { account_type: payload.account_type },
-        ],
-      },
-    };
-    const accountData = {
+
+    // Create the account
+    const account = await Account.create({
       account_type: payload.account_type,
       balance: payload.balance,
       user_id: user.id,
-    };
+    });
 
     const isAccount = await Account.findOne(accountExist);
     if (isAccount) {

@@ -60,7 +60,6 @@ async function userRegistration(payload) {
 
 async function userLogin(payload) {
   try {
-    console.log("LOGIN PAYLAOD FROM SERVICE => ", payload);
     //JWT SCRET KEY
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
     //payload validation
@@ -69,6 +68,7 @@ async function userLogin(payload) {
         [Op.and]: [{ mobile: payload.mobile }, { email: payload.email }],
       },
     };
+
 
     const user = await User.findOne(userData);
     if (!user) {

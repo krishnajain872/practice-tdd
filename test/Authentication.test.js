@@ -86,8 +86,8 @@ const invalid_data = {
   password: data.password,
 };
 const wrong = {
-  email: data.email,
-  mobile: data.mobile,
+  email: "Blanche83@gmail2.com",
+  mobile: "8192132311",
   password: "G&(BQDQEW(D",
 };
 
