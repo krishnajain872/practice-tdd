@@ -100,7 +100,6 @@ describe("POST / Describe the user LOGIN ", () => {
       .send(login)
       .type("form")
       .end((err, res) => {
-         (res.body);
         expect(res.statusCode).eq(200);
         expect(res.body.code).eq(200);
         expect(res.body.data.message).eq("User Login Successfully");

@@ -60,8 +60,6 @@ async function userRegistration(payload) {
 
 async function userLogin(payload) {
   try {
-    
-    console.log("LOGIN PAYLAOD FROM SERVICE => ", payload);
     //JWT SCRET KEY
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
     //payload validation
@@ -73,7 +71,6 @@ async function userLogin(payload) {
 
 
     const user = await User.findOne(userData);
-    console.log("PAYLOAD DATA OF USER FROM LOGIN ===> ",user)
     if (!user) {
       return errorHelper(404, "User Not Found", "");
     }
