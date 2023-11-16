@@ -75,9 +75,9 @@ describe("POST / Describe the user registration", () => {
 });
 
 const login = {
-  email: data.email,
-  mobile: data.mobile,
-  password: data.password,
+  email: "Blanche83@gmail2.com",
+  mobile: "8192132311",
+  password: "Uvcck0J1RU78LoW",
 };
 
 const invalid_data = {
@@ -86,8 +86,8 @@ const invalid_data = {
   password: data.password,
 };
 const wrong = {
-  email: data.email,
-  mobile: data.mobile,
+  email: "Blanche83@gmail2.com",
+  mobile: "8192132311",
   password: "G&(BQDQEW(D",
 };
 
@@ -100,6 +100,7 @@ describe("POST / Describe the user LOGIN ", () => {
       .send(login)
       .type("form")
       .end((err, res) => {
+         (res.body);
         expect(res.statusCode).eq(200);
         expect(res.body.code).eq(200);
         expect(res.body.data.message).eq("User Login Successfully");

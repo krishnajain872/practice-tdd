@@ -7,12 +7,6 @@ const TransactionModel = db.Transaction;
 async function widthdrawalAccountBalance(payload) {
   const transaction = await sequelize.transaction();
   try {
-    // Validate the payload
-    if (!payloadValidate(payload)) {
-      await transaction.rollback();
-      return errorHelper(400, "validation error", "check payload");
-    }
-
     // Get the account to update
     const account = await Account.findOne({ id: payload.account_id });
     console.log(account);
