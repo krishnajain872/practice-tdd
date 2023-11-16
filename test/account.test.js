@@ -5,21 +5,21 @@ require("dotenv").config();
 chai.use(chaiHttp);
 
 const { BASE_API_URL: api_url, API_AUTH_TOKEN: token } = process.env;
-const endpoint = "/account";
+
+const endpoint = "/accounts";
 const auth = `Bearer ${token}`;
 const data = {
-  account_type:"saving",
-  balance:2000,
-  mobile:"8192132312"
-};
- 
-const not_found_data = {
-  account_type:"saving",
-  balance:2000,
-  mobile:"8192132323",
+  account_type: "saving",
+  balance: 2000,
+  mobile: "8192132312",
 };
 
- 
+const not_found_data = {
+  account_type: "saving",
+  balance: 2000,
+  mobile: "8192132323",
+};
+
 describe("POST / Describe the Account test case ", () => {
   it("should send code 201 for account create successfully", () => {
     chai
