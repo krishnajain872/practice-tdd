@@ -172,7 +172,7 @@ describe("patch / Describe the withdrawal account balance test case ", () => {
         done();
       });
   });
-  it("should send code 422 if unprocessable content ", (done) => {
+  it("should send code 422 if INSUFICIENT BALANCE ", (done) => {
     chai
       .request(api_url)
       .patch(endpoint)
