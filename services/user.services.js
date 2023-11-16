@@ -1,32 +1,28 @@
-const { errorHelper } = require("../helpers/errorHelp");
-const { responseHelper } = require("../helpers/responseHelp");
+// db models for service
 const db = require("./../models");
 const User = db.User;
+
+// helpers
+const { errorHelper } = require("../helpers/error.helper");
+const { responseHelper } = require("../helpers/response.helper");
 const {
   passHashHelper,
   passCompareHelper,
-} = require("./../helpers/passHelper");
+} = require("./../helpers/password.helper");
+
 const jwt = require("jsonwebtoken");
-const { payloadValidate } = require("../helpers/payloadValidationHelper");
 const { Op } = require("sequelize");
 
-async function userRegistrationService(payload) {
+async function userRegistration(payload) {
   try {
     //JWT SCRET KEY
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
-    
-    if (!payloadValidate(payload)) {
-      return errorHelper(400, "validation error", "check payload");
-    }
-    console.log("service Payload =  > ", payload);
     // create the password hash
     const pass = await passHashHelper(payload.password);
-    console.log(pass);
     if (pass == undefined) {
       return errorHelper(500, "service error", "password hash not generated");
     }
 
-    //
     const userData = {
       first_name: payload.first_name,
       last_name: payload.last_name,
@@ -54,7 +50,6 @@ async function userRegistrationService(payload) {
       return errorHelper(500, "jwt error", "access token not generated");
     }
   } catch (err) {
-    console.log(err);
     if (err.name === "SequelizeUniqueConstraintError") {
       return errorHelper(409, err.name, err.parent.detail);
     } else {
@@ -63,20 +58,17 @@ async function userRegistrationService(payload) {
   }
 }
 
-async function userLoginService(payload) {
+async function userLogin(payload) {
   try {
     //JWT SCRET KEY
     const { JWT_SECRET: secret, JWT_EXPIRATION: expire } = process.env;
     //payload validation
-    if (!payloadValidate(payload)) {
-      console.log(payload)
-      return errorHelper(400, "validation error", "check payload");
-    }
     const userData = {
       where: {
         [Op.and]: [{ mobile: payload.mobile }, { email: payload.email }],
       },
     };
+
 
     const user = await User.findOne(userData);
     if (!user) {
@@ -99,15 +91,14 @@ async function userLoginService(payload) {
           }
         );
         user.dataValues.accessToken = accessToken;
-        return responseHelper(202, true, "User Login Successfully", user);
+        return responseHelper(200, true, "User Login Successfully", user);
       }
     }
   } catch (err) {
-    console.log("this is the error message \n\n\n\n",err)
     return errorHelper(500, "service error", err.message);
   }
 }
 module.exports = {
-  userRegistrationService,
-  userLoginService,
+  userRegistration,
+  userLogin,
 };
