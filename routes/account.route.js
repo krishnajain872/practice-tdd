@@ -4,7 +4,7 @@ const { createAccount } = require("../controllers/account.controller");
 var router = express.Router();
 const {
   addAccountValidation,
-} = require("../validators/user/account.validation");
+} = require("../validators/account/account.validation");
 
 router.route("/").post(checkAccessToken, addAccountValidation, createAccount);
 

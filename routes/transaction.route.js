@@ -4,7 +4,7 @@ const { withdrawalBalance } = require("../controllers/transaction.controller");
 var router = express.Router();
 const {
   updateAccountBalanceValidation,
-} = require("../validators/user/account.validation");
+} = require("../validators/account/account.validation");
 
 router
   .route("/withdrawal")
