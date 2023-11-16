@@ -20,5 +20,4 @@ async function account(req, res) {
 
 module.exports = {
   account,
-  withdrawal,
 };
