@@ -1,4 +1,4 @@
-const { account } = require("./account.validation.schema");
+const { account, account_balance } = require("./account.validation.schema");
 
 const addAccountValidation = async (req, res, next) => {
   const value = await account.validate(req.body);

@@ -8,6 +8,6 @@ const {
 
 router
   .route("/withdrawal")
-  .post(checkAccessToken, updateAccountBalanceValidation, withdrawalBalance);
+  .patch(checkAccessToken, updateAccountBalanceValidation, withdrawalBalance);
 
 module.exports = router;
