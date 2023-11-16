@@ -9,7 +9,6 @@ async function widthdrawalAccountBalance(payload) {
   try {
     // Get the account to update
     const account = await Account.findOne({ id: payload.account_id });
-    console.log(account);
     if (!account) {
       await transaction.rollback();
       errorHelper(404, "account not found", " ");
@@ -47,8 +46,6 @@ async function widthdrawalAccountBalance(payload) {
       balance: account.balance,
     });
   } catch (err) {
-    console.log(err);
-
     // Rollback the transaction if something goes wrong
     await transaction.rollback();
 

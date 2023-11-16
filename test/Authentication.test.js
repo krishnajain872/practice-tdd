@@ -75,9 +75,9 @@ describe("POST / Describe the user registration", () => {
 });
 
 const login = {
-  email: "Blanche83@gmail2.com",
-  mobile: "8192132311",
-  password: "Uvcck0J1RU78LoW",
+  email: data.email,
+  mobile: data.mobile,
+  password: data.password,
 };
 
 const invalid_data = {

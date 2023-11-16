@@ -6,7 +6,6 @@ async function withdrawalBalance(req, res) {
       account_id: req.body.account_id,
       amount: req.body.amount,
     };
-    console.log("=>  withdrawalBalance CONTROLLER  PAYLOAD  ", payload);
     const response = await transactionServices.widthdrawalAccountBalance(payload);
 
     if (response.success) {
