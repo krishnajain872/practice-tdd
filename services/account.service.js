@@ -3,10 +3,6 @@ const { responseHelper } = require("../helpers/response.helper");
 const db = require("./../models");
 const User = db.User;
 const Account = db.Account;
-const {
-  passHashHelper,
-  passCompareHelper,
-} = require("./../helpers/password.helper");
 const { Op } = require("sequelize");
 async function createAccount(payload) {
   try {
@@ -49,6 +45,7 @@ async function createAccount(payload) {
       );
     }
   } catch (err) {
+    console.log(err)
     return errorHelper(500, "service error", err.message);
   }
 }
