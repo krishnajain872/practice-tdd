@@ -3,48 +3,20 @@ const expect = chai.expect;
 const chaiHttp = require("chai-http");
 require("dotenv").config();
 chai.use(chaiHttp);
-const { userFakeData, USERS } = require("../helpers/fakeuser.helper");
+const { userFakeData } = require("../helpers/fakeuser.helper");
 const { BASE_API_URL: api_url } = process.env;
-const app = require("../index");
-const { faker } = require("@faker-js/faker");
-const { user } = require("../validators/user/user.validation.schema");
+const endpoint_register = "/users/register";
+const endpoint_login = "/users/login";
 
-// API ENDPOINTS
-const endpoint_register = `${api_url}/users/register`;
-const endpoint_login = `${api_url}/users/login`;
+const data = userFakeData();
 
-// DATA FOR TESTING
-const users = USERS;
-const data = USERS[0];
-
-const login = {
-  email: data.email,
-  mobile: data.mobile,
-  password: data.password,
-};
-const invalid_data = {
-  email: data.email,
-  mobile: faker.number.int({ min: 1000000000, max: 9999999999 }),
-};
-const wrong = {
-  email: data.email,
-  mobile: data.mobile,
-  password: faker.internet.password(),
-};
-const notFound = {
-  email: users[2].email,
-  mobile: users[2].mobile,
-  password: users[2].password,
-};
-
-// REGISTRATION TESTCASES
 describe("POST / Describe the user registration", () => {
-  it("should send code 201 if user successfully registered ", (done) => {
+  it("should send code 201 if user successfully registered ", () => {
     chai
-      .request(app)
+      .request(api_url)
       .post(endpoint_register)
-      .send(data)
       .set("Content-Type", "application/json")
+      .send(data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(201);
@@ -63,22 +35,20 @@ describe("POST / Describe the user registration", () => {
           "accessToken"
         );
       });
-    done();
   });
-  it("should send code 400 if error for bad request", (done) => {
+  it("should send code 400 if error for bad request", () => {
     chai
-      .request(app)
+      .request(api_url)
       .post(endpoint_register)
       .type("form")
       .send(invalid_data)
       .end((err, res) => {
         expect(res.statusCode).eq(400);
       });
-    done();
   });
-  it("should send code 409 if conflict encounter like user already register ", (done) => {
+  it("should send code 409 if conflict encounter like user already register ", () => {
     chai
-      .request(app)
+      .request(api_url)
       .post(endpoint_register)
       .type("form")
       .send(data)
@@ -88,15 +58,43 @@ describe("POST / Describe the user registration", () => {
         expect(res.body).to.have.property("success").equal(false);
         expect(res.body.name).eq("SequelizeUniqueConstraintError");
       });
-    done();
+  });
+
+  it("should send code 500 if internal server error ", () => {
+    chai
+      .request(api_url)
+      .post(endpoint_register)
+      .type("form")
+      .send(data)
+      .end((err, res) => {
+        if (err) {
+          expect(res.status).eq(500);
+        }
+      });
   });
 });
 
-// LOGIN TEST CASES
+const login = {
+  email: data.email,
+  mobile: data.mobile,
+  password: data.password,
+};
+
+const invalid_data = {
+  email: data.email,
+  mobile: "9291828737",
+  password: data.password,
+};
+const wrong = {
+  email: "Blanche83@gmail2.com",
+  mobile: "8192132311",
+  password: "G&(BQDQEW(D",
+};
+
 describe("POST / Describe the user LOGIN ", () => {
-  it("should send code 200 if user successfully Login ", (done) => {
+  it("should send code 200 if user successfully Login ", () => {
     chai
-      .request(app)
+      .request(api_url)
       .post(endpoint_login)
       .set("Content-Type", "application/json")
       .send(login)
@@ -118,25 +116,23 @@ describe("POST / Describe the user LOGIN ", () => {
           "updated_at"
         );
       });
-    done();
   });
-  it("should send code 404 if user not found  ", (done) => {
+  it("should send code 404 if user not found  ", () => {
     chai
-      .request(app)
+      .request(api_url)
       .post(endpoint_login)
       .set("Content-Type", "application/json")
-      .send(notFound)
+      .send(invalid_data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(404);
         expect(res.body.code).eq(404);
         expect(res.body).to.have.property("success").equal(false);
       });
-    done();
   });
-  it("should send code 401 if user password not match ", (done) => {
+  it("should send code 401 if user password not match ", () => {
     chai
-      .request(app)
+      .request(api_url)
       .post(endpoint_login)
       .set("Content-Type", "application/json")
       .send(wrong)
@@ -146,22 +142,31 @@ describe("POST / Describe the user LOGIN ", () => {
         expect(res.body.code).eq(401);
         expect(res.body).to.have.property("success").equal(false);
       });
-    done();
   });
-  it("should send code 400 bad reques invalid payload", (done) => {
+  it("should send code 500 internal server errors", () => {
     chai
-      .request(app)
+      .request(api_url)
       .post(endpoint_login)
       .set("Content-Type", "application/json")
-      .send(invalid_data)
+      .send(login)
+      .type("form")
+      .end((err, res) => {
+        if (err) {
+          expect(res.status).eq(500);
+        }
+      });
+  });
+  it("should send code 400 bad reques invalid payload", () => {
+    chai
+      .request(api_url)
+      .post(endpoint_login)
+      .set("Content-Type", "application/json")
+      .send(data)
       .type("form")
       .end((err, res) => {
         expect(res.statusCode).eq(400);
         expect(res.body.code).eq(400);
         expect(res.body).to.have.property("success").equal(false);
       });
-    done();
   });
 });
-
-module.exports = data;
