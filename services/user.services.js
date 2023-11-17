@@ -68,8 +68,6 @@ async function userLogin(payload) {
         [Op.and]: [{ mobile: payload.mobile }, { email: payload.email }],
       },
     };
-
-
     const user = await User.findOne(userData);
     if (!user) {
       return errorHelper(404, "User Not Found", "");
