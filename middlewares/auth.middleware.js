@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const models = require("./../models");
+const db = require("./../models");
+const User = db.User;
 const { errorHelper } = require("../helpers/error.helper");
 const { Op } = require("sequelize");
 require("dotenv").config();
@@ -17,9 +18,12 @@ const checkAccessToken = async (req, res, next) => {
   try {
     const decodedJwt = await jwt.verify(accessToken, secret);
 
-    const user = await models.User.findOne({
+    const user = await User.findOne({
       where: {
-        [Op.or]: [{ mobile: decodedJwt.mobile }, { email: decodedJwt.email }],
+        [Op.and]: [
+          { mobile: String(decodedJwt.mobile) },
+          { email: decodedJwt.email },
+        ],
       },
     });
 
