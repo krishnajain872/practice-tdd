@@ -5,24 +5,22 @@ require("dotenv").config();
 chai.use(chaiHttp);
 const app = require("../index");
 const { faker } = require("@faker-js/faker");
-
 const { BASE_API_URL: api_url } = process.env;
-// , API_AUTH_TOKEN: token
+const { userRegistration } = require("../services/user.services");
 
+const { userFakeData } = require("../helpers/fakeuser.helper");
+const payload = userFakeData();
+let data;
+let account_data;
+let auth;
+
+// , API_AUTH_TOKEN: token
 // API ENDPOINTS
 const endpoint_account = `${api_url}/accounts`;
-const endpoint_login = `${api_url}/users/login`;
-
-const login = require("./authentication.test");
 
 const accountTypes = ["saving", "current"];
 const accountType =
   accountTypes[Math.floor(Math.random() * accountTypes.length)];
-const account_data = {
-  account_type: accountType,
-  balance: String(faker.number.int({ min: 10, max: 1000 })),
-  mobile: login.mobile,
-};
 
 const not_found_data = {
   account_type: accountType,
@@ -30,22 +28,20 @@ const not_found_data = {
   mobile: faker.number.int({ min: 1000000000, max: 9999999999 }),
 };
 
-// ACCOUNT Testcases
-const token = chai
-  .request(app)
-  .post(endpoint_login)
-  .send(login)
-  .set("Content-Type", "application/json")
-  .type("form")
-  .end((err, res) => {
-    console.log("THIS IS RESPONSE OF CHAI TOKEN ===>>>\n ", res.body);
-    // return res.body.
-  });
-const auth = `Bearer ${token}`;
-console.log("AUTH TOKEN ===>>> token -: ", auth);
+// ACCOUNT Testcases;
 
-console.log("ACOUNT DATA PAYALOAD==>", account_data);
-describe("POST / Describe the Account test case ", () => {
+describe("ACCOUNT => POST / Describe the Account test case ", () => {
+  before(async () => {
+    data = await userRegistration(payload);
+    account_data = {
+      account_type: accountType,
+      balance: String(faker.number.int({ min: 10, max: 1000 })),
+      mobile: data.data.payload.dataValues.mobile,
+    };
+    const token = data.data.payload.dataValues.accessToken;
+    auth = `Bearer ${token}`;
+  });
+
   it("should send code 201 for account create successfully", (done) => {
     chai
       .request(app)
@@ -55,7 +51,6 @@ describe("POST / Describe the Account test case ", () => {
       .send(account_data)
       .type("form")
       .end((err, res) => {
-        console.log("THIS ACCOUNT RESPOSNSE", res.body);
         expect(res.statusCode).eq(201);
         expect(res.body.code).eq(201);
         done();

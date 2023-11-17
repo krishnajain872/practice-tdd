@@ -6,7 +6,6 @@ const Account = db.Account;
 const { Op } = require("sequelize");
 async function createAccount(payload) {
   try {
-    console.log("ACCOUNT SERVICE CALLED  ==>>>  ", payload);
     // fetch user details
     const userData = {
       where: {
@@ -14,7 +13,6 @@ async function createAccount(payload) {
       },
     };
     const user = await User.findOne(userData);
-    console.log("ACCOUNT SERVICE USER ==>>>  ", user);
     if (!user) {
       return errorHelper(404, "User Not Found", "");
     }
@@ -47,6 +45,7 @@ async function createAccount(payload) {
       );
     }
   } catch (err) {
+    console.log(err)
     return errorHelper(500, "service error", err.message);
   }
 }

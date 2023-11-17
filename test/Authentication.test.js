@@ -4,7 +4,7 @@ const chaiHttp = require("chai-http");
 require("dotenv").config();
 chai.use(chaiHttp);
 const { userFakeData, USERS } = require("../helpers/fakeuser.helper");
-const { BASE_API_URL: api_url, API_AUTH_TOKEN: token } = process.env;
+const { BASE_API_URL: api_url } = process.env;
 
 const app = require("../index");
 const { faker } = require("@faker-js/faker");
@@ -37,28 +37,8 @@ const notFound = {
   password: users[2].password,
 };
 
-// Auth token for accounts
-const auth = `Bearer ${token}`;
-console.log("AUTH TOKEN ===>>> token -: ", token);
-// account data for test cases
-const accountTypes = ["saving", "current"];
-const accountType =
-  accountTypes[Math.floor(Math.random() * accountTypes.length)];
-const account_data = {
-  account_type: accountType,
-  balance: faker.number.int({ min: 10, max: 1000 }),
-  mobile: data.mobile,
-};
-
-const not_found_data = {
-  account_type: accountType,
-  balance: faker.number.int({ min: 10, max: 1000 }),
-  mobile: faker.number.int({ min: 1000000000, max: 9999999999 }),
-};
-
 // REGISTRATION TESTCASES
-console.log("REGISRTATION DATA PAYALOAD==>", data);
-describe("POST / Describe the user registration", () => {
+describe("AUTHENTICATION => POST / Describe the user registration", () => {
   it("should send code 201 if user successfully registered ", (done) => {
     chai
       .request(app)
@@ -113,8 +93,7 @@ describe("POST / Describe the user registration", () => {
 });
 
 // LOGIN TEST CASES
-console.log("Login DATA PAYALOAD==>", login);
-describe("POST / Describe the user LOGIN ", () => {
+describe("AUTHENTICATION => POST / Describe the user LOGIN ", () => {
   it("should send code 200 if user successfully Login ", (done) => {
     chai
       .request(app)
@@ -184,5 +163,3 @@ describe("POST / Describe the user LOGIN ", () => {
       });
   });
 });
-
-module.exports = login;
