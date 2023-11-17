@@ -45,7 +45,6 @@ async function createAccount(payload) {
       );
     }
   } catch (err) {
-    console.log(err)
     return errorHelper(500, "service error", err.message);
   }
 }
