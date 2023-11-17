@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use("/api/staging", api);
 
 app.get("/", (req, res) => {
-  res.status(200).send("baking system api with tdd ");
+  res.status(200).json("baking system api with tdd ");
 });
 
 app.listen(port, () => {
@@ -23,3 +23,5 @@ app.listen(port, () => {
     console.log(err + "internal server error connection failed !!!");
   }
 });
+
+module.exports = app;
