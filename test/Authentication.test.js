@@ -4,14 +4,14 @@ const chaiHttp = require("chai-http");
 require("dotenv").config();
 chai.use(chaiHttp);
 const { userFakeData, USERS } = require("../helpers/fakeuser.helper");
-const { BASE_API_URL: api_url } = process.env;
+const { BASE_API_URL: api_url, API_AUTH_TOKEN: token } = process.env;
+
 const app = require("../index");
 const { faker } = require("@faker-js/faker");
-const { user } = require("../validators/user/user.validation.schema");
-
 // API ENDPOINTS
 const endpoint_register = `${api_url}/users/register`;
 const endpoint_login = `${api_url}/users/login`;
+const endpoint_account = `${api_url}/accounts`;
 
 // DATA FOR TESTING
 const users = USERS;
@@ -37,7 +37,27 @@ const notFound = {
   password: users[2].password,
 };
 
+// Auth token for accounts
+const auth = `Bearer ${token}`;
+console.log("AUTH TOKEN ===>>> token -: ", token);
+// account data for test cases
+const accountTypes = ["saving", "current"];
+const accountType =
+  accountTypes[Math.floor(Math.random() * accountTypes.length)];
+const account_data = {
+  account_type: accountType,
+  balance: faker.number.int({ min: 10, max: 1000 }),
+  mobile: data.mobile,
+};
+
+const not_found_data = {
+  account_type: accountType,
+  balance: faker.number.int({ min: 10, max: 1000 }),
+  mobile: faker.number.int({ min: 1000000000, max: 9999999999 }),
+};
+
 // REGISTRATION TESTCASES
+console.log("REGISRTATION DATA PAYALOAD==>", data);
 describe("POST / Describe the user registration", () => {
   it("should send code 201 if user successfully registered ", (done) => {
     chai
@@ -62,8 +82,8 @@ describe("POST / Describe the user registration", () => {
           "created_at",
           "accessToken"
         );
+        done();
       });
-    done();
   });
   it("should send code 400 if error for bad request", (done) => {
     chai
@@ -73,8 +93,8 @@ describe("POST / Describe the user registration", () => {
       .send(invalid_data)
       .end((err, res) => {
         expect(res.statusCode).eq(400);
+        done();
       });
-    done();
   });
   it("should send code 409 if conflict encounter like user already register ", (done) => {
     chai
@@ -87,12 +107,13 @@ describe("POST / Describe the user registration", () => {
         expect(res.body.code).eql(409);
         expect(res.body).to.have.property("success").equal(false);
         expect(res.body.name).eq("SequelizeUniqueConstraintError");
+        done();
       });
-    done();
   });
 });
 
 // LOGIN TEST CASES
+console.log("Login DATA PAYALOAD==>", login);
 describe("POST / Describe the user LOGIN ", () => {
   it("should send code 200 if user successfully Login ", (done) => {
     chai
@@ -117,8 +138,8 @@ describe("POST / Describe the user LOGIN ", () => {
           "password",
           "updated_at"
         );
+        done();
       });
-    done();
   });
   it("should send code 404 if user not found  ", (done) => {
     chai
@@ -131,8 +152,8 @@ describe("POST / Describe the user LOGIN ", () => {
         expect(res.statusCode).eq(404);
         expect(res.body.code).eq(404);
         expect(res.body).to.have.property("success").equal(false);
+        done();
       });
-    done();
   });
   it("should send code 401 if user password not match ", (done) => {
     chai
@@ -145,8 +166,8 @@ describe("POST / Describe the user LOGIN ", () => {
         expect(res.statusCode).eq(401);
         expect(res.body.code).eq(401);
         expect(res.body).to.have.property("success").equal(false);
+        done();
       });
-    done();
   });
   it("should send code 400 bad reques invalid payload", (done) => {
     chai
@@ -159,9 +180,9 @@ describe("POST / Describe the user LOGIN ", () => {
         expect(res.statusCode).eq(400);
         expect(res.body.code).eq(400);
         expect(res.body).to.have.property("success").equal(false);
+        done();
       });
-    done();
   });
 });
 
-module.exports = data;
+module.exports = login;

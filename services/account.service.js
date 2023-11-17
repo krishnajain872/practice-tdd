@@ -3,13 +3,10 @@ const { responseHelper } = require("../helpers/response.helper");
 const db = require("./../models");
 const User = db.User;
 const Account = db.Account;
-const {
-  passHashHelper,
-  passCompareHelper,
-} = require("./../helpers/password.helper");
 const { Op } = require("sequelize");
 async function createAccount(payload) {
   try {
+    console.log("ACCOUNT SERVICE CALLED  ==>>>  ", payload);
     // fetch user details
     const userData = {
       where: {
@@ -17,6 +14,7 @@ async function createAccount(payload) {
       },
     };
     const user = await User.findOne(userData);
+    console.log("ACCOUNT SERVICE USER ==>>>  ", user);
     if (!user) {
       return errorHelper(404, "User Not Found", "");
     }
