@@ -3,8 +3,7 @@ const transactionServices = require("../services/transaction.service");
 async function withdrawalBalance(req, res) {
   try {
     const payload = {
-      account_id: req.body.account_id,
-      amount: req.body.amount,
+      ...req.body,
     };
     const response = await transactionServices.widthdrawalAccountBalance(
       payload
@@ -20,7 +19,6 @@ async function withdrawalBalance(req, res) {
     res.status(500).send(err);
   }
 }
- 
 
 async function depositBalance(req, res) {
   try {
@@ -31,7 +29,9 @@ async function depositBalance(req, res) {
     };
 
     console.log("=> PAYLOAD CONTROLLER  ", payload);
-    const response = await transactionServices.depositeAccountBalanceService(payload);
+    const response = await transactionServices.depositeAccountBalanceService(
+      payload
+    );
 
     if (response.success) {
       res.status(200).send(response);
