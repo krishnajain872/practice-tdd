@@ -21,8 +21,7 @@ async function widthdrawalAccountBalance(payload) {
       });
     }
 
-    account.balance = Number(account.balance) - Number(payload.amount);
-
+    account.balance -= payload.amount;
     // Save the account
     await account.save({ transaction });
 
@@ -65,14 +64,14 @@ async function depositeAccountBalanceService(payload) {
     }
     // Update the account balance
 
-    account.balance = Number(account.balance) + Number(payload.amount);
+    account.balance += payload.amount;
 
     // Save the account
     await account.save({ transaction });
 
     // Create a transaction history record
     const transactionData = {
-      transaction_type: "deposite",
+      transaction_type: payload.type,
       account_id: account.id,
       is_sucessful: true,
       status: "completed",
@@ -89,6 +88,8 @@ async function depositeAccountBalanceService(payload) {
       balance: account.balance,
     });
   } catch (err) {
+    console.log(err);
+
     // Rollback the transaction if something goes wrong
     await transaction.rollback();
 
