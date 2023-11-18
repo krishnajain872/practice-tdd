@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use("/api/staging", api);
 
 app.get("/", (req, res) => {
-  res.status(200).json("baking system api with tdd ");
+  res.status(200).send("banking system api with tdd ");
 });
 
 app.listen(port, () => {
