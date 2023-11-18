@@ -7,7 +7,6 @@ const {
   passHashHelper,
   passCompareHelper,
 } = require("./../helpers/password.helper");
-const jwt = require("jsonwebtoken");
 const { Op } = require("sequelize");
 async function createAccount(payload) {
   try {
@@ -21,19 +20,25 @@ async function createAccount(payload) {
     if (!user) {
       return errorHelper(404, "User Not Found", "");
     }
-
-    // Create the account
-    const account = await Account.create({
-      account_type: payload.account_type,
-      balance: payload.balance,
-      user_id: user.id,
-    });
+    const accountExist = {
+      where: {
+        [Op.and]: [
+          { user_id: user.id },
+          { account_type: payload.account_type },
+        ],
+      },
+    };
 
     const isAccount = await Account.findOne(accountExist);
     if (isAccount) {
       return errorHelper(409, "Account already exist", isAccount);
     }
-
+    const accountData = {
+      account_type: payload.account_type,
+      balance: payload.balance,
+      user_id: user.id,
+    };
+    // Create the account
     if (user && payload.account_type && payload.balance) {
       const account = await Account.create(accountData);
       return responseHelper(
@@ -47,8 +52,6 @@ async function createAccount(payload) {
     return errorHelper(500, "service error", err.message);
   }
 }
-
-
 
 module.exports = {
   createAccount,

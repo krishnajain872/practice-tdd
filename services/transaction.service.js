@@ -8,7 +8,7 @@ async function widthdrawalAccountBalance(payload) {
   const transaction = await sequelize.transaction();
   try {
     // Get the account to update
-    const account = await Account.findOne({ id: payload.account_id });
+    const account = await Account.findByPk(payload.account_id);
     if (!account) {
       await transaction.rollback();
       errorHelper(404, "account not found", " ");
@@ -53,18 +53,15 @@ async function widthdrawalAccountBalance(payload) {
   }
 }
 
-
-
 async function depositeAccountBalanceService(payload) {
   const transaction = await sequelize.transaction();
   try {
-     
-     // Get the account to update
-     const account = await Account.findByPk(payload.account_id);
-     if (!account) {
-       await transaction.rollback();
-       return errorHelper(404, "account not found", " ");
-     }
+    // Get the account to update
+    const account = await Account.findByPk(payload.account_id);
+    if (!account) {
+      await transaction.rollback();
+      return errorHelper(404, "account not found", " ");
+    }
     // Update the account balance
 
     account.balance += payload.amount;
@@ -100,8 +97,7 @@ async function depositeAccountBalanceService(payload) {
   }
 }
 
-
 module.exports = {
   widthdrawalAccountBalance,
-  depositeAccountBalanceService
+  depositeAccountBalanceService,
 };
