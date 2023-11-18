@@ -69,7 +69,6 @@ async function userLogin(payload) {
       },
     };
 
-
     const user = await User.findOne(userData);
     if (!user) {
       return errorHelper(404, "User Not Found", "");

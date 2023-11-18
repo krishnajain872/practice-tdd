@@ -21,7 +21,7 @@ async function widthdrawalAccountBalance(payload) {
       });
     }
 
-    account.balance -= payload.amount;
+    account.balance = Number(account.balance) - Number(payload.amount);
     // Save the account
     await account.save({ transaction });
 
@@ -64,14 +64,14 @@ async function depositeAccountBalanceService(payload) {
     }
     // Update the account balance
 
-    account.balance += payload.amount;
+    account.balance = Number(account.balance) + Number(payload.amount);
 
     // Save the account
     await account.save({ transaction });
 
     // Create a transaction history record
     const transactionData = {
-      transaction_type: payload.type,
+      transaction_type: "deposit",
       account_id: account.id,
       is_sucessful: true,
       status: "completed",

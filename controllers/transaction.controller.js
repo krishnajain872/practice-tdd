@@ -23,10 +23,8 @@ async function withdrawalBalance(req, res) {
 async function depositBalance(req, res) {
   try {
     const payload = {
-      ...req.body
+      ...req.body,
     };
-
-    console.log("=> PAYLOAD CONTROLLER  ", payload);
     const response = await transactionServices.depositeAccountBalanceService(
       payload
     );
@@ -37,7 +35,6 @@ async function depositBalance(req, res) {
       res.status(response.code).send(response);
     }
   } catch (err) {
-    console.log(err);
     res.status(500).send(err);
   }
 }
