@@ -132,7 +132,6 @@ describe("patch / Describe the deposit account balance test case ", () => {
       .send()
       .type("form")
       .end((err, res) => {
-        console.log(res.body);
         expect(res.statusCode).to.equal(200);
         expect(res.body.code).to.equal(200);
         expect(res.body.success).to.equal(true);

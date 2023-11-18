@@ -23,9 +23,7 @@ async function withdrawalBalance(req, res) {
 async function depositBalance(req, res) {
   try {
     const payload = {
-      account_id: req.params.account_id,
-      amount: req.body.amount,
-      type: req.body.type,
+      ...req.body
     };
 
     console.log("=> PAYLOAD CONTROLLER  ", payload);

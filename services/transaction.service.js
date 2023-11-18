@@ -88,8 +88,6 @@ async function depositeAccountBalanceService(payload) {
       balance: account.balance,
     });
   } catch (err) {
-    console.log(err);
-
     // Rollback the transaction if something goes wrong
     await transaction.rollback();
 
